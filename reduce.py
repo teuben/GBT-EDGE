@@ -64,7 +64,7 @@ def getscans(gal, pars='gals.pars'):
     scans.append( (1, 24,  57, [ 21, 58]) )
     return scans
 
-def calscans(gal, scan, pid='AGBT21B_024', rawdir='rawdata'):
+def my_calscans(gal, scan, pid='AGBT21B_024', rawdir='rawdata'):
     seq      = scan[0]
     start    = scan[1]
     stop     = scan[2]
@@ -78,6 +78,6 @@ if __name__ == "__main__":
         print("Working on galaxy %s" % gal)
         scans = getscans(gal)
         for scan in scans:
-            calscans(gal,scan)
+            my_calscans(gal,scan)
         edgegrid(cal)
         

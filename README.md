@@ -1,7 +1,14 @@
 # GBT-EDGE
 
-example scripts to reduce GBT EDGE data. Still very preliminary, expect updates, here
+Example scripts to reduce GBT EDGE data. Still very preliminary, expect updates, here
 as well as in 3rd party code mentioned here.
+
+Example of use (in this directory):
+
+      source edge.sh
+      ./reduce.py NGC0001 UGC02239
+	  
+each galaxy takes about 20 mins to reduce.
 
 # Installation
 
@@ -30,4 +37,6 @@ For those wishing to run this locally, consult the degas instructions
 
 * GBTEDGE.cat - this should also be in  /home/astro-util/projects/gbt-edge/GBTEDGE.cat 
 * night1.py - a bruteforce example script for Night 1 (Nov 5/6, 2021)
+* reduce.py - reduce one (or more) galaxies, based on parameters in gals.pars
+* gals.pars - parameter file for reduce.py
 * /home/sdfits/AGBT21B_024_01 - night1 VEGAS raw data @ GBO  (1.3GB)

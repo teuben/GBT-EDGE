@@ -67,7 +67,7 @@ def getscans(gal, pars='gals.pars'):
 def calscans(gal, scan, pid='AGBT21B_024', rawdir='rawdata'):
     seq      = scan[0]
     start    = scan[1]
-    end      = scan[2]
+    stop     = scan[2]
     refscans = scan[3]
     dirname  = '%s/%s_%02d/%s_%02d.raw.vegas' % (rawdir,pid,seq,pid,seq)
     calscans(dirname, start=start, stop=stop, refscans=refscans, OffType='PCA')

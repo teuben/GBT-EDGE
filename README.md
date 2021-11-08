@@ -1,6 +1,7 @@
 # GBT-EDGE
 
-example scripts to reduce GBT EDGE data. Still very preliminary, expect updates.
+example scripts to reduce GBT EDGE data. Still very preliminary, expect updates, here
+as well as in 3rd party code mentioned here.
 
 # Installation
 
@@ -20,5 +21,9 @@ Since the weather info is nominally only available at GBO, you should run this o
 For those wishing to run this locally, consult the degas instructions
 [here](https://github.com/GBTSpectroscopy/degas/blob/master/README.md#local-installation-of-the-degas-pipeline).
 
+# Files
+
+* GBTEDGE.cat - this should also be in  /home/astro-util/projects/gbt-edge/GBTEDGE.cat 
+* night1.py - a bruteforce example script for Night 1 (Nov 5/6, 2021)
 
 

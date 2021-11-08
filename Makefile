@@ -18,6 +18,7 @@ GIT_DIRS = gbtpipe degas
 
 URL1  = https://github.com/GBTSpectroscopy/gbtpipe
 URL2  = https://github.com/GBTSpectroscopy/degas
+URL3  = https://github.com/astroumd/lmtoy
 
 .PHONY:  help install build
 
@@ -47,18 +48,38 @@ gbtpipe:
 degas:
 	git clone $(URL2)
 
+lmtoy:
+	git clone $(URL3)
+
 
 edge_env:
 	python3 -m venv edge_env
 
 install_gbtpipe:  gbtpipe edge_env
 	(cd gbtpipe;\
-	cd ../edge_env/bin/activate;\
+	source ../edge_env/bin/activate;\
 	pip3 install --upgrade pip;\
 	pip3 install -e .)
 
 install_degas:  degas edge_env
 	(cd degas;\
-	cd ../edge_env/bin/activate;\
+	source ../edge_env/bin/activate;\
 	pip3 install --upgrade pip;\
 	pip3 install -e .)
+
+#  running at GBO, rawdata just points to /home/sdfits
+#  offsite you will need to supply your own, YMMV
+rawdata:
+	if [ -d /home/sdfits ]; then \
+	  ln -s /home/sdfits rawdata ;\
+	fi
+
+# python >= 3.7 is now required
+# gbt runs 3.6.8
+# hack to install a more recent python
+pjt:	lmtoy
+	(cd lmtoy; make install_python)
+	@echo "Make sure you 'source lmtoy/python_start.sh'"
+
+
+#  todo:   pyspeckit

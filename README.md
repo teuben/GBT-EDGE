@@ -21,9 +21,8 @@ Since the weather info is nominally only available at GBO, you should run this o
 For those wishing to run this locally, consult the degas instructions
 [here](https://github.com/GBTSpectroscopy/degas/blob/master/README.md#local-installation-of-the-degas-pipeline).
 
-# Files
+# Important Files and Directories
 
 * GBTEDGE.cat - this should also be in  /home/astro-util/projects/gbt-edge/GBTEDGE.cat 
 * night1.py - a bruteforce example script for Night 1 (Nov 5/6, 2021)
-
-
+* /home/sdfits/AGBT21B_024_01 - night1 VEGAS raw data @ GBO

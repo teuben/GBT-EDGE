@@ -60,8 +60,8 @@ def galcenter(galaxy):
 
 def getscans(gal, pars='gals.pars'):
     scans = []
-    scans.append( (117, 148, [115,150]) )
-    scans.append( ( 24,  57, [ 21, 58]) )
+    scans.append( (1, 117, 148, [115,150]) )
+    scans.append( (1, 24,  57, [ 21, 58]) )
     return scans
 
 def calscans(gal, scan, pid='AGBT21B_024', rawdir='rawdata'):

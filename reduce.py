@@ -58,10 +58,28 @@ def galcenter(galaxy):
                                 unit=(u.hourangle, u.deg))
     return(galcoord)
 
-def getscans(gal, pars='gals.pars'):
+def getscans(gal, parfile='gals.pars'):
     scans = []
-    scans.append( (1, 117, 148, [115,150]) )
-    scans.append( (1, 24,  57, [ 21, 58]) )
+    fp = open(parfile)
+    lines = fp.readlines()
+    for line in lines:
+        if line[0] == '#':
+            continue
+        try:
+            w = line.split()
+            if len(w) < 5:
+                continue
+            if gal != w[0]:
+                continue
+            seq = int(w[1])
+            start = int(w[2])
+            stop = int(w[3])
+            ss = w[4].split(',')
+            refscans = [int(ss[0]),int(ss[1])]
+            scans.append( (seq,start,stop,refscans) )
+            print('%s: found %s' % (gal,scans[-1])) 
+        except:
+            print('Skipping parsing bad line: ',line)
     return scans
 
 def my_calscans(gal, scan, pid='AGBT21B_024', rawdir='rawdata'):
@@ -79,5 +97,5 @@ if __name__ == "__main__":
         scans = getscans(gal)
         for scan in scans:
             my_calscans(gal,scan)
-        edgegrid(cal)
+        edgegrid(gal)
         

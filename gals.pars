@@ -1,0 +1,12 @@
+# per galaxy:
+#   calscans('rawdata/AGBT21B_024_01/AGBT21B_024_01.raw.vegas',start=117,stop=149,refscans=[115, 150], OffType='PCA')
+
+NGC0001   01 117 149 115,150
+NGC0001   01  24  57  21,58
+
+UGC01569  01 117 149  115,150
+UGC01569  01 161 194  159,195
+
+UGC02239  01  214 248 212,249
+#UGC02239 02
+

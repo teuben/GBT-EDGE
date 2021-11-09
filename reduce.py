@@ -95,7 +95,9 @@ if __name__ == "__main__":
     for gal in sys.argv[1:]:
         print("Working on galaxy %s" % gal)
         scans = getscans(gal)
-        for scan in scans:
-            my_calscans(gal,scan)
-        edgegrid(gal)
-        
+        if len(scans) > 0:
+            for scan in scans:
+                my_calscans(gal,scan)
+            edgegrid(gal)
+        else:
+            print("Skipping %s: no entry found" % gal)

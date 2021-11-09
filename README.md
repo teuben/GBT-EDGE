@@ -6,9 +6,9 @@ as well as in 3rd party code mentioned here.
 Example of use (in this directory):
 
       source edge.sh
-      ./reduce.py NGC0001 UGC02239
+      ./reduce.py NGC0001 
 	  
-each galaxy takes about 20 mins to reduce.
+each galaxy takes about 20 mins to reduce, where the observing time was about 60 mins.
 
 # Installation
 
@@ -18,8 +18,8 @@ each galaxy takes about 20 mins to reduce.
 There are short-cuts in the Makefile, but basically you need to 
 install the following python packages in your whatever python3 environment you use:
 
-* gbtpipe: https://github.com/GBTSpectroscopy/gbtpipe
-* degas:   https://github.com/GBTSpectroscopy/degas
+* **gbtpipe**: https://github.com/GBTSpectroscopy/gbtpipe
+* **degas**:   https://github.com/GBTSpectroscopy/degas
 
 Probably better to use the source based install, so you can "git pull" while code updates are being made:
 

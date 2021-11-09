@@ -88,7 +88,7 @@ def my_calscans(gal, scan, pid='AGBT21B_024', rawdir='rawdata'):
     stop     = scan[2]
     refscans = scan[3]
     dirname  = '%s/%s_%02d/%s_%02d.raw.vegas' % (rawdir,pid,seq,pid,seq)
-    calscans(dirname, start=start, stop=stop, refscans=refscans, OffType='PCA')
+    calscans(dirname, start=start, stop=stop, refscans=refscans, OffType='PCA',nProc=1)
 
 
 if __name__ == "__main__":
@@ -96,8 +96,11 @@ if __name__ == "__main__":
         print("Working on galaxy %s" % gal)
         scans = getscans(gal)
         if len(scans) > 0:
+            os.makedirs(gal, exist_ok=True)
+            os.chdir(gal)
             for scan in scans:
                 my_calscans(gal,scan)
             edgegrid(gal)
+            os.chdir('..')
         else:
             print("Skipping %s: no entry found" % gal)

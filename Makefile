@@ -92,8 +92,10 @@ pjt:	lmtoy
 	@echo "Make sure you 'source lmtoy/python_start.sh'"
 
 
-#  OMP=1   182.82user 3.72system 3:06.68elapsed 99%CPU
-# 
+#  all procs:    556.80user   7.36system  3:17.45elapsed 285%CPU    (peter's laptop - i5-1135G7)
+#  1 processor   182.82user   3.72system  3:06.68elapsed  99%CPU    (peter's laptop)
+#  all procs:   3068.26user 178.50system 10:22.19elapsed 521%CPU    (at GBO's fourier machine - Xeon E5620)
+#  1 processor   536.42user  10.68system 10:25.20elapsed  87%CPU    (at GBO's fourier machine)
 run:	NGC0001
 	$(OMP) $(TIME) ./reduce.py -s NGC0001
 

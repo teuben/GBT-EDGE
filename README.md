@@ -9,6 +9,8 @@ Example of use (in this directory):
       ./reduce.py NGC0001 
 	  
 each galaxy takes about 20 mins to reduce, where the observing time was about 60 mins.
+The use of the **edge.sh** script is optional, as long as the needed packages are
+installed in *your* python (see Installation below).
 
 # Installation
 
@@ -37,6 +39,7 @@ Running the calibration off-line is not impossible, but involved. However, using
 one of our datasets for [NGC0001](https://www.astro.umd.edu/~teuben/edge/data/NGC0001.tar) can be
 used to play with the gridding step, viz.
 
+     make NGC0001
       ./reduce.py -s NGC0001
 	  
 # Running

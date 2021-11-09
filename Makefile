@@ -104,3 +104,10 @@ NGC0001:
 
 other:
 	pip install pyspeckit
+
+#  if you want to fully reduce the data off-line
+SEQ = 01
+REM = teuben@lma.astro.umd.edu:/lma1/teuben/
+rsync:
+	rsync -ahv --bwlimit=8000 /home/sdfits/AGBT21B_024_$(SEQ) $(REM)/GBTRawdata
+	rsync -ahv --bwlimit=8000 /users/rmaddale/Weather/ArchiveCoeffs/Coeffs* $(REM)/GBTWeather

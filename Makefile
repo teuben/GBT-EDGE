@@ -10,6 +10,12 @@ WGET = wget
 # use python3 or anaconda3
 PYTHON = anaconda3
 
+# timing
+TIME = /usr/bin/time
+
+# parallel?
+OMP = OMP_NUM_THREADS=1
+
 # git directories we should have here
 
 GIT_DIRS = gbtpipe degas
@@ -55,6 +61,7 @@ lmtoy:
 edge_env:
 	python3 -m venv edge_env
 
+# note gbtpipe needs to be installed before degas
 install_gbtpipe:  gbtpipe edge_env
 	(cd gbtpipe;\
 	source ../edge_env/bin/activate;\
@@ -70,8 +77,11 @@ install_degas:  degas edge_env
 #  running at GBO, rawdata just points to /home/sdfits
 #  offsite you will need to supply your own, YMMV
 rawdata:
-	if [ -d /home/sdfits ]; then \
-	  ln -s /home/sdfits rawdata ;\
+	@if [ -d /home/sdfits ]; then \
+	  ln -s /home/sdfits rawdata; \
+	else \
+	  echo "Not at GBO; Provide your own symlink/directory named 'rawdata'"; \
+          echo "or get a precomputed dataset via: make NGC0001"; \
 	fi
 
 # python >= 3.7 is now required
@@ -82,4 +92,13 @@ pjt:	lmtoy
 	@echo "Make sure you 'source lmtoy/python_start.sh'"
 
 
-#  todo:   pyspeckit
+#  OMP=1   182.82user 3.72system 3:06.68elapsed 99%CPU
+# 
+run:	NGC0001
+	$(OMP) $(TIME) ./reduce.py -s NGC0001
+
+NGC0001:
+	wget -q https://www.astro.umd.edu/~teuben/edge/data/NGC0001.tar -O - | tar xvf -
+
+other:
+	pip install pyspeckit

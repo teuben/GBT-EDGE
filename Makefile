@@ -109,6 +109,7 @@ other:
 SEQ = 01
 REM = teuben@lma.astro.umd.edu:/lma1/teuben/
 rsync:
+	@echo rsync to REM=$(REM) and SEQ=$(SEQ)
 	du -sh /home/sdfits/AGBT21B_024_$(SEQ)
 	rsync -ahv --bwlimit=8000 /home/sdfits/AGBT21B_024_$(SEQ) $(REM)/GBTRawdata
 	rsync -ahv --bwlimit=8000 /users/rmaddale/Weather/ArchiveCoeffs/Coeffs* $(REM)/GBTWeather

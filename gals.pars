@@ -1,7 +1,9 @@
+# AGBT21B_024
 # Parameter file for reduce.py
 # Usually the refscans are the VANE's at start-2 and stop+1
+#   [vane,sky,Map,vane,sky]
 
-#  gal  seq  start stop [refscans]
+# galaxy seq start stop [refscans]
 
 #  21-59  65-103
 NGC0001   1    67   101  65,102    #  5 Msun/yr    clear double horn, SN ~ 10  rms=0.025292  0.023344
@@ -15,7 +17,7 @@ UGC02239  1   214   248  212,249   # 0.8 Msun/yr    weak, if any  rms=0.023122
 UGC02239  2   213   247  211,248
 
 # 18-56  a.k.a. Arp 282
-NGC0169   2    20    54   18,55    #  3   Msun/yr   clear, SN~10   
+NGC0169   2    20    54   18,55    #  3   Msun/yr   clear, SN~10   rms=0.024697
 NGC0169   2    64    98   62,99
 
 # 123-161  167-205
@@ -23,9 +25,12 @@ NGC0932   2   125   159  123,160    #  0.4 Msun/yr    weak, if any   rms=0.02529
 NGC0932   2   169   203  123,204
 
 # 292-330
-UGC04262  2   294   328  292,329    #  1.6 Msun/yr
-#UGC04262  2   
+UGC04262  2   294   328  292,329    #  1.6 Msun/yr     weak?
+UGC04262  2   338   372  336,373
 
-# NGC2449     1
+# 386-424
+NGC2449   2   388   422  386,423    #  1 Msun/yr
+#NGC2449   2 
+
 # UGC04258    0.1
 # UGC05187    0.1

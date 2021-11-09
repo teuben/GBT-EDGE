@@ -12,6 +12,9 @@ each galaxy takes about 20 mins to reduce.
 
 # Installation
 
+      git clone https://github.com/teuben/GBT-EDGE
+
+
 There are short-cuts in the Makefile, but basically you need to 
 install the following python packages in your whatever python3 environment you use:
 
@@ -20,12 +23,21 @@ install the following python packages in your whatever python3 environment you u
 
 Probably better to use the source based install, so you can "git pull" while code updates are being made:
 
-	  cd gbtpipe
-      pip install -e .
+      pip install -e gbtpipe
+      pip install -e degas
 	  
 It was noted that python > 3.7 was needed, where GBO runs 3.6.8. I've use the lmtoy method to
-install a container with anaconda3's python.
-	  
+install a container with anaconda3's python. Also the installation of gbtpipe might need the
+bz2 library. On my ubuntu system I needed to install **libbz2-dev** for this to pass the cfitsio
+installation.
+
+# Sample Data
+
+Running the calibration off-line is not impossible, but involved. However, using
+one of our datasets for [NGC0001](https://www.astro.umd.edu/~teuben/edge/data/NGC0001.tar) can be
+used to play with the gridding step, viz.
+
+      ./reduce.py -s NGC0001
 	  
 # Running
 

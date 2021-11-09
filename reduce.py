@@ -98,7 +98,13 @@ if __name__ == "__main__":
             print("Warning: skipping accumulating scans, only doing gridding")
             do_scan = False
             continue
-        print("Working on galaxy %s" % gal)
+        if gal == '-h':
+            print("Usage: %s [-h] [-s] galaxy [galaxy ...]" % sys.argv[0])
+            print("  -h      help")
+            print("  -s      skip scan building (assumed you've done it before)")
+            print("  galaxy  galaxy name(s), e.g. NGC0001, as they appear in gals.pars")
+            continue
+        print("Trying galaxy %s" % gal)
         scans = getscans(gal)
         if len(scans) > 0:
             os.makedirs(gal, exist_ok=True)

@@ -127,3 +127,9 @@ rsync:
 	-rsync -ahv --bwlimit=8000 $(SDIR)/AGBT21B_024_$(SEQ) $(REM)/GBTRawdata
 	@echo weather
 	-rsync -ahv --bwlimit=8000 $(WDIR)/Coeffs* $(REM)/GBTWeather
+
+#  produce a sample edge.sh
+edge.sh:
+	@echo '#  this is a sample edge.sh file'
+	@echo "export GBTWEATHER=$(PWD)/weather"
+	@echo "source $(PWD)/lmtoy/python_start.sh"

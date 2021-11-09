@@ -1,7 +1,8 @@
-# AGBT21B_024
+# Project: AGBT21B_024
 # Parameter file for reduce.py
 # Usually the refscans are the VANE's at start-2 and stop+1
 #   [vane,sky,Map,vane,sky]
+# galaxy names must match the ones in GBTEDGE.cat exactly
 
 # galaxy seq start stop [refscans]
 
@@ -28,9 +29,9 @@ NGC0932   2   169   203  123,204
 UGC04262  2   294   328  292,329    #  1.6 Msun/yr     weak?
 UGC04262  2   338   372  336,373
 
-# 386-424
+# 386-424  430-
 NGC2449   2   388   422  386,423    #  1 Msun/yr
-#NGC2449   2 
+NGC2449   2   432   466  430,467
 
 # UGC04258    0.1
 # UGC05187    0.1

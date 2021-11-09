@@ -76,12 +76,24 @@ install_degas:  degas edge_env
 
 #  running at GBO, rawdata just points to /home/sdfits
 #  offsite you will need to supply your own, YMMV
+SDIR = /home/sdfits
 rawdata:
-	@if [ -d /home/sdfits ]; then \
-	  ln -s /home/sdfits rawdata; \
+	@if [ -d $(SDIR) ]; then \
+	  ln -s $(SDIR) rawdata; \
 	else \
 	  echo "Not at GBO; Provide your own symlink/directory named 'rawdata'"; \
           echo "or get a precomputed dataset via: make NGC0001"; \
+	  echo "SDIR=$(SDIR)"; \
+	fi
+
+WDIR = /users/rmaddale/Weather/ArchiveCoeffs
+
+weather:
+	@if [ -d $(WDIR) ]; then \
+	  ln -s $(WDIR) weatherd; \
+	else \
+	  echo "Not at GBO; Provide your own symlink/directory named 'weather'"; \
+	  echo "WDIR=$(WDIR)"; \
 	fi
 
 # python >= 3.7 is now required
@@ -110,6 +122,8 @@ SEQ = 01
 REM = teuben@lma.astro.umd.edu:/lma1/teuben/
 rsync:
 	@echo rsync to REM=$(REM) and SEQ=$(SEQ)
-	du -sh /home/sdfits/AGBT21B_024_$(SEQ)
-	rsync -ahv --bwlimit=8000 /home/sdfits/AGBT21B_024_$(SEQ) $(REM)/GBTRawdata
-	rsync -ahv --bwlimit=8000 /users/rmaddale/Weather/ArchiveCoeffs/Coeffs* $(REM)/GBTWeather
+	du -sh $(SDIR)/AGBT21B_024_$(SEQ)
+	@echo rawdata SEQ=$(SEQ)
+	-rsync -ahv --bwlimit=8000 $(SDIR)/AGBT21B_024_$(SEQ) $(REM)/GBTRawdata
+	@echo weather
+	-rsync -ahv --bwlimit=8000 $(WDIR)/Coeffs* $(REM)/GBTWeather

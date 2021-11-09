@@ -39,12 +39,12 @@ def edgegrid(galaxy):
 
     postprocess.cleansplit(filename + '.fits',
                            spectralSetup='12CO',
-                           HanningLoops=1,
-                           spatialSmooth=1.3,
-                           CatalogFile='GBTEDGE.cat',
+                           HanningLoops=2,          # was: 1
+                           spatialSmooth=2,         # was: 1.3
+                           CatalogFile='../GBTEDGE.cat',
                            blorder=posblorder)
 def galcenter(galaxy):
-    CatalogFile = 'GBTEDGE.cat'
+    CatalogFile = '../GBTEDGE.cat'
     Catalog = Table.read(CatalogFile, format='ascii')
 
     match = np.zeros_like(Catalog, dtype=bool)
@@ -82,24 +82,30 @@ def getscans(gal, parfile='gals.pars'):
             print('Skipping parsing bad line: ',line)
     return scans
 
-def my_calscans(gal, scan, pid='AGBT21B_024', rawdir='rawdata'):
+def my_calscans(gal, scan, pid='AGBT21B_024', rawdir='../rawdata'):
     seq      = scan[0]
     start    = scan[1]
     stop     = scan[2]
     refscans = scan[3]
     dirname  = '%s/%s_%02d/%s_%02d.raw.vegas' % (rawdir,pid,seq,pid,seq)
-    calscans(dirname, start=start, stop=stop, refscans=refscans, OffType='PCA',nProc=1)
+    calscans(dirname, start=start, stop=stop, refscans=refscans, OffType='PCA',nProc=4)
 
 
 if __name__ == "__main__":
+    do_scan = True
     for gal in sys.argv[1:]:
+        if gal == '-s':
+            print("Warning: skipping accumulating scans, only doing gridding")
+            do_scan = False
+            continue
         print("Working on galaxy %s" % gal)
         scans = getscans(gal)
         if len(scans) > 0:
             os.makedirs(gal, exist_ok=True)
             os.chdir(gal)
-            for scan in scans:
-                my_calscans(gal,scan)
+            if do_scan:
+                for scan in scans:
+                    my_calscans(gal,scan)
             edgegrid(gal)
             os.chdir('..')
         else:

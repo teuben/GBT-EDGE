@@ -3,6 +3,7 @@
 
 #  gal  seq  start stop [refscans]
 
+# 21-59  65-103
 NGC0001   1    67   101  65,102    #  5 Msun/yr
 NGC0001   1    23    57  21,58
 
@@ -12,7 +13,9 @@ UGC01659  1   161   195  159,196
 UGC02239  1   214   248  212,249   # 0.8 Msun/yr
 #UGC02239 2
 
-# NGC0169     3   Msun/yr
+# 18-56
+NGC0169   2   20    54    18,55       #  3   Msun/yr
+#
 # NGC0932     0.4 Msun/yr
 # UGC04262    1.6
 # NGC2449     1

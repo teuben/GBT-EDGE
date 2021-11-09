@@ -1,13 +1,15 @@
-# per galaxy:
-#   calscans('rawdata/AGBT21B_024_01/AGBT21B_024_01.raw.vegas',start=117,stop=149,refscans=[115, 150], OffType='PCA')
+# Parameter file for reduce.py
+#
 
-NGC0001   1  67 101  65,102
-NGC0001   1  23  57  21,58
+#  gal  seq  start stop [refscans]
 
-UGC01659  1 117 149  115,150
-# UGC01659  1 161 194  159,195    # 159,196 ??
-UGC01659  1 161 195  159,196    # 159,196 ??
+NGC0001   1    67   101  65,102
+NGC0001   1    23    57  21,58
 
-UGC02239  1  214 248 212,249
+UGC01659  1   117   149  115,150
+#UGC01659  1  161   194  159,195    # 159,196 ??
+UGC01659  1   161   195  159,196
+
+UGC02239  1   214   248  212,249
 #UGC02239 2
 

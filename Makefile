@@ -143,3 +143,7 @@ edge.sh:
 	@echo "source $(PWD)/lmtoy/python_start.sh"
 	@echo "# for a virtual environment, un-comment this:"
 	@echo "# source $(PWD)/edge_env/bin/activate"
+
+#
+show:
+	@grep -v ^# gals.pars | awk '{if (NF>0) print $$1}' | sort  | uniq

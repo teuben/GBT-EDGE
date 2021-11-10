@@ -135,3 +135,5 @@ edge.sh:
 	@echo '#  this is a sample edge.sh file'
 	@echo "export GBTWEATHER=$(PWD)/weather"
 	@echo "source $(PWD)/lmtoy/python_start.sh"
+	@echo "# for a virtual environment, un-comment this:"
+	@echo "# source $(PWD)/edge_env/bin/activate"

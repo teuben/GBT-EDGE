@@ -40,6 +40,6 @@ UGC04258  2   520   554  518,555
 # UGC05187    0.1   - near zenith , we'll redo later
 
 # 562-600 601-639
-UGC04136   2  564  598     562,599   # 0.9 Msun/yr ?
-UGC04136   2  603  623     601,601  # no final VANE/SKY, we  got interrupted, redo?
+UGC04136   2  564  598   562,599   # 0.9 Msun/yr ?
+UGC04136   2  603  622   601,601   # no final VANE/SKY, we  got interrupted, redo?
 

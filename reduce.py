@@ -59,6 +59,10 @@ def galcenter(galaxy):
     return(galcoord)
 
 def getscans(gal, parfile='gals.pars'):
+    """  allowed formats:
+       GAL  SEQ  START  STOP  REF1,REF2
+       GAL  SEQ  START  STOP               #  cheating: REF1=START-2  REF2=STOP+1
+    """
     scans = []
     fp = open(parfile)
     lines = fp.readlines()
@@ -66,16 +70,20 @@ def getscans(gal, parfile='gals.pars'):
         if line[0] == '#':
             continue
         try:
+            line = line.split('#')[0]    #  removing trailing comments
             w = line.split()
-            if len(w) < 5:
+            if len(w) < 4:
                 continue
             if gal != w[0]:
                 continue
             seq = int(w[1])
             start = int(w[2])
             stop = int(w[3])
-            ss = w[4].split(',')
-            refscans = [int(ss[0]),int(ss[1])]
+            if len(w) ==4:
+                refscans = [start-2, stop+1]
+            else:
+                ss = w[4].split(',')
+                refscans = [int(ss[0]),int(ss[1])]
             scans.append( (seq,start,stop,refscans) )
             print('%s: found %s' % (gal,scans[-1])) 
         except:
@@ -88,7 +96,7 @@ def my_calscans(gal, scan, pid='AGBT21B_024', rawdir='../rawdata'):
     stop     = scan[2]
     refscans = scan[3]
     dirname  = '%s/%s_%02d/%s_%02d.raw.vegas' % (rawdir,pid,seq,pid,seq)
-    calscans(dirname, start=start, stop=stop, refscans=refscans, OffType='PCA',nProc=4)
+    calscans(dirname, start=start, stop=stop, refscans=refscans, OffType='PCA',nProc=4,opacity=True)
 
 
 if __name__ == "__main__":

@@ -6,7 +6,8 @@ as well as in 3rd party code mentioned here.
 
 Example of use (in this directory):
 
-      source edge.sh              # optional, just to set up your (python) environment
+      cd /home/astro-util/projects/gbt-edge/GBT-EDGE       # at GBO
+      source edge.sh           
       ./reduce.py NGC0001 
 	  
 each galaxy takes about 20 mins to reduce, where the observing time was about 60 mins.

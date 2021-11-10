@@ -26,8 +26,8 @@ install the following python packages in your whatever python3 environment you u
 Probably better to use the source based install (-e), so you can "git pull" while code updates are being made:
 
       make git
-      pip install -e gbtpipe
-      pip install -e degas
+      (cd gbtpipe; pip install -e .)
+      (cd degas;   pip install -e .)
       pip install pyspeckit
 	  
 It was noted that python > 3.7 was needed, where GBO runs 3.6.8. I've use the lmtoy method to

@@ -1,6 +1,4 @@
-# See the INSTALL.md notes on how to use this Makefile
-# what is shown here to install, is just one of many paths
-
+#    various target to aid in installing GBT-EDGE
 #
 SHELL = /bin/bash
 
@@ -15,6 +13,11 @@ TIME = /usr/bin/time
 
 # parallel?
 OMP = OMP_NUM_THREADS=1
+
+# Greenbank locations (useful for rsync)
+
+SDIR = /home/sdfits
+WDIR = /users/rmaddale/Weather/ArchiveCoeffs
 
 # git directories we should have here
 
@@ -76,7 +79,7 @@ install_degas:  degas edge_env
 
 #  running at GBO, rawdata just points to /home/sdfits
 #  offsite you will need to supply your own, YMMV
-SDIR = /home/sdfits
+
 rawdata:
 	@if [ -d $(SDIR) ]; then \
 	  ln -s $(SDIR) rawdata; \
@@ -85,8 +88,6 @@ rawdata:
           echo "or get a precomputed dataset via: make NGC0001"; \
 	  echo "SDIR=$(SDIR)"; \
 	fi
-
-WDIR = /users/rmaddale/Weather/ArchiveCoeffs
 
 weather:
 	@if [ -d $(WDIR) ]; then \
@@ -117,6 +118,7 @@ NGC0001:
 other:
 	pip install pyspeckit
 
+#  rsync:   only useful if you are at GBO and want to rsync to your offline location
 #  if you want to fully reduce the data off-line
 SEQ = 01
 REM = teuben@lma.astro.umd.edu:/lma1/teuben/

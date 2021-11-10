@@ -104,12 +104,18 @@ pjt:	lmtoy
 	(cd lmtoy; make install_python)
 	@echo "Make sure you 'source lmtoy/python_start.sh'"
 
+data0:
+	(cd rawdata; \
+	wget -q https://www.astro.umd.edu/~teuben/edge/data/AGBT21B_024_01.tar -O - | tar xvf -)
+
+bench0:
+	$(OMP) $(TIME) ./reduce.py NGC0001
 
 #  all procs:    556.80user   7.36system  3:17.45elapsed 285%CPU    (peter's laptop - i5-1135G7)
 #  1 processor   182.82user   3.72system  3:06.68elapsed  99%CPU    (peter's laptop)
 #  all procs:   3068.26user 178.50system 10:22.19elapsed 521%CPU    (at GBO's fourier machine - Xeon E5620)
 #  1 processor   536.42user  10.68system 10:25.20elapsed  87%CPU    (at GBO's fourier machine)
-run:	NGC0001
+bench1:	NGC0001
 	$(OMP) $(TIME) ./reduce.py -s NGC0001
 
 NGC0001:
@@ -132,8 +138,8 @@ rsync:
 
 #  produce a sample edge.sh
 edge.sh:
-	@echo '#  this is a sample edge.sh file'
-	@echo "export GBTWEATHER=$(PWD)/weather"
+	@echo '#  this is a sample edge.sh file, edit as need be'
+	@echo "export GBTWEATHER=$(PWD)/weather/"
 	@echo "source $(PWD)/lmtoy/python_start.sh"
 	@echo "# for a virtual environment, un-comment this:"
 	@echo "# source $(PWD)/edge_env/bin/activate"

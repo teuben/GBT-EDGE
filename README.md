@@ -77,7 +77,9 @@ the setup.
    here https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html) the results are not reproducable
    on a few mK level.  The solver is high efficiency but can lead to different outcomes.
 
-
+3. A few notes on CPU times: the **-s"" flags makes the code run about 2x faster, but always inspect if the galaxy directory
+   has the feed files that you expect! Using the weather information make the code
+   run maybe 5% slower, not a huge effect. On fourier NGC0001 took about 10 mins, on my i5-1135G7 laptop 4 mins.
 
 
 

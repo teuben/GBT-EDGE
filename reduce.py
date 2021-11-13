@@ -1,4 +1,16 @@
 #! /usr/bin/env python
+#
+#  options:
+#    -noweather
+#    -offtype PCA
+#    -nproc 4
+#    -scanblorder 7
+#    -posblorder 3
+#    -pixperbeam 3
+#    -rmsthresh 1.1
+#    -hanning 2
+#    -smooth 2
+
 
 import os, sys
 from gbtpipe.ArgusCal import calscans, ZoneOfAvoidance
@@ -12,9 +24,13 @@ import astropy.units as u
 from functools import partial
 
 
-def edgegrid(galaxy):
-    filelist = glob.glob(galaxy +'*_pol0.fits')
-    filename = galaxy + '_12co'
+def edgegrid(galaxy, wildname=None ):
+    if wildname == None:
+        filelist = glob.glob(galaxy +'*_pol0.fits')
+    else:
+        filelist = glob.glob(galaxy +'*%s*_pol0.fits' % wildname)
+        
+    filename = galaxy + '__12CO'
     edgetrim = 64
     outdir='.'
     plotTimeSeries=True
@@ -101,15 +117,26 @@ def my_calscans(gal, scan, pid='AGBT21B_024', rawdir='../rawdata'):
 
 if __name__ == "__main__":
     do_scan = True
+    wildname = None
+    grabwild = False
     for gal in sys.argv[1:]:
+        if grabwild:
+            print("Warning: only making map with '%s'" % gal)
+            wildname = gal
+            grabwild = False
+            continue
         if gal == '-s':
             print("Warning: skipping accumulating scans, only doing gridding")
             do_scan = False
+            continue
+        if gal == '-m':
+            grabwild = True
             continue
         if gal == '-h':
             print("Usage: %s [-h] [-s] galaxy [galaxy ...]" % sys.argv[0])
             print("  -h      help")
             print("  -s      skip scan building (assumed you've done it before)")
+            print("  -m      match this name in wildcarding for gridding")
             print("  galaxy  galaxy name(s), e.g. NGC0001, as they appear in gals.pars")
             continue
         print("Trying galaxy %s" % gal)
@@ -120,7 +147,7 @@ if __name__ == "__main__":
             if do_scan:
                 for scan in scans:
                     my_calscans(gal,scan)
-            edgegrid(gal)
+            edgegrid(gal, wildname)
             os.chdir('..')
         else:
             print("Skipping %s: no entry found" % gal)

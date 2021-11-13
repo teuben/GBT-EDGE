@@ -135,8 +135,8 @@ if __name__ == "__main__":
         if gal == '-h':
             print("Usage: %s [-h] [-s] galaxy [galaxy ...]" % sys.argv[0])
             print("  -h      help")
-            print("  -s      skip scan building (assumed you've done it before)")
-            print("  -m      match this name in wildcarding for gridding")
+            print("  -s      skip scan building (assumed you've done it before).")
+            print("  -m      match this name in wildcarding for gridding.")
             print("  galaxy  galaxy name(s), e.g. NGC0001, as they appear in gals.pars")
             continue
         print("Trying galaxy %s" % gal)

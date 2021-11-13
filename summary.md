@@ -14,25 +14,25 @@ Taking the example of NGC0001:
 
 NEMO commands to get the RMS:
 
-    source lmtoy/nemo/nemo_start.sh
+      source lmtoy/nemo/nemo_start.sh
 	
-    gal=NGC0001
-	fitsccd $gal/${gal}_12CO.fits - | ccdstat - bad=0 robust=t 
-	-> look for "Sigma Robust"
+      gal=NGC0001
+      fitsccd $gal/${gal}_12CO.fits - | ccdstat - bad=0 robust=t 
+      -> look for "Sigma Robust"
 
 here are the results:
 
       Galaxy              RMS (native)   elev
-	  ------              ------------   ----
-      NGC0001               25           74?
-	  UGC01659              21           64?
-	  UGC02239              25           82?
+      ------              ------------   ----
+      NGC0001               25           74?      ra:35    dec:37
+      UGC01659              21           64?
+      UGC02239              25           82?
 	  
-	  NGC0169               26           69?
-	  NGC0932               28           68?
-	  UGC04262              32           40?
-	  NGC2449               25           69?
-	  UGC04258              28           76?
-	  UGC04136              28           ?         ra:44  dec:34
+      NGC0169               26           69?
+      NGC0932               28           68?
+      UGC04262              32           40?
+      NGC2449               25           69?
+      UGC04258              28           76?
+      UGC04136              28           ?        ra:44  dec:34
 	  
-	  UGC04659              39           75?
+      UGC04659              39           75?

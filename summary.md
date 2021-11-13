@@ -14,6 +14,8 @@ Taking the example of NGC0001:
 
 NEMO commands to get the RMS:
 
+    source lmtoy/nemo/nemo_start.sh
+	
     gal=NGC0001
 	fitsccd $gal/${gal}_12CO.fits - | ccdstat - bad=0 robust=t 
 	-> look for "Sigma Robust"

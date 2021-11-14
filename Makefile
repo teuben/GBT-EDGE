@@ -81,6 +81,12 @@ install_degas:  degas edge_env
 	pip3 install --upgrade pip;\
 	pip3 install -e .)
 
+install_maskmoment:  maskmoment edge_env
+	(cd maskmoment;\
+	source ../edge_env/bin/activate;\
+	pip3 install --upgrade pip;\
+	pip3 install -e .)
+
 #  running at GBO, rawdata just points to /home/sdfits
 #  offsite you will need to supply your own, YMMV
 

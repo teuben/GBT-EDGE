@@ -9,10 +9,14 @@ Example of use (in this directory):
       cd /home/astro-util/projects/gbt-edge/GBT-EDGE-pipeline        # at GBO
       source edge.sh
       ./reduce.py NGC0001
+	  ./mmaps.py NGC0001
 	  
 each galaxy takes about 20 mins to reduce, where the observing time was about 60 mins.
 The use of the **edge.sh** script is optional in your installation, as long as the needed packages are
 installed in *your* python (see Installation below). However, at GBO it is required.
+
+You can push your luck by trying the example maskmoment based **mmaps.py** script which tries a number
+of methods to make moment maps.
 
 # Installation
 

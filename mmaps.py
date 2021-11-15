@@ -1,5 +1,9 @@
 #! /usr/bin/env python
 #
+#  Create a few moment (0,1,2) maps based on the maskmoment module
+#
+#  based on the notebook example/N4047_examples.ipyn (Tony Wong)
+#
 
 import os
 import sys
@@ -49,50 +53,57 @@ if __name__ == "__main__":
             os.chdir(gal)
             cube = "%s%s.fits" % (gal,ext)
             mout = "%s" % (gal)
+            
         # example 0:
-        
         maskmoment.maskmoment(img_fits=cube,
                               snr_hi=4, snr_lo=2, minbeam=2, snr_lo_minch=2,
                               outname="%s.dilmsk" % mout)
         quadplot("%s.dilmsk" % mout)
+        
         # example 1:
         maskmoment.maskmoment(img_fits=cube,
                               snr_hi=5, snr_lo=2, minbeam=2, nguard=[2,0],
                               outname='%s.dilmskpad' % mout)
         quadplot("%s.dilmskpad" % mout)
+        
         # example 2:
         maskmoment.maskmoment(img_fits=cube,
                               snr_hi=3, snr_lo=3, fwhm=15, vsm=None, minbeam=2,
                               outname='%s.smomsk' % mout)
         quadplot("%s.smomsk" % mout)
+        
         # example 3
         maskmoment.maskmoment(img_fits=cube,
                               snr_hi=4, snr_lo=2, fwhm=15, vsm=None, minbeam=2,
                               output_2d_mask=True,                   
                               outname='%s.dilsmomsk' % mout) 
         quadplot("%s.dilsmomsk" % mout)
+        
         # example 4
-        # don't have an RMS cube yet
-        if False:
-            maskmoment.maskmoment(img_fits=cube,
-                              rms_fits='NGC4047.dilmsk.ecube.fits.gz',
-                              mask_fits='NGC4047.dilsmomsk.mask2d.fits.gz',
+        maskmoment.maskmoment(img_fits=cube,
+                              rms_fits='%s.dilmsk.ecube.fits.gz' % gal,
+                              mask_fits='%s.dilsmomsk.mask2d.fits.gz' % gal,
                               outname='%s.msk2d' % mout)
-        # flux comparison
+        # error: No such file or directory: 'NGC0001.msk2d.mask.fits.gz'
+        # quadplot("%s.msk2d" % mout)        
+        # flux comparisons
         ex0 = Table.read('%s.dilmsk.flux.csv'    % mout, format='ascii.ecsv')
         ex1 = Table.read('%s.dilmskpad.flux.csv' % mout, format='ascii.ecsv')
         ex2 = Table.read('%s.smomsk.flux.csv'    % mout, format='ascii.ecsv')
         ex3 = Table.read('%s.dilsmomsk.flux.csv' % mout, format='ascii.ecsv')
-        # ex4 = Table.read('%s.msk2d.flux.csv', format='ascii.ecsv')
+        ex4 = Table.read('%s.msk2d.flux.csv'     % mout, format='ascii.ecsv')
         fig = plt.figure(figsize=[8,5.5])
         plt.step(ex0['Velocity'],ex0['Flux'],color='r',label='dilmsk')
         plt.step(ex1['Velocity'],ex1['Flux'],color='b',label='dilmskpad')
         plt.step(ex2['Velocity'],ex2['Flux'],color='g',label='smomsk')
         plt.step(ex3['Velocity'],ex3['Flux'],color='k',label='dilsmomsk')
-        # plt.step(ex4['Velocity'],ex4['Flux'],color='orange',label='msk2d')
+        plt.step(ex4['Velocity'],ex4['Flux'],color='orange',label='msk2d')
         plt.legend(fontsize='large')
         plt.xlabel(ex0['Velocity'].description+' ['+str(ex0['Velocity'].unit)+']',fontsize='x-large')
         plt.ylabel(ex0['Flux'].description+' ['+str(ex0['Flux'].unit)+']',fontsize='x-large')
+        if True:
+            t = Table.read("../GBTEDGE.cat", format='ascii')
+            
         plt.savefig("%s.flux.png" % mout)
         # plt.show()
 

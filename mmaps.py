@@ -103,8 +103,13 @@ if __name__ == "__main__":
         plt.ylabel(ex0['Flux'].description+' ['+str(ex0['Flux'].unit)+']',fontsize='x-large')
         if True:
             t = Table.read("../GBTEDGE.cat", format='ascii')
-            
+            idx = t['NAME'] == gal
+            vlsr = t[idx]['CATVEL'][0]
+            ax = plt.gca()
+            fmax = ax.get_ylim()[1]
+            print("VLSR=",vlsr," Fmax=",fmax)
+            plt.arrow(vlsr,fmax,0.0,-0.5*fmax,width = 1, shape='full', length_includes_head=True)
         plt.savefig("%s.flux.png" % mout)
-        # plt.show()
+        #plt.show()
 
         os.chdir("..")

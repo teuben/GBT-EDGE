@@ -1,5 +1,10 @@
 #! /usr/bin/env python
 #
+#  reduce a EDGE galaxy from the GBT-EDGE survey
+#  all work occurs in a subdirectory of the "galaxy" name
+#
+#  e.g.       ./reduce.py NGC0001
+#
 #  options:
 #    -noweather
 #    -offtype PCA
@@ -13,18 +18,40 @@
 
 
 import os, sys
-from gbtpipe.ArgusCal import calscans, ZoneOfAvoidance
-from gbtpipe import griddata
 import glob
-from degas import postprocess
-from astropy.table import Table
 import numpy as np
-from astropy.coordinates import SkyCoord
-import astropy.units as u
 from functools import partial
+from astropy.table import Table
+from astropy.coordinates import SkyCoord
+from astropy.wcs import wcs
+from astropy.io import fits
+import astropy.units as u
+from gbtpipe.ArgusCal import calscans, ZoneOfAvoidance, SpatialSpectralMask
+from gbtpipe import griddata
+from degas import postprocess
+from degas.masking import buildmasks
+# from docopt import docopt
 
-
-def edgegrid(galaxy, wildname=None ):
+def edgemask(galaxy, maskfile=None):
+    """
+    based on an input mask file (0,1) this will use
+    gal_12CO.fits
+    """
+    if maskfile == None:
+        maskname = '../masks/mask_{0}.fits'.format(galaxy)
+        print("Reading default mask file %s" % maskname)
+    else:
+        maskname = maskfile
+    buildmasks(maskname, galname=galaxy, outdir='./',
+               setups=['12CO'], grow_v=20, grow_xy=3)
+    # this writes a file   outdir + galname+'.12co.mask.fits'
+    # but it should return that filename
+    return galaxy+'.12co.mask.fits'
+    
+def edgegrid(galaxy, wildname=None, maskfile=None):
+    """
+    maskfile can be None, in which case no masking was done
+    """
     if wildname == None:
         filelist = glob.glob(galaxy +'*_pol0.fits')
     else:
@@ -36,7 +63,14 @@ def edgegrid(galaxy, wildname=None ):
     plotTimeSeries=True
     scanblorder=7
     posblorder=3
-
+    # Erik's original
+    smooth_v = 1
+    smooth_xy = 1.3
+    # default pipeline 
+    smooth_v = 2
+    smooth_xy = 2
+    
+    # maskfle = None       # this case lower noise 12 mK -> 8 mK
 
     griddata(filelist,
              startChannel=edgetrim,
@@ -51,15 +85,19 @@ def edgegrid(galaxy, wildname=None ):
              blorder=scanblorder,
              plotsubdir='timeseries/',
              windowStrategy='simple',
+             maskfile=maskfile,
              outname=filename)
 
     postprocess.cleansplit(filename + '.fits',
                            spectralSetup='12CO',
-                           HanningLoops=2,          # was: 1
-                           spatialSmooth=2,         # was: 1.3
+                           HanningLoops=smooth_v,           # was: 1
+                           spatialSmooth=smooth_xy,         # was: 1.3
                            CatalogFile='../GBTEDGE.cat',
+                           maskfile=maskfile,
                            blorder=posblorder)
 def galcenter(galaxy):
+    """
+    """
     CatalogFile = '../GBTEDGE.cat'
     Catalog = Table.read(CatalogFile, format='ascii')
 
@@ -75,7 +113,9 @@ def galcenter(galaxy):
     return(galcoord)
 
 def getscans(gal, parfile='gals.pars'):
-    """  allowed formats:
+    """
+
+    allowed formats:
        GAL  SEQ  START  STOP  REF1,REF2
        GAL  SEQ  START  STOP               #  cheating: REF1=START-2  REF2=STOP+1
     """
@@ -106,20 +146,29 @@ def getscans(gal, parfile='gals.pars'):
             print('Skipping parsing bad line: ',line)
     return scans
 
-def my_calscans(gal, scan, pid='AGBT21B_024', rawdir='../rawdata'):
+def my_calscans(gal, scan, maskstrategy, maskfile, pid='AGBT21B_024', rawdir='../rawdata'):
+    """
+    """
     seq      = scan[0]
     start    = scan[1]
     stop     = scan[2]
     refscans = scan[3]
     dirname  = '%s/%s_%02d/%s_%02d.raw.vegas' % (rawdir,pid,seq,pid,seq)
-    calscans(dirname, start=start, stop=stop, refscans=refscans, OffType='PCA',nProc=4,opacity=True)
+    if maskstrategy == None:
+        calscans(dirname, start=start, stop=stop, refscans=refscans, OffType='PCA',nProc=4, opacity=True)
+    else:
+        calscans(dirname, start=start, stop=stop, refscans=refscans, OffType='PCA',nProc=4, opacity=True, OffSelector=maskstrategy)
 
 
-if __name__ == "__main__":
+def main(args):    
+    """
+    """
     do_scan = True
+    do_mask = False
     wildname = None
     grabwild = False
-    for gal in sys.argv[1:]:
+    do_seed = False
+    for gal in args:
         if grabwild:
             print("Warning: only making map with '%s'" % gal)
             wildname = gal
@@ -129,25 +178,52 @@ if __name__ == "__main__":
             print("Warning: skipping accumulating scans, only doing gridding")
             do_scan = False
             continue
+        if gal == '-f':
+            do_seed = True
+            continue
         if gal == '-m':
             grabwild = True
             continue
+        if gal == '-M':
+            do_mask = True
+            continue
         if gal == '-h':
-            print("Usage: %s [-h] [-s] galaxy [galaxy ...]" % sys.argv[0])
+            print("Usage: %s [-h] [-s] [-m] [-M] galaxy [galaxy ...]" % sys.argv[0])
             print("  -h      help")
             print("  -s      skip scan building (assumed you've done it before).")
+            print("  -f      force a 123 seed so runs are reproducable")
             print("  -m      match this name in wildcarding for gridding.")
+            print("  -M      add masking (needs special mask_GAL.fits file)")
             print("  galaxy  galaxy name(s), e.g. NGC0001, as they appear in gals.pars")
             continue
+
+        if do_seed:
+            # this doesn't seem to work
+            print("Warning: fixed seed=123 for reproducable cubes")
+            np.random.seed(123)
+
         print("Trying galaxy %s" % gal)
         scans = getscans(gal)
         if len(scans) > 0:
             os.makedirs(gal, exist_ok=True)
             os.chdir(gal)
+            if do_mask:
+                maskfile = edgemask(gal)               # make mask file
+                print("Using mask from %s" % maskfile)
+                hdu = fits.open(maskfile)
+                maskstrategy=partial(SpatialSpectralMask, mask=hdu[0].data, wcs=wcs.WCS(hdu[0].header), offpct=50)
+            else:
+                maskstrategy = None
+                maskfile = None
             if do_scan:
                 for scan in scans:
-                    my_calscans(gal,scan)
-            edgegrid(gal, wildname)
+                    my_calscans(gal, scan, maskstrategy, maskfile)
+            edgegrid(gal, wildname, maskfile)
             os.chdir('..')
         else:
             print("Skipping %s: no entry found" % gal)
+
+
+if __name__ == "__main__":
+    main(sys.argv[1:])
+            

@@ -54,6 +54,11 @@ used to play with the gridding step, viz.
 
 and skipping the calibration.
 
+# Masking
+
+For baseline fitting it is useful to know where the signal is expected. Using the -M flag you can
+place a mask file in **masks/mask_GAL.fits**, which should contain 0's and 1's where we expect signal.
+
 # Working Offline
 
 To fully work offline, you will need to create symlinks from
@@ -93,6 +98,7 @@ the setup.
 * night1.py - a bruteforce example script for Night 1 (Nov 5/6, 2021)
 * reduce.py - reduce one (or more) galaxies, based on parameters in gals.pars
 * gals.pars - galaxy parameter file for reduce.py containing the seq/scans 
+* masks/    - here you need to place the mask_GAL.fits file for the -M flag
 * rawdata/ - symlink to where the rawdata are stored
 * weather/ - symlink to where the GBT Weather data are stored (with Coeff*.txt files)
 * /home/sdfits/AGBT21B_024_01/ - night1 VEGAS raw data directory @ GBO  (1.3GB)

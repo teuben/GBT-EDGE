@@ -193,7 +193,7 @@ def main(args):
             print("  -s      skip scan building (assumed you've done it before).")
             print("  -f      force a 123 seed so runs are reproducable")
             print("  -m      match this name in wildcarding for gridding.")
-            print("  -M      add masking (needs special mask_GAL.fits file)")
+            print("  -M      add masking (needs special masks/mask_GAL.fits file)")
             print("  galaxy  galaxy name(s), e.g. NGC0001, as they appear in gals.pars")
             continue
 

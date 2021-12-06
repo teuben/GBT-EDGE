@@ -96,3 +96,26 @@ the setup.
 * rawdata/ - symlink to where the rawdata are stored
 * weather/ - symlink to where the GBT Weather data are stored (with Coeff*.txt files)
 * /home/sdfits/AGBT21B_024_01/ - night1 VEGAS raw data directory @ GBO  (1.3GB)
+
+# Issues
+
+1. nProc v.s.  OMP_NUM_THREADS
+2. seed(123) doesn't work
+3. masking:  -M uses fixed name
+4. with -s the alrogithm is reproducable
+5. 50mK mask was too high, 20mK and 10mK are new ones to try
+6. For the old default (smoothv,xy=1,1.3)  RMS=27 mK and 34 mK without mask
+   For the newer smoothv,xy=2,2  RMS=9 mK with mask, and 12 without mask
+7. 2*sqrt(2)/sqrt(1.3) = 2.48, but we measure a noise ratio of 2.7-3.1
+8. (2,2)   nomask: 12.6      mask:  8.9mK  ratio 1.4
+9. (1.3,1) nomask: 33.5      mask: 27.4mK  ratio 1.2
+
+
+Few notes:
+1. for the pipeline I've demanded mask files are in masks/mask_GAL.fits (symlink can be used too)
+2. using np.random.seed(123) i still get different results from different runs
+3. between different runs the diff map has an RMS about 30% of the input maps
+4. using a mask seems to reduce the noise by about 20-40%
+5. it would be useful if buildmasks() could return the mask filename, that we carry it all through
+6. I found no improvement (actually ran a bit slower) if nProc=2 or 4. In fact, I get the best
+   performance when setting OMP_NUM_THREADS=1

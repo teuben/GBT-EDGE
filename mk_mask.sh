@@ -5,6 +5,8 @@
 #
 #     ./mk_mask.sh refmap=NGC0001/NGC0001_12CO_rebase3_smooth2_hanning2.fits inc=45   pa=120  vsys=4485  mask=masks/mask_NGC0001.fits
 #
+#
+#  two galaxies doesn't work yet, since this script forces vsys to be at the reference pixel
 
 refmap=masks/mask@0.010_NGC0001.fits
 refmap=NGC0001/NGC0001_12CO_rebase3_smooth2_hanning2.fits
@@ -36,11 +38,14 @@ tmp=tmp
 
 rm -rf $tmp.* $mask
 
-# there is a deprecated in=, or can it be used ?
+# 1. First make Density, Velocity and Sigma maps from 0 to r1.
+# ccdvel: there is a deprecated in=, or can it be used ?
 ccdvel out=$tmp.d radii=0,$r0,$r1 vrot=1,1,1      inc=$inc pa=$pa size=$nx cell=$cell amp=t
 ccdvel out=$tmp.v radii=0,$r0,$r1 vrot=0,$v1,$v1  inc=$inc pa=$pa size=$nx cell=$cell amp=f vsys=$vsys
 ccdvel out=$tmp.s radii=0,$r0,$r1 vrot=100,100,50 inc=$inc pa=$pa size=$nx cell=$cell amp=t
 
+# 2. Make a cube, turn into 0/1 mask, and writing as fits
+#    a bug where the Sigma map was not working, so using sigdefault
 velcube - $tmp.v $tmp.d zrange=${vsys}-5*${nz}:${vsys}+5*${nz} nz=$nz sigdefault=$sig |\
   ccdmath - -  'ifgt(%1,0,1,0)' |\
   ccdfits - $mask refmap=$refmap refaxis=1,2,3 crpix=$nx/2,$nx/2,$nz/2 cdelt=$cell/3600,$cell/3600,$chan 

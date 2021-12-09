@@ -10,13 +10,13 @@
 
 refmap=masks/mask@0.010_NGC0001.fits
 refmap=NGC0001/NGC0001_12CO_rebase3_smooth2_hanning2.fits
-v1=200           # max rotation curve (vmax)
-r0=20            # radius where v1 (vmax)
-r1=60            # edge of galaxy
-inc=45      
+v1=350           # max rotation curve (vmax)
+r0=10            # radius where v1 (vmax)
+r1=30            # edge of galaxy
+inc=40      
 pa=120
 vsys=4485
-sig=5            # measure of width of signal. will do 4 sigma
+sig=10           # measure of width of signal. will do 4 sigma
 nx=128
 ny=128
 nz=128
@@ -46,9 +46,10 @@ ccdvel out=$tmp.s radii=0,$r0,$r1 vrot=100,100,50 inc=$inc pa=$pa size=$nx cell=
 
 # 2. Make a cube, turn into 0/1 mask, and writing as fits
 #    a bug where the Sigma map was not working, so using sigdefault
+#    note the refmap is in km/s
 velcube - $tmp.v $tmp.d zrange=${vsys}-5*${nz}:${vsys}+5*${nz} nz=$nz sigdefault=$sig |\
   ccdmath - -  'ifgt(%1,0,1,0)' |\
-  ccdfits - $mask refmap=$refmap refaxis=1,2,3 crpix=$nx/2,$nx/2,$nz/2 cdelt=$cell/3600,$cell/3600,$chan 
+  ccdfits - $mask refmap=$refmap refaxis=1,2,3 crpix=$nx/2,$nx/2,$nz/2 cdelt=-$cell/3600,$cell/3600,$chan 
 # crval=1.8152157770653,27.70767526688,4419.5816198067
 # cunit=deg,deg,km/s
 

@@ -53,7 +53,7 @@ UGC02134  4   112  146             # 10**0.4    clear detection
 UGC02134  4   156  190
 
 #
-UGC04730  5    29   63             # 10**0.4    weak, if any
+UGC04730  5    29   63             # 10**0.4    weak, if any    ; DECmap is better / RAmap is bad
 UGC04730  5    73   107
 
 #
@@ -63,3 +63,19 @@ NGC2691   5   166   200
 # crossmap : does not work here
 IC1683    4   200   205
 IC1683    4   210   215
+
+#
+NGC0495   6    19    53
+NGC0495   6    63    97
+
+
+NGC2540   7   38     72            # 
+NGC2540   7   82    116
+
+
+UGC05326  7   126 160
+UGC05326  7   170 204
+
+NGC3106   7   214 248
+NGC3106   7   258 292
+

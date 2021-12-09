@@ -45,10 +45,11 @@ UGC04659  3    29   63             #  <0.1 Msun/yr      weak, if any
 UGC04659  3    73  107             # 1720.2
 
 # 22-
-NGC0776   4    24   58             # 10**0.6 Msun/yr    clear
+NGC0776   4    24   58             # 10**0.6 Msun/yr    clear detection
 NGC0776   4    68  102
 
-UGC02134  4   112  146             # 10**0.4    clean
+#
+UGC02134  4   112  146             # 10**0.4    clear detection
 UGC02134  4   156  190
 
 #
@@ -59,6 +60,6 @@ UGC04730  5    73   107
 NGC2691   5   122   156            # 10**0.3    weak, but present
 NGC2691   5   166   200
 
-# crossmap
+# crossmap : does not work here
 IC1683    4   200   205
-#IC1683    4   210   215
+IC1683    4   210   215

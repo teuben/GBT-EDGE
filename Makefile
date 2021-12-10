@@ -130,11 +130,13 @@ bench0:
 bench1:	NGC0001
 	$(OMP) $(TIME) ./reduce.py -s NGC0001
 	fitsccd NGC0001/NGC0001_12CO_rebase3_smooth2_hanning2.fits -|ccdstat - bad=0 qac=t
+	fitsccd NGC0001/NGC0001_12CO_rebase3_smooth2_hanning2.fits -|ccdstat - bad=0 qac=t robust=t
 
 # 1 processor:   
 bench2:
 	$(OMP) $(TIME) ./reduce.py -M NGC0001
 	fitsccd NGC0001/NGC0001_12CO_rebase3_smooth2_hanning2.fits -|ccdstat - bad=0 qac=t
+	fitsccd NGC0001/NGC0001_12CO_rebase3_smooth2_hanning2.fits -|ccdstat - bad=0 qac=t robust=t
 
 NGC0001:
 	wget -q https://www.astro.umd.edu/~teuben/edge/data/NGC0001.tar -O - | tar xvf -
@@ -159,6 +161,7 @@ edge.sh:
 	@echo '#  this is a sample edge.sh file, edit as need be'
 	@echo "export GBTWEATHER=$(PWD)/weather/"
 	@echo "source $(PWD)/lmtoy/python_start.sh"
+	@echo "source $(PWD)/lmtoy/nemo/nemo_start.sh"
 	@echo "# for a virtual environment, un-comment this:"
 	@echo "# source $(PWD)/edge_env/bin/activate"
 

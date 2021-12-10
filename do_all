@@ -1,0 +1,22 @@
+#! /usr/bin/env bash
+#
+#    (re)reduce all galaxies in the GBT-EDGE survey
+#
+#
+
+time=/usr/bin/time
+
+
+ngc=$(grep ^NGC gals.pars | awk '{print $1}' | sort | uniq)
+ugc=$(grep ^UGC gals.pars | awk '{print $1}' | sort | uniq)
+
+echo $ngc $ugc
+
+for gal in $ngc $ugc; do
+    echo "================================================================="
+    if [ -e masks/mask_${gal}.fits ]; then
+	$time ./reduce.py -M $gal
+    else
+	$time ./reduce.py $gal
+    fi
+done

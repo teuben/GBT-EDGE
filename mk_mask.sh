@@ -1,10 +1,13 @@
 #! /usr/bin/env bash
 #
 #  make a mask
-#     typical use:
+#     good examples:
 #
-#     ./mk_mask.sh refmap=NGC0001/NGC0001_12CO_rebase3_smooth2_hanning2.fits  mask=masks/mask_NGC0001.fits 
-#     ./mk_mask.sh refmap=NGC0776/NGC0776_12CO_rebase3_smooth2_hanning2.fits  mask=masks/mask_NGC0776.fits  inc=46 pa=315 vsys=4830 v1=90
+#     ./mk_mask.sh refmap=NGC0001/NGC0001_12CO_rebase3_smooth2_hanning2.fits    mask=masks/mask_NGC0001.fits 
+#     ./mk_mask.sh refmap=NGC0776/NGC0776_12CO_rebase3_smooth2_hanning2.fits    mask=masks/mask_NGC0776.fits   inc=46 pa=315 vsys=4830 v1=90
+#     ./mk_mask.sh refmap=NGC2691/NGC2691_12CO_rebase3_smooth2_hanning2.fits    mask=masks/mask_NGC2691.fits   inc=40 pa=345 vsys=3950 v1=200
+#     ./mk_mask.sh refmap=UGC01659/UGC01659_12CO_rebase3_smooth2_hanning2.fits  mask=masks/mask_UGC01659.fits  inc=66 pa=30  vsys=8195 v1=100
+#     ./mk_mask.sh refmap=UGC02134/UGC02134_12CO_rebase3_smooth2_hanning2.fits  mask=masks/mask_UGC02134.fits  inc=65 pa=285 vsys=4510 v1=165 r1=50
 #
 #  - the defaults here are meant for NGC0001, the first galaxy we observed, and also a pretty good detection
 #  - two galaxies doesn't work yet, since this script forces vsys to be at the reference pixel
@@ -41,7 +44,8 @@ tmp=tmp
 
 rm -rf $tmp.* $mask
 
-# 0. The Rotation Center is going to be the crval of the refmap. We can't trust the vsys though
+# 0. The Rotation Center is going to be the crval of the refmap.
+#    We can't trust the vref to be close to vsys though
   ra=$(fitshead $refmap | grep CRVAL1 | awk '{print $3}')
  dec=$(fitshead $refmap | grep CRVAL2 | awk '{print $3}')
 vref=$(fitshead $refmap | grep CRVAL3 | awk '{print $3}')
@@ -64,10 +68,4 @@ velcube - $tmp.v $tmp.d zrange=${vsys}-5*${nz}:${vsys}+5*${nz} nz=$nz sigdefault
 
 # 4. Some reporting
 echo RA=$ra DEC=$dec VREF=$vref VSYS=$vsys
-
-# crval=1.8152157770653,27.70767526688,4419.5816198067
-# cunit=deg,deg,km/s
-
-# fitshead NGC0001/NGC0001_12CO_rebase3_smooth2_hanning2.fits  > head1
-# fitshead masks/mask@0.010_NGC0001.fits  > head2
 

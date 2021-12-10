@@ -10,30 +10,34 @@
 #     ./mk_mask.sh refmap=UGC02134/UGC02134_12CO_rebase3_smooth2_hanning2.fits  mask=masks/mask_UGC02134.fits  inc=65 pa=285 vsys=4510 v1=165 r1=50
 #
 #  - the defaults here are meant for NGC0001, the first galaxy we observed, and also a pretty good detection
-#  - two galaxies doesn't work yet, since this script forces vsys to be at the reference pixel
+#  - stacking two galaxies on the field doesn't work yet, since this script forces vsys to be at the reference pixel
 
 refmap=masks/mask@0.010_NGC0001.fits
 refmap=NGC0001/NGC0001_12CO_rebase3_smooth2_hanning2.fits
 v1=350           # max rotation curve (vmax)
-r0=10            # radius where v1 (vmax)
-r1=30            # edge of galaxy
-inc=42      
-pa=116
-vsys=4485
-sig=20           # measure of width of signal. will do 4 sigma
-nx=128
+r0=10            # radius where v1 (vmax) is reached - inside of this we assume linear RC
+r1=30            # outer edge of galaxy
+inc=42           # inclination
+pa=116           # kinematic PA of the receding side
+vsys=4485        # systemic (radio convention for now)
+sig=20           # measure of width of signal. will do 4*sig of this
+nx=128           # size of cube
 ny=128
 nz=128
 cell=2           # pixel in arcsec
 chan=10          # channel in km/s
 mask=mask.fits   # output file
+debug=0          # oh horror
 
 #  simple keyword=value command line parser for bash 
 for arg in $*; do
   export $arg
 done
 
-# set -x
+if [ $debug != 0 ]; then
+  set -x
+  export DEBUG=$debug
+fi
 
 if [ -z "$NEMO" ]; then
   echo This script needs NEMO
@@ -44,19 +48,19 @@ tmp=tmp
 
 rm -rf $tmp.* $mask
 
-# 0. The Rotation Center is going to be the crval of the refmap.
+# 1. The Rotation Center is going to be the crval of the refmap.
 #    We can't trust the vref to be close to vsys though
   ra=$(fitshead $refmap | grep CRVAL1 | awk '{print $3}')
  dec=$(fitshead $refmap | grep CRVAL2 | awk '{print $3}')
 vref=$(fitshead $refmap | grep CRVAL3 | awk '{print $3}')
 
-# 1. First make Density, Velocity and Sigma maps from 0 to r1.
+# 2. First make Density, Velocity and Sigma maps from 0 to r1.
 # ccdvel: there is a deprecated in=, or can it be used ?
 ccdvel out=$tmp.d radii=0,$r0,$r1 vrot=1,1,1      inc=$inc pa=$pa size=$nx cell=$cell amp=t
 ccdvel out=$tmp.v radii=0,$r0,$r1 vrot=0,$v1,$v1  inc=$inc pa=$pa size=$nx cell=$cell amp=f vsys=$vsys
 ccdvel out=$tmp.s radii=0,$r0,$r1 vrot=100,100,50 inc=$inc pa=$pa size=$nx cell=$cell amp=t
 
-# 2. Make a cube, turn into 0/1 mask, and writing as fits
+# 3. Make a cube, turn into 0/1 mask, and writing as fits
 #    a bug where the Sigma map was not working, so using sigdefault
 #    note the refmap is in km/s
 velcube - $tmp.v $tmp.d zrange=${vsys}-5*${nz}:${vsys}+5*${nz} nz=$nz sigdefault=$sig |\

@@ -2,6 +2,7 @@
 #
 #    (re)reduce all galaxies in the GBT-EDGE survey
 #
+#    Each galaxy takes about 6-7'
 #
 
 time=/usr/bin/time
@@ -12,6 +13,9 @@ ugc=$(grep ^UGC gals.pars | awk '{print $1}' | sort | uniq)
 
 echo $ngc $ugc
 
+log=do_all.log
+
+rm -f $log
 for gal in $ngc $ugc; do
     echo "================================================================="
     if [ -e masks/mask_${gal}.fits ]; then
@@ -19,4 +23,8 @@ for gal in $ngc $ugc; do
     else
 	$time ./reduce.py $gal
     fi
+    echo -n "$gal " >> $log
+    fitsccd ${gal}/${gal}_12CO_rebase3_smooth2_hanning2.fits - | ccdstat - bad=0 qac=t >> $log
 done
+
+

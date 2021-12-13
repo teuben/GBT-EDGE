@@ -8,7 +8,7 @@
 
 #  21-59  65-103
 NGC0001   1    67   101  #  65,102 #  5 Msun/yr    clear double horn, SN ~ 10  rms=0.025292  0.023344
-NGC0001   1    23    57  #  21,58  #  vlsr 4485.7
+NGC0001   1    23    57  #  21,58  #  vlsr 4485.7     good for mk_mask.sh
 
 UGC01659  1   117   151            #  3 Msun/yr    weak, SN ~ 4   rms=0.025292  slightly NE of center
 UGC01659  1   161   195            #  8195.4
@@ -19,7 +19,7 @@ UGC02239  2   213   247            #  4776.1
 
 # 18-56  a.k.a. Arp 282
 NGC0169   2    20    54            #  3 Msun/yr   clear, SN~10   rms=0.024697, one side only?
-NGC0169   2    64    98            #  4598.2
+NGC0169   2    64    98            #  4598.2      
 
 # 123-161  167-205
 NGC0932   2   125   159            #  0.4 Msun/yr    weak, if any   rms=0.025292
@@ -34,7 +34,7 @@ NGC2449   2   388   422            #  1 Msun/yr      weak, if any
 NGC2449   2   432   466            #  4874.6
 
 # 474-    518-
-UGC04258  2   476   510            #  0.1  Msun/yr   weak, if any
+UGC04258  2   476   510            #  0.1  Msun/yr   weak, if anyds9 
 UGC04258  2   520   554            #  3097.7
 
 # 562-600 601-639
@@ -46,37 +46,38 @@ UGC04659  3    73  107             # 1720.2
 
 # 22-
 NGC0776   4    24   58             # 10**0.6 Msun/yr    clear detection
-NGC0776   4    68  102
+NGC0776   4    68  102             #                good for mk_mask.sh
 
 #
 UGC02134  4   112  146             # 10**0.4    clear detection
-UGC02134  4   156  190
+UGC02134  4   156  190             #        good for mk_mask.sh
 
 #
 UGC04730  5    29   63             # 10**0.4    weak, if any    ; DECmap is better / RAmap is bad
 UGC04730  5    73   107
 
 #
+
 NGC2691   5   122   156            # 10**0.3    weak, but present
-NGC2691   5   166   200
+NGC2691   5   166   200            #            seems ok with mk_mask, but mmaps dies
 
 # crossmap : does not work here
-IC1683    4   200   205
-IC1683    4   210   215
+#IC1683    4   200   205
+#IC1683    4   210   215
 
 #
 NGC0495   6    19    53
 NGC0495   6    63    97
 
 
-NGC2540   7   38     72            # 
+NGC2540   7   38     72            # 20 mK
 NGC2540   7   82    116
 
 
-UGC05326  7   126 160
+UGC05326  7   126 160              # 12 mK
 UGC05326  7   170 204
 
-NGC3106   7   214 248
+NGC3106   7   214 248              # 12 mK
 NGC3106   7   258 292
 
 UGC04245  8   33   67

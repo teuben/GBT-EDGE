@@ -18,6 +18,8 @@ installed in *your* python (see Installation below). However, at GBO it is requi
 You can push your luck by trying the example maskmoment based **mmaps.py** script which tries a number
 of methods to make moment maps.
 
+
+
 # Installation
 
       git clone https://github.com/teuben/GBT-EDGE
@@ -58,6 +60,15 @@ and skipping the calibration.
 
 For baseline fitting it is useful to know where the signal is expected. Using the -M flag you can
 place a mask file in **masks/mask_GAL.fits**, which should contain 0's and 1's where we expect signal.
+A mask can also be made using the **mk_mask.sh** script, documentation is embedded, but here is an
+example of use
+
+      ./mk_mask.sh refmap=NGC0776/NGC0776_12CO_rebase3_smooth2_hanning2.fits  \
+	               mask=masks/mask_NGC0776.fits  \
+	               inc=46 pa=315 vsys=4830 v1=90
+      ./reduce.py -M NGC0776
+      ./mmaps.py NGC0776
+
 
 # Working Offline
 
@@ -104,6 +115,15 @@ Otherwise just be aware of the listed ones here:
 
 6. (in code) it would be useful if buildmasks() could return the mask filename, that we carry it all through
 
+7. The percentage of flagged scans is very low when using a mask, and
+   this can be expected as flagging occurs when (1) RMS being too
+   high, (2) there being evidence of a large scale ripple in the
+   spectrum or (3) there being a big spike in the data.  The mask
+   causes the analysis to not check those conditions in the region
+   associated with the galaxy.
+   
+8. The use of the maskfile in griddata() and postprocess.cleansplit() seems not used
+
 
 # Important Files and Directories
 
@@ -111,7 +131,7 @@ Otherwise just be aware of the listed ones here:
 * night1.py - a bruteforce example script for Night 1 (Nov 5/6, 2021)
 * reduce.py - reduce one (or more) galaxies, based on parameters in gals.pars
 * gals.pars - galaxy parameter file for reduce.py containing the seq/scans 
-* masks/    - here you need to place the mask_GAL.fits file for the -M flag
+* masks/    - here you need to place the mask_GAL.fits file (or symlink) for the -M flag
 * rawdata/ - symlink to where the rawdata are stored
 * weather/ - symlink to where the GBT Weather data are stored (with Coeff*.txt files)
 * /home/sdfits/AGBT21B_024_01/ - night1 VEGAS raw data directory @ GBO  (1.3GB)

@@ -1,14 +1,34 @@
 #! /usr/bin/env bash
 #
 #  make a mask
-#     good examples:
+#     good examples with detected emission:
 #
 #     ./mk_mask.sh refmap=NGC0001/NGC0001_12CO_rebase3_smooth2_hanning2.fits    mask=masks/mask_NGC0001.fits 
 #     ./mk_mask.sh refmap=NGC0776/NGC0776_12CO_rebase3_smooth2_hanning2.fits    mask=masks/mask_NGC0776.fits   inc=46 pa=315 vsys=4830 v1=90
 #     ./mk_mask.sh refmap=NGC2691/NGC2691_12CO_rebase3_smooth2_hanning2.fits    mask=masks/mask_NGC2691.fits   inc=40 pa=345 vsys=3950 v1=200
 #     ./mk_mask.sh refmap=UGC01659/UGC01659_12CO_rebase3_smooth2_hanning2.fits  mask=masks/mask_UGC01659.fits  inc=66 pa=30  vsys=8195 v1=100
 #     ./mk_mask.sh refmap=UGC02134/UGC02134_12CO_rebase3_smooth2_hanning2.fits  mask=masks/mask_UGC02134.fits  inc=65 pa=285 vsys=4510 v1=165 r1=50
+#     ./mk_mask.sh refmap=UGC04245/UGC04245_12CO_rebase3_smooth2_hanning2.fits  mask=masks/mask_UGC04245.fits  inc=70 pa=110 vsys=5110 v1=190 r1=40
 #
+# From https://www.astro.umd.edu/~bolatto/EDGE/data/galaxy_parameters.dat
+# NGC0001           1.816084  27.708082    14.0     0.324   107.60
+# NGC0169           9.215034  23.990973    19.0     0.473    90.70
+# NGC0776          29.977188  23.644276    21.0     0.101    41.30
+# NGC2691 ???
+# NGC2692         134.241714  52.065948    11.0     0.547   159.60
+# NGC2693         134.246964  51.347427    23.0     0.336   158.70
+# UGC01659         32.487083  16.032585    20.0     0.594    35.20
+# UGC02134         39.715862  27.847286    26.0     0.602   101.80
+# UGC04245        122.190956  18.194210    17.0     0.683   107.20
+# 
+# 
+# 
+# 
+# 
+# 
+
+
+
 #  - the defaults here are meant for NGC0001, the first galaxy we observed, and also a pretty good detection
 #  - two galaxies doesn't work yet, since this script forces vsys to be at the reference pixel
 

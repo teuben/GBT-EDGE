@@ -80,11 +80,15 @@ UGC05326  7   170 204
 NGC3106   7   214 248              # 12 mK
 NGC3106   7   258 292
 
-UGC04245  8   33   67
+# session 8
+
+UGC04245  8   33   67        # clear rotcur in ra-vel
 UGC04245  8   87  121
 
-UGC04730  8   131 165
+# redo, but
+
+UGC04730  8   131 165        # nothing obvious
 UGC04730  8   175 209
 
-NGC3057   8   219 253
+NGC3057   8   219 253        # nothing obvious
 NGC3057   8   263 297

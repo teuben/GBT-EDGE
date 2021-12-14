@@ -34,7 +34,7 @@ NGC2449   2   388   422            #  1 Msun/yr      weak, if any
 NGC2449   2   432   466            #  4874.6
 
 # 474-    518-
-UGC04258  2   476   510            #  0.1  Msun/yr   weak, if any
+UGC04258  2   476   510            #  0.1  Msun/yr   weak, if anyds9 
 UGC04258  2   520   554            #  3097.7
 
 # 562-600 601-639
@@ -57,8 +57,9 @@ UGC04730  5    29   63             # 10**0.4    weak, if any    ; DECmap is bett
 UGC04730  5    73   107
 
 #
-NGC2691   5   122   156            # 10**0.3    weaker, but present
-NGC2691   5   166   200            #                 also good for mk_mask.sh
+
+NGC2691   5   122   156            # 10**0.3    weak, but present
+NGC2691   5   166   200            #            seems ok with mk_mask, but mmaps dies
 
 # crossmap : does not work here
 #IC1683    4   200   205
@@ -69,13 +70,25 @@ NGC0495   6    19    53
 NGC0495   6    63    97
 
 
-NGC2540   7   38     72            # 
+NGC2540   7   38     72            # 20 mK
 NGC2540   7   82    116
 
 
-UGC05326  7   126 160
+UGC05326  7   126 160              # 12 mK
 UGC05326  7   170 204
 
-NGC3106   7   214 248
+NGC3106   7   214 248              # 12 mK
 NGC3106   7   258 292
 
+# session 8
+
+UGC04245  8   33   67        # clear rotcur in ra-vel
+UGC04245  8   87  121
+
+# redo, but
+
+UGC04730  8   131 165        # nothing obvious
+UGC04730  8   175 209
+
+NGC3057   8   219 253        # nothing obvious
+NGC3057   8   263 297

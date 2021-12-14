@@ -48,15 +48,24 @@ def edgemask(galaxy, maskfile=None):
     # but it should return that filename
     return galaxy+'.12co.mask.fits'
     
-def edgegrid(galaxy, wildname=None, maskfile=None):
+def edgegrid(galaxy, badfeed=[], maskfile=None):
     """
-    maskfile can be None, in which case no masking was done
+    maskfile     can be None, in which case no masking was done
+    badfeed      a list of (0-based) feeds that should not be included
+                 from the list via wildfeed
     """
-    if wildname == None:
-        filelist = glob.glob(galaxy +'*_pol0.fits')
-    else:
-        filelist = glob.glob(galaxy +'*%s*_pol0.fits' % wildname)
-        
+    filelist = glob.glob(galaxy +'*_pol0.fits')
+    for bf in badfeed:
+        fl = glob.glob(galaxy +'*_feed%s_*.fits' % bf)
+        n = len(filelist)
+        for fli in fl:
+            filelist.remove(fli)
+            if len(filelist) == n:
+                print("Warning, could not remove",fli)
+            else:
+                print("Not using ",fli)
+            n = len(filelist)
+
     filename = galaxy + '__12CO'
     edgetrim = 64
     outdir='.'
@@ -162,37 +171,38 @@ def my_calscans(gal, scan, maskstrategy, maskfile, pid='AGBT21B_024', rawdir='..
 
 def main(args):    
     """
+    parse arguments (@todo use parseargs) and execute pipeline
     """
     do_scan = True
     do_mask = False
-    wildname = None
+    badfeed = []
     grabwild = False
     do_seed = False
     for gal in args:
         if grabwild:
-            print("Warning: only making map with '%s'" % gal)
-            wildname = gal
+            print("Warning: removing feeds '%s'" % gal)
+            badfeed =  [int(x) for x in gal.split(',')]
             grabwild = False
+            print("badfeeds",badfeed)
             continue
         if gal == '-s':
             print("Warning: skipping accumulating scans, only doing gridding")
             do_scan = False
             continue
         if gal == '-f':
-            do_seed = True
-            continue
-        if gal == '-m':
             grabwild = True
             continue
         if gal == '-M':
             do_mask = True
             continue
+        if gal == '-m':
+            do_mask = True
+            continue
         if gal == '-h':
-            print("Usage: %s [-h] [-s] [-m] [-M] galaxy [galaxy ...]" % sys.argv[0])
+            print("Usage: %s [-h] [-s] [[-M] [-f f1,f2,...] galaxy [galaxy ...]" % sys.argv[0])
             print("  -h      help")
             print("  -s      skip scan building (assumed you've done it before).")
-            print("  -f      force a 123 seed so runs are reproducable")
-            print("  -m      match this name in wildcarding for gridding.")
+            print("  -f      comma separated list of bad feeds")
             print("  -M      add masking (needs special masks/mask_GAL.fits file)")
             print("  galaxy  galaxy name(s), e.g. NGC0001, as they appear in gals.pars")
             continue
@@ -218,7 +228,7 @@ def main(args):
             if do_scan:
                 for scan in scans:
                     my_calscans(gal, scan, maskstrategy, maskfile)
-            edgegrid(gal, wildname, maskfile)
+            edgegrid(gal, badfeed, maskfile)
             os.chdir('..')
         else:
             print("Skipping %s: no entry found" % gal)

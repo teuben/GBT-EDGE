@@ -4,6 +4,7 @@
 #
 
 ext=12CO_rebase3_smooth2_hanning2.fits
+ext=12CO_rebase3_smooth1.3_hanning1.fits
 cbf=0.4
 
 
@@ -16,8 +17,10 @@ log=do_all_stats.log
 
 rm -f $log
 for gal in $ngc $ugc; do
-    echo -n "$gal " >> $log
-    fitsccd ${gal}/${gal}_${ext} - |  ccdsub - - centerbox=$cbf,$cbf,$cbf | ccdstat - bad=0 qac=t >> $log
+    if [ -e ${gal}/${gal}_${ext} ]; then
+	echo -n "$gal " >> $log
+	fitsccd ${gal}/${gal}_${ext} - |  ccdsub - - centerbox=$cbf,$cbf,$cbf | ccdstat - bad=0 qac=t >> $log
+    fi
 done
 
 cat $log

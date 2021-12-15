@@ -69,6 +69,20 @@ example of use
       ./reduce.py -M NGC0776
       ./mmaps.py NGC0776
 
+# Bad Feeds
+
+If there is some indication that some feeds add negatively to the maps, they can be removed at the gridding 
+stage, viz.
+
+      ./reduce.py -f 6,10 -M NGC0776
+
+where feeds 6 and 10 (where feed 0 is the first feed) would be removed from gridding. They are still added to
+the calibration stage, so one can continue experimenting with pure gridding:
+
+      ./reduce.py -f 10 -s NGC0776
+	  
+to see what the effect on the final outcome is with just feed 10 removed.
+
 
 # Working Offline
 
@@ -122,7 +136,8 @@ Otherwise just be aware of the listed ones here:
    causes the analysis to not check those conditions in the region
    associated with the galaxy.
    
-8. The use of the maskfile in griddata() and postprocess.cleansplit() seems not used
+8. The use of the maskfile in griddata() and postprocess.cleansplit() seems not used. This makes the -s useful
+   to experiment with the -f flag to remove feeds from the gridding stage.
 
 
 # Important Files and Directories

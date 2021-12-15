@@ -10,18 +10,27 @@ import numpy as np
 
 from astropy.io import fits
 import matplotlib.pyplot as plt
+from scipy.signal import savgol_filter
+
+if len(sys.argv) == 0:
+    print('Usage: %s template_cube.fits cs1.sdfits cs2.sdfits ...')
+    print('     template_cube:        needs RA,DEC reference pixel and RESTFRQ')
+    sys.exit(0)
+    
 
 
 hdu = fits.open(sys.argv[1])
 ra_cen  = float(hdu[0].header['CRVAL1'])
 dec_cen = float(hdu[0].header['CRVAL2'])
-print(ra_cen,dec_cen)
+restfrq = float(hdu[0].header['RESTFRQ'])
+print('ra,dec,restfrq=',ra_cen,dec_cen,restfrq)
 
 plt.figure()
 
-radius  = 30.0
+radius  = 20.0
 edge = 64
 Qxy = False
+ckms = 299792.458
 
 cosd = np.cos(dec_cen*np.pi/180)
 
@@ -33,9 +42,14 @@ for f in sys.argv[2:]:
     hdu = fits.open(f)
     data = hdu[1].data
 
-    ra = data['CRVAL2']
-    dec = data['CRVAL3']
+    freq = data['CRVAL1']
+    df   = data['CDELT1']
+    fref = data['CRPIX1']
+    ra   = data['CRVAL2']
+    dec  = data['CRVAL3']
     spec = data['DATA']
+    vel  = (1-freq/restfrq)*ckms
+    dvel = -df/restfrq*ckms
 
     dx = (ra - ra_cen)*15*cosd * 3600
     dy = (dec - dec_cen) * 3600
@@ -50,18 +64,23 @@ for f in sys.argv[2:]:
     if do_sum == False:
         nchan = len(spec[0,:])
         chan = np.arange(nchan)
+        chan = (chan - fref[0])*dvel[0] + vel[0]
         dsum = np.zeros(nchan)
-        print(dsum.shape)
+        print('nchan=',nchan)
         do_sum = True
     dsum = dsum + spec[idx].sum(axis=0)
+    # print(vel)
+    print(vel.min(), vel.max(), vel.max()-vel.min())
+    
 
 print("Found %d/%d points within %g arcsec of %g %g" % (nsum,ntot,radius,ra_cen,dec_cen))
     
 if not Qxy:
     x = chan[edge:nchan-edge] 
     y = dsum[edge:nchan-edge] / nsum * 1000
-    plt.plot(x,y)
-    plt.xlabel("Channel")
+    ys = savgol_filter(y, 11, 3) 
+    plt.plot(x,ys)
+    plt.xlabel("velocity")
     plt.ylabel("Spectrum (mK)")
 
 plt.show()

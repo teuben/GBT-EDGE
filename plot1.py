@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 from scipy.signal import savgol_filter
 
 if len(sys.argv) == 0:
-    print('Usage: %s template_cube.fits cs1.sdfits cs2.sdfits ...')
+    print('Usage: %s [-s] template_cube.fits cs1.sdfits cs2.sdfits ...')
     print('     template_cube:        needs RA,DEC reference pixel and RESTFRQ')
     sys.exit(0)
     
@@ -36,7 +36,10 @@ print("Vmin,max,dV=",vmin,vmax,dv)
 
 plt.figure()
 
-radius  = 20.0
+radius  = 6.0    # one beam
+radius  = 12.0
+off_x   = 0.0
+off_y   = 0.0
 edge    = 64
 Qxy     = False
 ckms    = 299792.458
@@ -46,6 +49,16 @@ cosd = np.cos(dec_cen*np.pi/180)
 do_sum = False
 nsum = 0
 ntot = 0
+
+# NGC0001 A side
+off_x = -3.556
+off_y =  1.712
+# NGC0001 R side
+off_x =  5.444
+off_y = -2.288
+
+# NGC0001 ctr
+
 
 for f in sys.argv[2:]:
     hdu = fits.open(f)
@@ -60,8 +73,8 @@ for f in sys.argv[2:]:
     vel  = (1-freq/restfrq)*ckms
     dvel = -df/restfrq*ckms
 
-    dx = (ra - ra_cen)*15*cosd * 3600
-    dy = (dec - dec_cen) * 3600
+    dx = (ra - ra_cen)*15*cosd * 3600 - off_x
+    dy = (dec - dec_cen) * 3600       - off_y
     rad = np.sqrt(dx*dx+dy*dy)
     idx = np.where(rad<radius)
     #print(f,len(idx[0]),idx)
@@ -86,12 +99,29 @@ print("Found %d/%d points within %g arcsec of %g %g" % (nsum,ntot,radius,ra_cen,
     
 if not Qxy:
     x = chan[edge:nchan-edge] 
-    y = dsum[edge:nchan-edge] / nsum * 1000
-    ys = savgol_filter(y, 11, 1) 
-    plt.plot(x,ys)
+    y = dsum[edge:nchan-edge] / nsum 
+    if False:
+        spts = 11
+        sorder = 1
+        ys = savgol_filter(y, spts, sorder)
+    elif True:
+        bp = 10
+        box = np.ones(bp)/bp
+        ys = np.convolve(y, box, mode='same')
+    else:
+        hs = 10
+        h = np.hanning(hs)
+        ys = np.convolve(y, h, mode='same')
+    plt.plot(x,ys*1000)
     plt.xlabel("velocity (-OBS) [km/s]")
     plt.ylabel("Spectrum [mK]")
     plt.title(template)
-    plt.xlim([vmin,vmax])
+    if vmin < vmax:
+        plt.xlim([vmin,vmax])
+    else:
+        plt.xlim([vmax,vmin])
+
+    np.savetxt('plot1.tab',np.transpose([x,ys]))
+
 
 plt.show()

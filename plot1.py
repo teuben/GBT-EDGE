@@ -3,6 +3,8 @@
 #    average the spectrum of all points within a given radius of the reference pixel of the first fits file
 #    all subsequent fits files are calibrated SDFITS files
 #
+#  Typical use in an EDGE galaxy directory:
+#      ../plot1.py *_12CO_rebase3_smooth2_hanning2.fits *feed*fits
 
 
 import os, sys

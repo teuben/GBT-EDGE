@@ -18,19 +18,26 @@ if len(sys.argv) == 0:
     sys.exit(0)
     
 
-
-hdu = fits.open(sys.argv[1])
+template = sys.argv[1]
+hdu = fits.open(template)
 ra_cen  = float(hdu[0].header['CRVAL1'])
 dec_cen = float(hdu[0].header['CRVAL2'])
 restfrq = float(hdu[0].header['RESTFRQ'])
 print('ra,dec,restfrq=',ra_cen,dec_cen,restfrq)
+vref = float(hdu[0].header['CRVAL3'])
+pref = float(hdu[0].header['CRPIX3'])
+dv   = float(hdu[0].header['CDELT3'])
+nv   = int(hdu[0].header['NAXIS3'])
+vmin = (1-pref)*dv + vref
+vmax = (nv-pref)*dv + vref
+print("Vmin,max,dV=",vmin,vmax,dv)
 
 plt.figure()
 
 radius  = 20.0
-edge = 64
-Qxy = False
-ckms = 299792.458
+edge    = 64
+Qxy     = False
+ckms    = 299792.458
 
 cosd = np.cos(dec_cen*np.pi/180)
 
@@ -70,7 +77,7 @@ for f in sys.argv[2:]:
         do_sum = True
     dsum = dsum + spec[idx].sum(axis=0)
     # print(vel)
-    print(vel.min(), vel.max(), vel.max()-vel.min())
+    print(vel.min(), vel.max(), vel.max()-vel.min(),dvel[0])
     
 
 print("Found %d/%d points within %g arcsec of %g %g" % (nsum,ntot,radius,ra_cen,dec_cen))
@@ -78,9 +85,11 @@ print("Found %d/%d points within %g arcsec of %g %g" % (nsum,ntot,radius,ra_cen,
 if not Qxy:
     x = chan[edge:nchan-edge] 
     y = dsum[edge:nchan-edge] / nsum * 1000
-    ys = savgol_filter(y, 11, 3) 
+    ys = savgol_filter(y, 11, 1) 
     plt.plot(x,ys)
-    plt.xlabel("velocity")
-    plt.ylabel("Spectrum (mK)")
+    plt.xlabel("velocity (-OBS) [km/s]")
+    plt.ylabel("Spectrum [mK]")
+    plt.title(template)
+    plt.xlim([vmin,vmax])
 
 plt.show()

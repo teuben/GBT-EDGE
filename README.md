@@ -74,14 +74,17 @@ example of use
 If there is some indication that some feeds add negatively to the maps, they can be removed at the gridding 
 stage, viz.
 
-      ./reduce.py -f 6,10 -M NGC0776
+      ./reduce.py -f 8,11 -M NGC0776
 
-where feeds 6 and 10 (where feed 0 is the first feed) would be removed from gridding. They are still added to
+where feeds 8 and 11 (where feed 0 is the first feed) would be removed from gridding. They are still added to
 the calibration stage, so one can continue experimenting with pure gridding:
 
-      ./reduce.py -f 10 -s NGC0776
+      ./reduce.py -f 11 -s NGC0776
 	  
-to see what the effect on the final outcome is with just feed 10 removed.
+to see what the effect on the final outcome is with just feed 11 removed.
+
+Note we are currently looking into if/why/when feeds 8 and 11 (in the 0-based system), but be aware some users
+may use a 1-based system in their language. Internally in the SDFITS files the feeds are numbered 0..15
 
 
 # Working Offline

@@ -119,15 +119,17 @@ Otherwise just be aware of the listed ones here:
    
    np.random.seed(123)  doesn't seem to work.
 
-3. A few notes on CPU times: the **-s"" flags makes the code run about 2x faster, but always inspect if the galaxy directory
+3. A few notes on CPU times: the **-s** flags makes the code run about 2x faster, but always inspect if the galaxy directory
    has the feed files that you expect! Using the weather information make the code
    run maybe 5% slower, not a huge effect. On fourier NGC0001 took about 10 mins, on my i5-1135G7 laptop 4 mins.
 
 4. nProc (see code) doesn't seem to work for me.   Setting OMP_NUM_THREADS=1 actually seems to make the code run a bit faster.
 
 5. For NGC0001 here are some RMS values:
-   (2,2)   nomask: 12.6      mask:  8.9mK  ratio 1.4
-   (1.3,1) nomask: 33.5      mask: 27.4mK  ratio 1.2
+
+         (2,2)   nomask: 12.6      mask:  8.9mK  ratio 1.4
+         (1.3,1) nomask: 33.5      mask: 27.4mK  ratio 1.2
+	 
    Going from (1.3,1) -> (2,2) S/N improved by about 3.
 
 6. (in code) it would be useful if buildmasks() could return the mask filename, that we carry it all through

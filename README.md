@@ -147,12 +147,12 @@ Otherwise just be aware of the listed ones here:
 
 # Important Files and Directories
 
-* GBTEDGE.cat - this should also be in  /home/astro-util/projects/gbt-edge/GBTEDGE.cat 
-* night1.py - a bruteforce example script for Night 1 (Nov 5/6, 2021)
-* reduce.py - reduce one (or more) galaxies, based on parameters in gals.pars
-* gals.pars - galaxy parameter file for reduce.py containing the seq/scans 
-* masks/    - here you need to place the mask_GAL.fits file (or symlink) for the -M flag
-* rawdata/ - symlink to where the rawdata are stored
-* weather/ - symlink to where the GBT Weather data are stored (with Coeff*.txt files)
-* /home/sdfits/AGBT21B_024_01/ - night1 VEGAS raw data directory @ GBO  (1.3GB)
+       GBTEDGE.cat   - this should also be in  /home/astro-util/projects/gbt-edge/GBTEDGE.cat 
+       night1.py     - a bruteforce example script for Night 1 (Nov 5/6, 2021)
+       reduce.py     - reduce one (or more) galaxies, based on parameters in gals.pars
+       gals.pars     - galaxy parameter file for reduce.py containing the seq/scans 
+       masks/        - here you need to place the mask_GAL.fits file (or symlink) for the -M flag
+       rawdata/      - (symlink to) where the rawdata are stored
+       weather/      - (symlink to) where the GBT Weather data are stored (with Coeff*.txt files)
+       /home/sdfits/AGBT21B_024_01/ - night1 VEGAS raw data directory @ GBO  (1.3GB)
 

@@ -158,4 +158,4 @@ Otherwise just be aware of the listed ones here:
 and specific to being at GBT:
 
        /home/sdfits/AGBT21B_024_01/ - night1 VEGAS raw data directory @ GBO  (1.3GB)
-
+                                      this should be rawdata/AGBT21B_024_01 for a local install

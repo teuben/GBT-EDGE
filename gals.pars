@@ -69,6 +69,7 @@ NGC2691   5   166   200            #            seems ok with mk_mask, but mmaps
 NGC0495   6    19    53
 NGC0495   6    63    97
 
+CGCG536-030  6  107 141          #  10**0.1
 
 NGC2540   7   38     72            # 20 mK
 NGC2540   7   82    116
@@ -92,3 +93,10 @@ UGC04730  8   175 209
 
 NGC3057   8   219 253        # nothing obvious
 NGC3057   8   263 297
+
+# session 9 was a bust
+
+CGCG536-030   10   11  45    #  maybe some signal in a dec-vel plot, very weak   rms=6.7
+
+
+UGC02222      10   55  89     # 10**-1.4    rms=16 mK  - nothing obvious

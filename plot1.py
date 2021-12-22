@@ -50,15 +50,18 @@ do_sum = False
 nsum = 0
 ntot = 0
 
-# NGC0001 A side
-off_x = -3.556
-off_y =  1.712
-# NGC0001 R side
-off_x =  5.444
-off_y = -2.288
+if False:
+    # NGC0001 R side:   about 10 mK in a 12" radius, 16 mK in 6" radius
+    off_x =  5.444
+    off_y = -2.288
+    # NGC0001 A side:   about 10 mK in a 12" radius, 16 mK in 6" radius
+    off_x = -3.556
+    off_y =  1.712
+    # NGC0001 ctr
 
-# NGC0001 ctr
-
+if False:
+    Qxy = True
+    radius=1800
 
 for f in sys.argv[2:]:
     hdu = fits.open(f)
@@ -73,7 +76,7 @@ for f in sys.argv[2:]:
     vel  = (1-freq/restfrq)*ckms
     dvel = -df/restfrq*ckms
 
-    dx = (ra - ra_cen)*15*cosd * 3600 - off_x
+    dx = (ra - ra_cen)*cosd * 3600    - off_x
     dy = (dec - dec_cen) * 3600       - off_y
     rad = np.sqrt(dx*dx+dy*dy)
     idx = np.where(rad<radius)
@@ -115,7 +118,7 @@ if not Qxy:
     plt.plot(x,ys*1000)
     plt.xlabel("velocity (-OBS) [km/s]")
     plt.ylabel("Spectrum [mK]")
-    plt.title(template)
+    plt.title(template + ' [%g %g %g]' % (off_x,off_y,radius))
     if vmin < vmax:
         plt.xlim([vmin,vmax])
     else:

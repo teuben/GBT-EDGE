@@ -74,14 +74,17 @@ example of use
 If there is some indication that some feeds add negatively to the maps, they can be removed at the gridding 
 stage, viz.
 
-      ./reduce.py -f 6,10 -M NGC0776
+      ./reduce.py -f 8,11 -M NGC0776
 
-where feeds 6 and 10 (where feed 0 is the first feed) would be removed from gridding. They are still added to
+where feeds 8 and 11 (where feed 0 is the first feed) would be removed from gridding. They are still added to
 the calibration stage, so one can continue experimenting with pure gridding:
 
-      ./reduce.py -f 10 -s NGC0776
+      ./reduce.py -f 11 -s NGC0776
 	  
-to see what the effect on the final outcome is with just feed 10 removed.
+to see what the effect on the final outcome is with just feed 11 removed.
+
+Note we are currently looking into if/why/when feeds 8 and 11 (in the 0-based system), but be aware some users
+may use a 1-based system in their language. Internally in the SDFITS files the feeds are numbered 0..15
 
 
 # Working Offline
@@ -116,15 +119,17 @@ Otherwise just be aware of the listed ones here:
    
    np.random.seed(123)  doesn't seem to work.
 
-3. A few notes on CPU times: the **-s"" flags makes the code run about 2x faster, but always inspect if the galaxy directory
+3. A few notes on CPU times: the **-s** flags makes the code run about 2x faster, but always inspect if the galaxy directory
    has the feed files that you expect! Using the weather information make the code
    run maybe 5% slower, not a huge effect. On fourier NGC0001 took about 10 mins, on my i5-1135G7 laptop 4 mins.
 
 4. nProc (see code) doesn't seem to work for me.   Setting OMP_NUM_THREADS=1 actually seems to make the code run a bit faster.
 
 5. For NGC0001 here are some RMS values:
-   (2,2)   nomask: 12.6      mask:  8.9mK  ratio 1.4
-   (1.3,1) nomask: 33.5      mask: 27.4mK  ratio 1.2
+
+         (2,2)   nomask: 12.6      mask:  8.9mK  ratio 1.4
+         (1.3,1) nomask: 33.5      mask: 27.4mK  ratio 1.2
+	 
    Going from (1.3,1) -> (2,2) S/N improved by about 3.
 
 6. (in code) it would be useful if buildmasks() could return the mask filename, that we carry it all through
@@ -142,12 +147,15 @@ Otherwise just be aware of the listed ones here:
 
 # Important Files and Directories
 
-* GBTEDGE.cat - this should also be in  /home/astro-util/projects/gbt-edge/GBTEDGE.cat 
-* night1.py - a bruteforce example script for Night 1 (Nov 5/6, 2021)
-* reduce.py - reduce one (or more) galaxies, based on parameters in gals.pars
-* gals.pars - galaxy parameter file for reduce.py containing the seq/scans 
-* masks/    - here you need to place the mask_GAL.fits file (or symlink) for the -M flag
-* rawdata/ - symlink to where the rawdata are stored
-* weather/ - symlink to where the GBT Weather data are stored (with Coeff*.txt files)
-* /home/sdfits/AGBT21B_024_01/ - night1 VEGAS raw data directory @ GBO  (1.3GB)
+       GBTEDGE.cat   - this should also be in  /home/astro-util/projects/gbt-edge/GBTEDGE.cat 
+       night1.py     - a bruteforce example script for Night 1 (Nov 5/6, 2021)
+       reduce.py     - reduce one (or more) galaxies, based on parameters in gals.pars
+       gals.pars     - galaxy parameter file for reduce.py containing the seq/scans 
+       masks/        - here you need to place the mask_GAL.fits file (or symlink) for the -M flag
+       rawdata/      - (symlink to) where the rawdata are stored
+       weather/      - (symlink to) where the GBT Weather data are stored (with Coeff*.txt files)
 
+and specific to being at GBT:
+
+       /home/sdfits/AGBT21B_024_01/ - night1 VEGAS raw data directory @ GBO  (1.3GB)
+                                      this should be rawdata/AGBT21B_024_01 for a local install

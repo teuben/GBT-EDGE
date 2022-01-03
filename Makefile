@@ -21,7 +21,7 @@ WDIR = /users/rmaddale/Weather/ArchiveCoeffs
 
 # git directories we should have here
 
-GIT_DIRS = gbtpipe degas maskmoment
+GIT_DIRS = gbtpipe degas maskmoment edge_pydb
 
 # URLs that we'll need
 
@@ -29,7 +29,7 @@ URL1  = https://github.com/GBTSpectroscopy/gbtpipe
 URL2  = https://github.com/GBTSpectroscopy/degas
 URL3  = https://github.com/astroumd/lmtoy
 URL4  = https://github.com/teuben/maskmoment
-
+URL5  = https://github.com/tonywong94/edge_pydb
 
 .PHONY:  help install build
 
@@ -65,6 +65,9 @@ lmtoy:
 maskmoment:
 	git clone $(URL4)
 
+edge_pydb:
+	git clone $(URL5)
+
 edge_env:
 	python3 -m venv edge_env
 
@@ -83,6 +86,12 @@ install_degas:  degas edge_env
 
 install_maskmoment:  maskmoment edge_env
 	(cd maskmoment;\
+	source ../edge_env/bin/activate;\
+	pip3 install --upgrade pip;\
+	pip3 install -e .)
+
+install_edge:  edge_pydb edge_env
+	(cd edge_pydb;\
 	source ../edge_env/bin/activate;\
 	pip3 install --upgrade pip;\
 	pip3 install -e .)

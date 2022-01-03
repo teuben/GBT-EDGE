@@ -168,3 +168,15 @@ edge.sh:
 #
 show:
 	@grep -v ^# gals.pars | awk '{if (NF>0) print $$1}' | sort  | uniq
+
+
+#  galaxies with masks
+MGCAL = NGC0001 NGC0169 NGC0495 NGC0776 NGC0932 NGC2691  UGC01659 UGC02134 UGC02239 UGC04245
+all:
+	@echo not yet
+	@echo export OMP_NUM_THREADS=1
+
+# mask_CGCG536-030_Havfield_v1.fits
+
+# getastridlog save AGBT21B_024_10
+ 

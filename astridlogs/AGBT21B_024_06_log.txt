@@ -1,0 +1,3298 @@
+ 
+ 
+#######################################################
+ SCRIPT NUMBER 1, project:AGBT21B_024_06 
+ 261735 1090 Tony Wong 12 Rob Taggart 2021-12-09 00:38:54 obs_completed 
+#######################################################
+##----------------------------------------------------------------------
+## If you restart Astrid, you will need to rerun this script!!
+## ----------------------------------------------------------------------
+
+# Plan for session 1 on Dec 9 (7:30 pm)
+galaxyName="NGC0495"  # source 1
+#galaxyName="CGCG536-030"  # source 2
+#galaxyName="IC1683"  # CARMA Check
+
+# Plan for session 2 on Dec 9 (2:15 am)
+#galaxyName="NGC0776"  # source 1
+#galaxyName="UGC02134"  # source 2
+#galaxyName="IC1683"  # CARMA Check
+# galaxyName = "UGC04136" # extra source RAmap only
+# galaxyName = "NGC4047" # test source
+# galaxyName = "NGC2623" #test source
+
+
+# AutoOOF source
+oofSrc='0319+4130'
+
+# Flux scalibration source 
+fluxSrc = '0319+4130' # good if OOFing
+#fluxSrc = "1058+0133"
+# fluxSrc = '0854+2006' # good if not OOFing
+
+# Avoid using pointing corrections when pointing source is in 
+# key-hole (elev >~85 deg)
+pointSrc="0137+3309"
+# pointSrc="0834+5534" # good for source 1
+#pointSrc="0927+3902" # good for source 2
+# pointSrc="0813+4813" # good for extra source 
+
+print "autoOOF source = ", oofSrc
+print "flux source =  ", fluxSrc
+print "point source = ", pointSrc
+
+#----------------------------------------------------------------------
+#               Nothing below here should be changed
+#----------------------------------------------------------------------       
+
+# location of project files
+projectDir = "/home/astro-util/projects/gbt-edge"
+
+# Load in relevant catalogs
+Catalog(qband_pointing)
+Catalog(wband_pointing)
+Catalog(fluxcal)
+c = Catalog(projectDir+"/GBTEDGE.cat") 
+
+print "observing source:",  galaxyName, "at ", c[galaxyName]['location']
+
+# set up configuration file and mapping parameters
+
+# backend configuration
+configFile = projectDir+"/12co.config" 
+execfile(configFile)
+
+# pointing configuration 
+# If we're going to point at X-band don't need this. Leaving in place just in case.
+configFile = projectDir+"/pointfocus.config" 
+execfile(configFile)
+
+# map setup 
+mymap = {}
+mymap['step'] = 2.6471 # arcsec
+mymap['scanDuration'] = 33.0645 # s
+mymap['nrows'] = 35
+mymap['scanLength'] = 1.5 # arcmin
+mymap['mapHeight'] = 1.5 # arcmin
+
+
+
+#######################################################
+ LOG SESSION NUMBER 1 
+[00:38:54] ******** Begin Scheduling Block
+[00:38:54] ******** observer = Tony Wong, SB name = 01_setup, project ID = AGBT21B_024, date = 09 Dec 2021
+
+[00:38:54] autoOOF source =  0319+4130
+[00:38:54] flux source =   0319+4130
+[00:38:54] point source =  0137+3309
+[00:38:54] observing source: NGC0495 at  J2000 @ (01:22:55.92, 33:28:17.10)
+[00:38:54] setting restfreq = skyfreq = 113736.2941MHz
+[00:38:54] setting restfreq = skyfreq = 113736.2941MHz
+runSuccessful: True
+[00:38:54] ******** End Scheduling Block
+[00:38:54] ******** observer = Tony Wong, SB name = 01_setup, project ID = AGBT21B_024
+
+how much log? 599 id: 261735self.history: <gbt.turtle.database.History.History instance at 0x6254290>self.history.connection: <gbt.turtle.database.TurtleConnection.TurtleConnection instance at 0x7fa66c0c4f38>how much converted log? 807 
+#######################################################
+ 
+ 
+#######################################################
+ SCRIPT NUMBER 2, project:AGBT21B_024_06 
+ 261736 1090 Tony Wong 12 Rob Taggart 2021-12-09 00:39:10 obs_completed 
+#######################################################
+# Argus Startup
+# dfrayer 2017.08.01  17B Semester
+
+##General Fix to 18.2 M&C system
+##Resets all configuration values to defaults
+##important after KFPA projects using frequency dictionary
+ResetConfig()
+
+# Startup the insrument by calling the 'presets' command
+# This will turn on LNA/CIF if necessary
+SetValues("RcvrArray75_115",{"presets":"on"})
+
+print "CIF Power:", GetValue("RcvrArray75_115","cif_power")
+print "LNA Power:", GetValue("RcvrArray75_115","lna_power")
+
+
+#######################################################
+ LOG SESSION NUMBER 2 
+[00:39:10] ******** Begin Scheduling Block
+[00:39:10] ******** observer = Tony Wong, SB name = 02_argus_startup, project ID = AGBT21B_024, date = 09 Dec 2021
+
+[00:39:10] *** Notice:Resetting the configuration. You must run another configuration before running a scan
+[00:39:11] CIF Power: on
+[00:39:13] LNA Power: on
+runSuccessful: True
+[00:39:13] ******** End Scheduling Block
+[00:39:13] ******** observer = Tony Wong, SB name = 02_argus_startup, project ID = AGBT21B_024
+
+how much log? 474 id: 261736self.history: <gbt.turtle.database.History.History instance at 0x6254290>self.history.connection: <gbt.turtle.database.TurtleConnection.TurtleConnection instance at 0x7fa66c0c4f38>how much converted log? 682 
+#######################################################
+ 
+ 
+#######################################################
+ SCRIPT NUMBER 3, project:AGBT21B_024_06 
+ 261737 1090 Tony Wong 12 Rob Taggart 2021-12-09 00:39:31 obs_completed 
+#######################################################
+source = oofSrc
+
+SetValues("ScanCoordinator", {"receiver": "RcvrArray75_115"})
+
+print "autoOOF source:", source
+
+Catalog(wband_pointing)
+Catalog(projectDir+"/alma_fluxcal_grid.cat")
+Slew(source)
+
+
+
+AutoOOF(source)
+
+#######################################################
+ LOG SESSION NUMBER 3 
+[00:39:31] ******** Begin Scheduling Block
+[00:39:31] ******** observer = Tony Wong, SB name = 03_autoOOF_Argus, project ID = AGBT21B_024, date = 09 Dec 2021
+
+[00:39:32] autoOOF source: 0319+4130
+[00:39:32] source : 0319+4130
+               S0.3 : 10.036
+               location : J2000 @ (03:19:48.16, 41:30:42.10)
+               Gold : P
+               OFFSET : 61.2
+[00:39:32] Slewing to source.
+[00:39:32] In state Ready, waiting for state Activating
+[00:39:32]     Setting State: Activating
+[00:39:32] Detected state Activating
+[00:39:32] In state Activating, waiting for state Ready
+[00:43:05]     Setting State: Ready
+[00:43:05] Detected state Ready
+[00:43:05] Configuring telescope.
+[00:43:06]     Setting State: Activating
+[00:43:24]     Setting State: Ready
+[00:43:25]     Setting State: Activating
+[00:43:26]     Setting State: Ready
+[00:43:26] Default values are
+[00:43:26] if3freq  =  [0]
+[00:43:26] noisecal  =  lo-ext
+[00:43:26] Configuring for backend DCR...
+[00:43:26] The bad devices are: 
+[00:43:26] ConverterFilter14
+[00:43:26] ConverterFilter2
+[00:43:26] ConverterFilter16
+[00:43:26] ConverterFilter10
+[00:43:26] ConverterFilter12
+[00:43:26] Warning: The doppler tracking frequency was not one of the specified rest frequencies. The telescope is being configured as specified but if this was not intentional, please fix and re-submit
+[00:43:26] Waiting for  IFRack to finish activating
+[00:43:26] . . . Waiting for  ScanCoordinator to finish activating
+[00:43:26] . . . . . . . . . . . . . . .
+[00:43:26] Checking telescope
+[00:43:26] Configuration Complete
+[00:43:26] source : 0319+4130
+[00:43:26] Slewing to source.
+[00:43:26] In state Ready, waiting for state Activating
+[00:43:26]     Setting State: Activating
+[00:43:26] Detected state Activating
+[00:43:26] In state Activating, waiting for state Ready
+[00:43:30]     Setting State: Ready
+[00:43:30] Detected state Ready
+[00:43:30] Balancing IF system.
+[00:43:30] Balancing IFRack
+[00:43:31]     Setting State: Activating
+[00:43:31]     Setting State: Ready
+[00:43:32] the sampler values are:
+[00:43:32] RF_power 1 : 0.02929688
+[00:43:32] RF_power 2 : 1.337891
+[00:43:32] RF_power 3 : 1.542969
+[00:43:32] RF_power 4 : 0.01464844
+[00:43:32] RF_power 5 : 0.01953125
+[00:43:32] RF_power 6 : 0.02441406
+[00:43:32] RF_power 7 : 0
+[00:43:32] RF_power 8 : 0.0390625
+[00:43:32] VaneCal Track: Subscan 1 of 2
+[00:43:32] In state Ready, waiting for state Running
+[00:43:33]     Setting State: Activating
+[00:43:57]     Setting State: Committed
+[00:44:01]     Setting State: Running
+[00:44:01] Detected state Running
+[00:44:01] *** Notice: This subscan will be numbered as scan #1 in your data reduction package.
+[00:44:01] In state Running, waiting for state Ready
+[00:44:09]     Setting State: Stopping
+[00:44:11]     Setting State: Ready
+[00:44:11] Detected state Ready
+[00:44:11] Ygor Telescope: WaitForStopping
+[00:44:11] VaneCal Track: Subscan 2 of 2
+[00:44:11] In state Ready, waiting for state Running
+[00:44:12]     Setting State: Activating
+[00:44:26]     Setting State: Committed
+[00:44:29]     Setting State: Running
+[00:44:29] Detected state Running
+[00:44:29] *** Notice: This subscan will be numbered as scan #2 in your data reduction package.
+[00:44:29] In state Running, waiting for state Ready
+[00:44:38]     Setting State: Stopping
+[00:44:40]     Setting State: Ready
+[00:44:40] Detected state Ready
+[00:44:40] Ygor Telescope: WaitForStopping
+[00:44:40]  Running AutoOOF 
+[00:44:40] Starting OOF map number, 1 at focus: 0.0
+[00:44:40] Beginning execution of scan trajectory in file /home/gbt/etc/config//w-oof-argus-v2.fits
+[00:44:40] Scan duration is  280  
+ Moving to source
+[00:44:40] J2000 @ (03:19:48.16, 41:30:42.10)   Starting trajectory
+[00:44:45] In state Ready, waiting for state Running
+[00:44:46]     Setting State: Activating
+[00:45:00]     Setting State: Committed
+[00:45:02]     Setting State: Running
+[00:45:02] Detected state Running
+[00:45:02] *** Notice: This subscan will be numbered as scan #3 in your data reduction package.
+[00:45:02] In state Running, waiting for state Ready
+[00:49:42]     Setting State: Stopping
+[00:49:44]     Setting State: Ready
+[00:49:44] Detected state Ready
+[00:49:44] Ygor Telescope: WaitForStopping
+[00:49:44] Ending trajectory
+[00:49:44] Starting OOF map number, 2 at focus: 10.0
+[00:49:44] Beginning execution of scan trajectory in file /home/gbt/etc/config//w-oof-argus-v2.fits
+[00:49:44] Scan duration is  280  
+ Moving to source
+[00:49:44] J2000 @ (03:19:48.16, 41:30:42.10)   Starting trajectory
+[00:49:50] In state Ready, waiting for state Running
+[00:49:50]     Setting State: Activating
+[00:50:05]     Setting State: Committed
+[00:50:07]     Setting State: Running
+[00:50:07] Detected state Running
+[00:50:07] *** Notice: This subscan will be numbered as scan #4 in your data reduction package.
+[00:50:07] In state Running, waiting for state Ready
+[00:54:47]     Setting State: Stopping
+[00:54:49]     Setting State: Ready
+[00:54:49] Detected state Ready
+[00:54:49] Ygor Telescope: WaitForStopping
+[00:54:49] Ending trajectory
+[00:54:49] Starting OOF map number, 3 at focus: -10.0
+[00:54:49] Beginning execution of scan trajectory in file /home/gbt/etc/config//w-oof-argus-v2.fits
+[00:54:49] Scan duration is  280  
+ Moving to source
+[00:54:49] J2000 @ (03:19:48.16, 41:30:42.10)   Starting trajectory
+[00:54:55] In state Ready, waiting for state Running
+[00:54:55]     Setting State: Activating
+[00:54:59]     Setting State: Committed
+[00:55:02]     Setting State: Running
+[00:55:02] Detected state Running
+[00:55:02] *** Notice: This subscan will be numbered as scan #5 in your data reduction package.
+[00:55:02] In state Running, waiting for state Ready
+[00:59:41]     Setting State: Stopping
+[00:59:43]     Setting State: Ready
+[00:59:43] Detected state Ready
+[00:59:43] Ygor Telescope: WaitForStopping
+[00:59:43] Ending trajectory
+[00:59:43] Adding 1 to expected scan number, because of Argus and calseq.
+[00:59:43] Starting OOF data analysis.  This will take a few minutes.
+[00:59:43] The surface will be displayed when the analysis is complete in the gfm OOF plugin.
+[00:59:43] After the surface is displayed, you may transfer a zernike solution using the 'Send Selected Solution' button in the gfm OOF plugin.
+[00:59:43] Running OOF command:
+[00:59:43] /home/oof/poof64/main/oofssh arcturus.gb.nrao.edu /home/gbtdata/AGBT21B_024_06 3 --channel=-1 --zmax=5 --nseq=3 --online --config=/home/gbt/etc/config --beamfind=None --mbacalseq=3
+runSuccessful: True
+[00:59:44] ******** End Scheduling Block
+[00:59:44] ******** observer = Tony Wong, SB name = 03_autoOOF_Argus, project ID = AGBT21B_024
+
+how much log? 6643 id: 261737self.history: <gbt.turtle.database.History.History instance at 0x6254290>self.history.connection: <gbt.turtle.database.TurtleConnection.TurtleConnection instance at 0x7fa66c0c4f38>how much converted log? 6854 
+#######################################################
+ 
+ 
+#######################################################
+ SCRIPT NUMBER 4, project:AGBT21B_024_06 
+ 261738 1090 Tony Wong 12 Rob Taggart 2021-12-09 01:06:19 obs_aborted 
+#######################################################
+#load catalogs
+#Catalog(qband_pointing)
+#Catalog(wband_pointing)
+Catalog(xband_pointing)
+#Catalog(fluxcal)
+Catalog(projectDir+"/alma_fluxcal_grid.cat")
+
+# choose appropriate source
+source = fluxSrc
+
+# set the receiver in the scan coordinator to avoid errors
+SetValues("ScanCoordinator", {"receiver": "RcvrArray75_115"})
+
+# configuring manually to avoid re-tuning
+Configure(point_config)
+execfile(projectDir+"/addwx.py")
+
+Slew(source)
+
+Balance()
+
+# pointing
+Peak(source) 
+
+Break("enter pointing offsets")
+
+# focusing
+Focus(source) 
+
+Break("enter focus values if necessary")
+
+#######################################################
+ LOG SESSION NUMBER 4 
+[01:06:19] ******** Begin Scheduling Block
+[01:06:19] ******** observer = Tony Wong, SB name = 05_PointFocus_Flux, project ID = AGBT21B_024, date = 09 Dec 2021
+
+[01:06:19] Configuring telescope.
+[01:06:20]     Setting State: Activating
+[01:06:38]     Setting State: Ready
+[01:06:39]     Setting State: Activating
+[01:06:40]     Setting State: Ready
+[01:06:40] Default values are
+[01:06:40] if3freq  =  [0]
+[01:06:40] noisecal  =  lo-ext
+[01:06:40] Configuring for backend DCR...
+[01:06:40] The bad devices are: 
+[01:06:40] ConverterFilter14
+[01:06:40] ConverterFilter2
+[01:06:40] ConverterFilter16
+[01:06:40] ConverterFilter10
+[01:06:40] ConverterFilter12
+[01:06:40] Warning: The doppler tracking frequency was not one of the specified rest frequencies. The telescope is being configured as specified but if this was not intentional, please fix and re-submit
+[01:06:40] Waiting for  IFRack to finish activating
+[01:06:40] . . . Waiting for  ScanCoordinator to finish activating
+[01:06:40] . . . . . . . . . . . . . . .
+[01:06:40] Checking telescope
+[01:06:40] Configuration Complete
+[01:06:40] source : 0319+4130
+               S0.3 : 10.036
+               location : J2000 @ (03:19:48.16, 41:30:42.10)
+               Gold : P
+               OFFSET : 61.2
+[01:06:40] Slewing to source.
+[01:06:46] In state Ready, waiting for state Activating
+[01:06:46]     Setting State: Activating
+[01:06:46] Detected state Activating
+[01:06:46] In state Activating, waiting for state Ready
+[01:06:50]     Setting State: Ready
+[01:06:50] Detected state Ready
+[01:06:50] Balancing IF system.
+[01:06:50] Balancing IFRack
+[01:06:50]     Setting State: Activating
+[01:06:50]     Setting State: Ready
+[01:06:52] the sampler values are:
+[01:06:52] RF_power 1 : 0.03417969
+[01:06:52] RF_power 2 : 1.503906
+[01:06:52] RF_power 3 : 1.508789
+[01:06:52] RF_power 4 : 0.01464844
+[01:06:52] RF_power 5 : 0.02929688
+[01:06:52] RF_power 6 : 0.02441406
+[01:06:52] RF_power 7 : 0
+[01:06:52] RF_power 8 : 0.0390625
+[01:06:53] source : 0319+4130
+               S0.3 : 10.036
+               location : J2000 @ (03:19:48.16, 41:30:42.10)
+               Gold : P
+               OFFSET : 61.2
+[01:06:53] Peak: Subscan 1 of 4
+[01:06:54] In state Ready, waiting for state Running
+[01:06:54]     Setting State: Activating
+[01:07:16]     Setting State: Committed
+[01:07:19]     Setting State: Running
+[01:07:19] Detected state Running
+[01:07:19] *** Notice: This subscan will be numbered as scan #6 in your data reduction package.
+[01:07:19] In state Running, waiting for state Ready
+[01:07:48]     Setting State: Stopping
+[01:07:50]     Setting State: Ready
+[01:07:50] Detected state Ready
+[01:07:50] Ygor Telescope: WaitForStopping
+[01:07:50] Peak: Subscan 2 of 4
+[01:07:51] In state Ready, waiting for state Running
+[01:07:51]     Setting State: Activating
+[01:07:55]     Setting State: Committed
+[01:07:58]     Setting State: Running
+[01:07:58] Detected state Running
+[01:07:58] *** Notice: This subscan will be numbered as scan #7 in your data reduction package.
+[01:07:58] In state Running, waiting for state Ready
+[01:08:27]     Setting State: Stopping
+[01:08:29]     Setting State: Ready
+[01:08:29] Detected state Ready
+[01:08:29] Ygor Telescope: WaitForStopping
+[01:08:30] . . . . . . . . . . . . . . . . . 
+[01:08:46] 
+[01:08:46] User queried: "No corrections detected! Wait longer?" waiting for reply...
+[01:08:56] User replied: "No".
+[01:08:56] 
+[01:08:56] User queried: "No corrections! Terminate block?" waiting for reply...
+[01:09:01] User replied: "Yes".
+[01:09:01] Exiting scheduling block.
+runSuccessful: False
+[01:09:01] ******** End Scheduling Block
+[01:09:01] ******** observer = Tony Wong, SB name = 05_PointFocus_Flux, project ID = AGBT21B_024
+
+how much log? 3728 id: 261738self.history: <gbt.turtle.database.History.History instance at 0x6254290>self.history.connection: <gbt.turtle.database.TurtleConnection.TurtleConnection instance at 0x7fa66c0c4f38>how much converted log? 3937 
+#######################################################
+ 
+ 
+#######################################################
+ SCRIPT NUMBER 5, project:AGBT21B_024_06 
+ 261739 1090 Tony Wong 12 Rob Taggart 2021-12-09 01:10:50 obs_aborted 
+#######################################################
+#load catalogs
+#Catalog(qband_pointing)
+#Catalog(wband_pointing)
+Catalog(xband_pointing)
+#Catalog(fluxcal)
+Catalog(projectDir+"/alma_fluxcal_grid.cat")
+
+# choose appropriate source
+source = fluxSrc
+
+# set the receiver in the scan coordinator to avoid errors
+SetValues("ScanCoordinator", {"receiver": "RcvrArray75_115"})
+
+# configuring manually to avoid re-tuning
+Configure(point_config)
+execfile(projectDir+"/addwx.py")
+
+Slew(source)
+
+Balance()
+
+# pointing
+AutoPeak(source,frequency=113736.) 
+
+Break("enter pointing offsets")
+
+# focusing
+Focus(source) 
+
+Break("enter focus values if necessary")
+
+#######################################################
+ LOG SESSION NUMBER 5 
+[01:10:50] ******** Begin Scheduling Block
+[01:10:50] ******** observer = Tony Wong, SB name = 05_PointFocus_Flux, project ID = AGBT21B_024, date = 09 Dec 2021
+
+[01:10:51] Configuring telescope.
+[01:10:51]     Setting State: Activating
+[01:11:11]     Setting State: Ready
+[01:11:12]     Setting State: Activating
+[01:11:13]     Setting State: Ready
+[01:11:13] Default values are
+[01:11:13] if3freq  =  [0]
+[01:11:13] noisecal  =  lo-ext
+[01:11:13] Configuring for backend DCR...
+[01:11:13] The bad devices are: 
+[01:11:13] ConverterFilter14
+[01:11:13] ConverterFilter2
+[01:11:13] ConverterFilter16
+[01:11:13] ConverterFilter10
+[01:11:13] ConverterFilter12
+[01:11:13] Warning: The doppler tracking frequency was not one of the specified rest frequencies. The telescope is being configured as specified but if this was not intentional, please fix and re-submit
+[01:11:13] Waiting for  IFRack to finish activating
+[01:11:13] . . Waiting for  ScanCoordinator to finish activating
+[01:11:13] . . . . . . . . . . . . . . . . . .
+[01:11:13] Checking telescope
+[01:11:13] Configuration Complete
+[01:11:14] source : 0319+4130
+               S0.3 : 10.036
+               location : J2000 @ (03:19:48.16, 41:30:42.10)
+               Gold : P
+               OFFSET : 61.2
+[01:11:14] Slewing to source.
+[01:11:14] In state Ready, waiting for state Activating
+[01:11:14]     Setting State: Activating
+[01:11:14] Detected state Activating
+[01:11:14] In state Activating, waiting for state Ready
+[01:11:18]     Setting State: Ready
+[01:11:18] Detected state Ready
+[01:11:18] Balancing IF system.
+[01:11:18] Balancing IFRack
+[01:11:18]     Setting State: Activating
+[01:11:19]     Setting State: Ready
+[01:11:20] the sampler values are:
+[01:11:20] RF_power 1 : 0.02929688
+[01:11:20] RF_power 2 : 1.464844
+[01:11:20] RF_power 3 : 1.474609
+[01:11:20] RF_power 4 : 0.01464844
+[01:11:20] RF_power 5 : 0.02929688
+[01:11:20] RF_power 6 : 0.02441406
+[01:11:20] RF_power 7 : 0
+[01:11:20] RF_power 8 : 0.03417969
+[01:11:22] Configuring telescope.
+[01:11:22]     Setting State: Activating
+[01:11:42]     Setting State: Ready
+[01:11:43]     Setting State: Activating
+[01:11:44]     Setting State: Ready
+[01:11:44] Default values are
+[01:11:44] if3freq  =  [0]
+[01:11:44] noisecal  =  lo-ext
+[01:11:44] Configuring for backend DCR...
+[01:11:44] The bad devices are: 
+[01:11:44] ConverterFilter14
+[01:11:44] ConverterFilter2
+[01:11:44] ConverterFilter16
+[01:11:44] ConverterFilter10
+[01:11:44] ConverterFilter12
+[01:11:44] Warning: The doppler tracking frequency was not one of the specified rest frequencies. The telescope is being configured as specified but if this was not intentional, please fix and re-submit
+[01:11:44] Waiting for  IFRack to finish activating
+[01:11:44] . . Waiting for  ScanCoordinator to finish activating
+[01:11:44] . . . . . . . . . . . . . . . . . .
+[01:11:44] Checking telescope
+[01:11:44] Configuration Complete
+[01:11:44] source : 0319+4130
+[01:11:44] Slewing to source.
+[01:11:45] In state Ready, waiting for state Activating
+[01:11:45]     Setting State: Activating
+[01:11:45] Detected state Activating
+[01:11:45] In state Activating, waiting for state Ready
+[01:11:48]     Setting State: Ready
+[01:11:48] Detected state Ready
+[01:11:48] Balancing IF system.
+[01:11:48] Balancing IFRack
+[01:11:48]     Setting State: Activating
+[01:11:48]     Setting State: Ready
+[01:11:50] the sampler values are:
+[01:11:50] RF_power 1 : 0.02929688
+[01:11:50] RF_power 2 : 1.542969
+[01:11:50] RF_power 3 : 1.59668
+[01:11:50] RF_power 4 : 0.01464844
+[01:11:50] RF_power 5 : 0.02441406
+[01:11:50] RF_power 6 : 0.02441406
+[01:11:50] RF_power 7 : 0
+[01:11:50] RF_power 8 : 0.03417969
+[01:11:50] VaneCal Track: Subscan 1 of 2
+[01:11:51] In state Ready, waiting for state Running
+[01:11:51]     Setting State: Activating
+[01:12:15]     Setting State: Committed
+[01:12:17]     Setting State: Running
+[01:12:17] Detected state Running
+[01:12:17] *** Notice: This subscan will be numbered as scan #8 in your data reduction package.
+[01:12:17] In state Running, waiting for state Ready
+[01:12:27]     Setting State: Stopping
+[01:12:29]     Setting State: Ready
+[01:12:29] Detected state Ready
+[01:12:29] Ygor Telescope: WaitForStopping
+[01:12:29] VaneCal Track: Subscan 2 of 2
+[01:12:30] In state Ready, waiting for state Running
+[01:12:30]     Setting State: Activating
+[01:12:41]     Setting State: Committed
+[01:12:43]     Setting State: Running
+[01:12:43] Detected state Running
+[01:12:43] *** Notice: This subscan will be numbered as scan #9 in your data reduction package.
+[01:12:43] In state Running, waiting for state Ready
+[01:12:53]     Setting State: Stopping
+[01:12:55]     Setting State: Ready
+[01:12:55] Detected state Ready
+[01:12:55] Ygor Telescope: WaitForStopping
+[01:12:55] Peak: Subscan 1 of 4
+[01:12:56] In state Ready, waiting for state Running
+[01:12:56]     Setting State: Activating
+[01:13:04]     Setting State: Committed
+[01:13:06]     Setting State: Running
+[01:13:06] Detected state Running
+[01:13:06] *** Notice: This subscan will be numbered as scan #10 in your data reduction package.
+[01:13:06] In state Running, waiting for state Ready
+[01:13:36]     Setting State: Stopping
+[01:13:38]     Setting State: Ready
+[01:13:38] Detected state Ready
+[01:13:38] Ygor Telescope: WaitForStopping
+[01:13:38] Peak: Subscan 2 of 4
+[01:13:39] In state Ready, waiting for state Running
+[01:13:39]     Setting State: Activating
+[01:13:43]     Setting State: Committed
+[01:13:45]     Setting State: Running
+[01:13:45] Detected state Running
+[01:13:45] *** Notice: This subscan will be numbered as scan #11 in your data reduction package.
+[01:13:45] In state Running, waiting for state Ready
+[01:14:15]     Setting State: Stopping
+[01:14:17]     Setting State: Ready
+[01:14:17] Detected state Ready
+[01:14:17] Ygor Telescope: WaitForStopping
+[01:14:18] . . . . . . . . . . . . . . . . . 
+[01:14:34] 
+[01:14:34] User queried: "No corrections detected! Wait longer?" waiting for reply...
+[01:15:24] User replied: "No".
+[01:15:24] 
+[01:15:24] User queried: "No corrections! Terminate block?" waiting for reply...
+[01:15:25] User replied: "Yes".
+[01:15:26] Exiting scheduling block.
+runSuccessful: False
+[01:15:26] ******** End Scheduling Block
+[01:15:26] ******** observer = Tony Wong, SB name = 05_PointFocus_Flux, project ID = AGBT21B_024
+
+how much log? 6336 id: 261739self.history: <gbt.turtle.database.History.History instance at 0x6254290>self.history.connection: <gbt.turtle.database.TurtleConnection.TurtleConnection instance at 0x7fa66c0c4f38>how much converted log? 6545 
+#######################################################
+ 
+ 
+#######################################################
+ SCRIPT NUMBER 6, project:AGBT21B_024_06 
+ 261740 1090 Tony Wong 12 Rob Taggart 2021-12-09 01:21:21 obs_aborted 
+#######################################################
+#load catalogs
+#Catalog(qband_pointing)
+#Catalog(wband_pointing)
+Catalog(xband_pointing)
+#Catalog(fluxcal)
+Catalog(projectDir+"/alma_fluxcal_grid.cat")
+
+# choose appropriate source
+source = pointSrc
+
+Slew(source)
+
+Break("Ask the operator to switch the receiver to X-band (Rcvr8_10). Click yes when Xband is in place.")
+
+SetValues("ScanCoordinator", {"receiver": "Rcvr8_10"})
+SetValues("LO1",{"restFrequency_A":9000})
+
+AutoPeakFocus(source,configure=True) 
+
+#Break("enter pointing offsets")
+
+#Focus(source) 
+
+#Break("enter focus values if necessary")
+
+Break ("Ask the operator to switch back to Argus. Click yes when Argus is in place.")
+
+SetValues("ScanCoordinator", {"receiver": "RcvrArray75_115"})
+
+#ResetConfig()
+
+#configure Argus
+Configure(argus_config)
+print "Setting up the YIG filter and LO for Argus during the operator switch from X-band to Argus."
+
+#######################################################
+ LOG SESSION NUMBER 6 
+[01:21:21] ******** Begin Scheduling Block
+[01:21:21] ******** observer = Tony Wong, SB name = 07_PointFocus_Galaxy_Xband, project ID = AGBT21B_024, date = 09 Dec 2021
+
+[01:21:21] source : 0137+3309
+               OFFSET : 40.34
+               location : J2000 @ (01:37:41.30, 33:09:35.13)
+               Gold : P
+               S3.3 : 3.094
+[01:21:21] Slewing to source.
+[01:21:21] In state Ready, waiting for state Activating
+[01:21:21]     Setting State: Activating
+[01:21:21] Detected state Activating
+[01:21:21] In state Activating, waiting for state Ready
+[01:21:22]     Setting State: Aborting
+[01:21:22] ygor.Telescope: WaitForReady: Asking abort confirmation.
+[01:21:22] 
+[01:21:22] User queried: "Abort detected! Terminate block?" waiting for reply...
+[01:21:45] User replied: "Yes".
+[01:21:45] Exiting scheduling block.
+[01:21:45]     Setting State: Ready
+runSuccessful: False
+[01:21:45] ******** End Scheduling Block
+[01:21:45] ******** observer = Tony Wong, SB name = 07_PointFocus_Galaxy_Xband, project ID = AGBT21B_024
+
+how much log? 1036 id: 261740self.history: <gbt.turtle.database.History.History instance at 0x6254290>self.history.connection: <gbt.turtle.database.TurtleConnection.TurtleConnection instance at 0x7fa66c0c4f38>how much converted log? 1245 
+#######################################################
+ 
+ 
+#######################################################
+ SCRIPT NUMBER 7, project:AGBT21B_024_06 
+ 261741 1090 Tony Wong 12 Rob Taggart 2021-12-09 01:22:08 obs_completed 
+#######################################################
+#load catalogs
+#Catalog(qband_pointing)
+#Catalog(wband_pointing)
+Catalog(xband_pointing)
+#Catalog(fluxcal)
+Catalog(projectDir+"/alma_fluxcal_grid.cat")
+
+# choose appropriate source
+source = pointSrc
+
+Slew(source)
+
+Break("Ask the operator to switch the receiver to X-band (Rcvr8_10). Click yes when Xband is in place.")
+
+SetValues("ScanCoordinator", {"receiver": "Rcvr8_10"})
+SetValues("LO1",{"restFrequency_A":9000})
+
+AutoPeakFocus(source,configure=True) 
+
+#Break("enter pointing offsets")
+
+#Focus(source) 
+
+#Break("enter focus values if necessary")
+
+Break ("Ask the operator to switch back to Argus. Click yes when Argus is in place.")
+
+SetValues("ScanCoordinator", {"receiver": "RcvrArray75_115"})
+
+#ResetConfig()
+
+#configure Argus
+Configure(argus_config)
+print "Setting up the YIG filter and LO for Argus during the operator switch from X-band to Argus."
+
+#######################################################
+ LOG SESSION NUMBER 7 
+[01:22:08] ******** Begin Scheduling Block
+[01:22:08] ******** observer = Tony Wong, SB name = 07_PointFocus_Galaxy_Xband, project ID = AGBT21B_024, date = 09 Dec 2021
+
+[01:22:08] source : 0137+3309
+               OFFSET : 40.34
+               location : J2000 @ (01:37:41.30, 33:09:35.13)
+               Gold : P
+               S3.3 : 3.094
+[01:22:08] Slewing to source.
+[01:22:08] In state Ready, waiting for state Activating
+[01:22:08]     Setting State: Activating
+[01:22:08] Detected state Activating
+[01:22:08] In state Activating, waiting for state Ready
+[01:22:08]     Setting State: Aborting
+[01:22:08] ygor.Telescope: WaitForReady: Asking abort confirmation.
+[01:22:08] 
+[01:22:08] User queried: "Abort detected! Terminate block?" waiting for reply...
+[01:22:23] User replied: "No".
+[01:22:23] In state Aborting, waiting for state Ready
+[01:22:31]     Setting State: Ready
+[01:22:31] Detected state Ready
+[01:22:31] 
+[01:22:31] User queried: "Ask the operator to switch the receiver to X-band (Rcvr8_10). Click yes when Xband is in place. - Continue scheduling block?" waiting for reply...
+[01:22:37] User replied: "Yes".
+[01:22:41] Configuring telescope.
+[01:22:41]     Setting State: Activating
+[01:22:43]     Setting State: Ready
+[01:22:44]     Setting State: Activating
+[01:22:45]     Setting State: Ready
+[01:22:45] Default values are
+[01:22:45] if3freq  =  [0]
+[01:22:45] polswitch  =  thru
+[01:22:45] Configuring for backend DCR...
+[01:22:45] The bad devices are: 
+[01:22:45] ConverterFilter14
+[01:22:45] ConverterFilter2
+[01:22:45] ConverterFilter16
+[01:22:45] ConverterFilter10
+[01:22:45] ConverterFilter12
+[01:22:45] Waiting for  LO1 to finish activating
+[01:22:45] . .
+[01:22:45] Checking telescope
+[01:22:45] Configuration Complete
+[01:22:46] source : 0137+3309
+[01:22:46] Slewing to source.
+[01:22:46] In state Ready, waiting for state Activating
+[01:22:46]     Setting State: Activating
+[01:22:46] Detected state Activating
+[01:22:46] In state Activating, waiting for state Ready
+[01:24:36]     Setting State: Ready
+[01:24:36] Detected state Ready
+[01:24:36] Balancing IF system.
+[01:24:36] Balancing IFRack
+[01:24:38] the sampler values are:
+[01:24:38] RF_power 1 : 0.02929688
+[01:24:38] RF_power 2 : 0.5859375
+[01:24:38] RF_power 3 : -0.04882812
+[01:24:38] RF_power 4 : 0.5810547
+[01:24:38] RF_power 5 : 0.02929688
+[01:24:38] RF_power 6 : 0.02441406
+[01:24:38] RF_power 7 : 0
+[01:24:38] RF_power 8 : 0.03417969
+[01:24:38] Peak: Subscan 1 of 4
+[01:24:38]     Setting State: Activating
+[01:24:38]     Setting State: Ready
+[01:24:39] In state Ready, waiting for state Running
+[01:24:40]     Setting State: Activating
+[01:24:59]     Setting State: Committed
+[01:25:01]     Setting State: Running
+[01:25:01] Detected state Running
+[01:25:01] *** Notice: This subscan will be numbered as scan #12 in your data reduction package.
+[01:25:01] In state Running, waiting for state Ready
+[01:25:25]     Setting State: Stopping
+[01:25:37]     Setting State: Ready
+[01:25:37] Detected state Ready
+[01:25:37] Ygor Telescope: WaitForStopping
+[01:25:37] Peak: Subscan 2 of 4
+[01:25:37] In state Ready, waiting for state Running
+[01:25:38]     Setting State: Activating
+[01:25:47]     Setting State: Committed
+[01:25:49]     Setting State: Running
+[01:25:49] Detected state Running
+[01:25:49] *** Notice: This subscan will be numbered as scan #13 in your data reduction package.
+[01:25:49] In state Running, waiting for state Ready
+[01:26:13]     Setting State: Stopping
+[01:26:23]     Setting State: Ready
+[01:26:23] Detected state Ready
+[01:26:23] Ygor Telescope: WaitForStopping
+[01:26:24] *** Updating antenna's pointing to az2=-0.1628 and el=0.0235 arcmins
+
+[01:26:24] Peak: Subscan 3 of 4
+[01:26:25] In state Ready, waiting for state Running
+[01:26:25]     Setting State: Activating
+[01:26:42]     Setting State: Committed
+[01:26:44]     Setting State: Running
+[01:26:44] Detected state Running
+[01:26:44] *** Notice: This subscan will be numbered as scan #14 in your data reduction package.
+[01:26:44] In state Running, waiting for state Ready
+[01:27:08]     Setting State: Stopping
+[01:27:11]     Setting State: Ready
+[01:27:11] Detected state Ready
+[01:27:11] Ygor Telescope: WaitForStopping
+[01:27:11] Peak: Subscan 4 of 4
+[01:27:12] In state Ready, waiting for state Running
+[01:27:12]     Setting State: Activating
+[01:27:16]     Setting State: Committed
+[01:27:18]     Setting State: Running
+[01:27:18] Detected state Running
+[01:27:18] *** Notice: This subscan will be numbered as scan #15 in your data reduction package.
+[01:27:18] In state Running, waiting for state Ready
+[01:27:42]     Setting State: Stopping
+[01:27:45]     Setting State: Ready
+[01:27:45] Detected state Ready
+[01:27:45] Ygor Telescope: WaitForStopping
+[01:27:46] *** Updating antenna's pointing to az2=-0.1628 and el=0.2652 arcmins
+
+[01:27:46] Focus: Subscan 1 of 1
+[01:27:47] In state Ready, waiting for state Running
+[01:27:47]     Setting State: Activating
+[01:28:13]     Setting State: Committed
+[01:28:15]     Setting State: Running
+[01:28:15] Detected state Running
+[01:28:15] *** Notice: This subscan will be numbered as scan #16 in your data reduction package.
+[01:28:15] In state Running, waiting for state Ready
+[01:29:15]     Setting State: Stopping
+[01:29:17]     Setting State: Ready
+[01:29:17] Detected state Ready
+[01:29:17] Ygor Telescope: WaitForStopping
+[01:29:18] . *** Poor fit, not updating antenna's corrections.
+
+[01:29:19] 
+[01:29:19] User queried: "Ask the operator to switch back to Argus. Click yes when Argus is in place. - Continue scheduling block?" waiting for reply...
+[01:30:27]     Setting State: Activating
+[01:31:55]     Setting State: Ready
+[01:32:22] User replied: "Yes".
+[01:32:23] Configuring telescope.
+[01:32:23]     Setting State: Activating
+[01:33:22]     Setting State: Ready
+[01:33:24]     Setting State: Activating
+[01:33:25] Default values are
+[01:33:25] if3freq  =  [0]
+[01:33:25] Configuring for backend VEGAS...
+[01:33:25] The bad devices are: 
+[01:33:25] ConverterFilter14
+[01:33:25] ConverterFilter2
+[01:33:25] ConverterFilter16
+[01:33:25] ConverterFilter10
+[01:33:25] ConverterFilter12
+[01:33:25] The bad devices are: 
+[01:33:25] ConverterFilter14
+[01:33:25] ConverterFilter2
+[01:33:25] ConverterFilter16
+[01:33:25] ConverterFilter10
+[01:33:25] ConverterFilter12
+[01:33:25] Waiting for  ConverterRack to finish activating
+[01:33:25] . . . . . . . . . . . Waiting for  ScanCoordinator to finish activating
+[01:33:25] . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+[01:33:25]  Finalizing VEGAS config...
+[01:33:25] Checking telescope
+[01:33:25] Configuration Complete
+[01:33:25] Setting up the YIG filter and LO for Argus during the operator switch from X-band to Argus.
+runSuccessful: True
+[01:33:25] ******** End Scheduling Block
+[01:33:25] ******** observer = Tony Wong, SB name = 07_PointFocus_Galaxy_Xband, project ID = AGBT21B_024
+
+how much log? 6907 id: 261741self.history: <gbt.turtle.database.History.History instance at 0x6254290>self.history.connection: <gbt.turtle.database.TurtleConnection.TurtleConnection instance at 0x7fa66c0c4f38>how much converted log? 7119 
+#######################################################
+ 
+ 
+#######################################################
+ SCRIPT NUMBER 8, project:AGBT21B_024_06 
+ 261742 1090 Tony Wong 12 Rob Taggart 2021-12-09 01:33:52 obs_completed 
+#######################################################
+Catalog(projectDir+"/GBTEDGE.cat") 
+
+print "Mapping galaxy: ", galaxyName
+print "Integration time per row (s): ", mymap['scanDuration']
+print "Offset between map rows (arcsec): ", mymap['step']
+print "Length of scan (arcmin): ", mymap['scanLength']
+print "Height of map (arcmin): ", mymap['mapHeight']
+
+Configure(argus_config)
+execfile(projectDir+"/addwx.py")
+
+Slew(galaxyName)
+Balance()
+
+execfile("/home/astro-util/projects/Argus/OBS/argus_vanecal")
+
+DecLatMap( galaxyName,
+           Offset("J2000", mymap['mapHeight']/60., 0.0, cosv=True),
+           Offset("J2000", 0.0, mymap['scanLength']/60., cosv=True),
+           Offset("J2000", mymap['step']/3600., 0.0, cosv=True),
+           scanDuration=mymap['scanDuration'], beamName='C')
+
+	   # can add start and stop row parameters to the above, 
+	   # e.g., start=2, stop=13
+
+
+execfile("/home/astro-util/projects/Argus/OBS/argus_vanecal")
+
+#######################################################
+ LOG SESSION NUMBER 8 
+[01:33:52] ******** Begin Scheduling Block
+[01:33:52] ******** observer = Tony Wong, SB name = 10_DecMap, project ID = AGBT21B_024, date = 09 Dec 2021
+
+[01:33:52] Mapping galaxy:  NGC0495
+[01:33:52] Integration time per row (s):  33.0645
+[01:33:53] Offset between map rows (arcsec):  2.6471
+[01:33:53] Length of scan (arcmin):  1.5
+[01:33:53] Height of map (arcmin):  1.5
+[01:33:53] Configuring telescope.
+[01:33:53]     Setting State: Activating
+[01:34:13]     Setting State: Ready
+[01:34:14]     Setting State: Activating
+[01:34:15]     Setting State: Ready
+[01:34:15] Default values are
+[01:34:15] if3freq  =  [0]
+[01:34:15] Configuring for backend VEGAS...
+[01:34:15] The bad devices are: 
+[01:34:15] ConverterFilter14
+[01:34:15] ConverterFilter2
+[01:34:15] ConverterFilter16
+[01:34:15] ConverterFilter10
+[01:34:15] ConverterFilter12
+[01:34:15] The bad devices are: 
+[01:34:15] ConverterFilter14
+[01:34:15] ConverterFilter2
+[01:34:15] ConverterFilter16
+[01:34:15] ConverterFilter10
+[01:34:15] ConverterFilter12
+[01:34:15] Waiting for  IFRack to finish activating
+[01:34:15] . . Waiting for  ScanCoordinator to finish activating
+[01:34:15] . . . . . . . . . . . . . . . . . .
+[01:34:15]  Finalizing VEGAS config...
+[01:34:15] Checking telescope
+[01:34:15] Configuration Complete
+[01:34:16] source : NGC0495
+               LOGSFR : -1.93
+               COMPLETE : 0.0
+               VOPT-Z : 4045.8
+               velocitydefinition : Radio
+               restframe : KinematicalLSR
+               location : J2000 @ (01:22:55.92, 33:28:17.10)
+               VELDEF : VRAD-LSR
+               VEL : 0.0
+               Z : 0.0135
+               LOGMst : 10.63
+               RESTFREQ : 113736.2941
+[01:34:16] Slewing to source.
+[01:34:17] In state Ready, waiting for state Activating
+[01:34:17]     Setting State: Activating
+[01:34:17] Detected state Activating
+[01:34:17] In state Activating, waiting for state Ready
+[01:35:54]     Setting State: Ready
+[01:35:54] Detected state Ready
+[01:35:54] Balancing IF system.
+[01:35:54] Balancing IFRack
+[01:35:57]     Setting State: Activating
+[01:35:57]     Setting State: Ready
+[01:35:58] the sampler values are:
+[01:35:58] RF_power 1 : 1.464844
+[01:35:58] RF_power 2 : 1.391602
+[01:35:58] RF_power 3 : 1.44043
+[01:35:58] RF_power 4 : 1.660156
+[01:35:58] RF_power 5 : 2.006836
+[01:35:58] RF_power 6 : 1.625977
+[01:35:58] RF_power 7 : 1.59668
+[01:35:58] RF_power 8 : 0.625
+[01:35:58] Balancing VEGAS
+[01:35:58]     Setting State: Activating
+[01:35:58]     Setting State: Ready
+[01:35:58]     Setting State: Activating
+[01:35:58]     Setting State: Ready
+[01:35:59]     Setting State: Activating
+[01:35:59]     Setting State: Ready
+[01:36:00]     Setting State: Activating
+[01:36:00]     Setting State: Ready
+[01:36:03]     Setting State: Activating
+[01:36:03]     Setting State: Ready
+[01:36:03] Moving Vane to Cal
+[01:36:03] Track: Subscan 1 of 1
+[01:36:04] In state Ready, waiting for state Running
+[01:36:05]     Setting State: Activating
+[01:36:05]     Setting State: Committed
+[01:36:27]     Setting State: Running
+[01:36:27] Detected state Running
+[01:36:27] *** Notice: This subscan will be numbered as scan #17 in your data reduction package.
+[01:36:27] In state Running, waiting for state Ready
+[01:36:39]     Setting State: Stopping
+[01:36:41]     Setting State: Ready
+[01:36:41] Detected state Ready
+[01:36:41] Ygor Telescope: WaitForStopping
+[01:36:41] cal (59557, 5789.579444)
+[01:36:41] Moving Vane to Obs
+[01:36:41] Track: Subscan 1 of 1
+[01:36:42] In state Ready, waiting for state Running
+[01:36:42]     Setting State: Activating
+[01:36:42]     Setting State: Committed
+[01:36:53]     Setting State: Running
+[01:36:53] Detected state Running
+[01:36:53] *** Notice: This subscan will be numbered as scan #18 in your data reduction package.
+[01:36:53] In state Running, waiting for state Ready
+[01:37:05]     Setting State: Stopping
+[01:37:07]     Setting State: Ready
+[01:37:07] Detected state Ready
+[01:37:07] Ygor Telescope: WaitForStopping
+[01:37:07] obs (59557, 5816.27641)
+[01:37:07] source : NGC0495
+               LOGSFR : -1.93
+               COMPLETE : 0.0
+               VOPT-Z : 4045.8
+               velocitydefinition : Radio
+               restframe : KinematicalLSR
+               location : J2000 @ (01:22:55.92, 33:28:17.10)
+               VELDEF : VRAD-LSR
+               VEL : 0.0
+               Z : 0.0135
+               LOGMst : 10.63
+               RESTFREQ : 113736.2941
+[01:37:08] DecLatMap: Subscan 1 of 35
+[01:37:08] In state Ready, waiting for state Running
+[01:37:09]     Setting State: Activating
+[01:37:09]     Setting State: Committed
+[01:37:28]     Setting State: Running
+[01:37:28] Detected state Running
+[01:37:28] *** Notice: This subscan will be numbered as scan #19 in your data reduction package.
+[01:37:28] In state Running, waiting for state Ready
+[01:38:03]     Setting State: Stopping
+[01:38:05]     Setting State: Ready
+[01:38:05] Detected state Ready
+[01:38:05] Ygor Telescope: WaitForStopping
+[01:38:05] DecLatMap: Subscan 2 of 35
+[01:38:06] In state Ready, waiting for state Running
+[01:38:07]     Setting State: Activating
+[01:38:07]     Setting State: Committed
+[01:38:12]     Setting State: Running
+[01:38:12] Detected state Running
+[01:38:12] *** Notice: This subscan will be numbered as scan #20 in your data reduction package.
+[01:38:12] In state Running, waiting for state Ready
+[01:38:47]     Setting State: Stopping
+[01:38:49]     Setting State: Ready
+[01:38:49] Detected state Ready
+[01:38:49] Ygor Telescope: WaitForStopping
+[01:38:49] DecLatMap: Subscan 3 of 35
+[01:38:50] In state Ready, waiting for state Running
+[01:38:51]     Setting State: Activating
+[01:38:51]     Setting State: Committed
+[01:38:56]     Setting State: Running
+[01:38:56] Detected state Running
+[01:38:56] *** Notice: This subscan will be numbered as scan #21 in your data reduction package.
+[01:38:56] In state Running, waiting for state Ready
+[01:39:31]     Setting State: Stopping
+[01:39:33]     Setting State: Ready
+[01:39:33] Detected state Ready
+[01:39:33] Ygor Telescope: WaitForStopping
+[01:39:33] DecLatMap: Subscan 4 of 35
+[01:39:34] In state Ready, waiting for state Running
+[01:39:35]     Setting State: Activating
+[01:39:35]     Setting State: Committed
+[01:39:40]     Setting State: Running
+[01:39:40] Detected state Running
+[01:39:40] *** Notice: This subscan will be numbered as scan #22 in your data reduction package.
+[01:39:40] In state Running, waiting for state Ready
+[01:40:15]     Setting State: Stopping
+[01:40:17]     Setting State: Ready
+[01:40:17] Detected state Ready
+[01:40:17] Ygor Telescope: WaitForStopping
+[01:40:17] DecLatMap: Subscan 5 of 35
+[01:40:18] In state Ready, waiting for state Running
+[01:40:19]     Setting State: Activating
+[01:40:19]     Setting State: Committed
+[01:40:24]     Setting State: Running
+[01:40:24] Detected state Running
+[01:40:24] *** Notice: This subscan will be numbered as scan #23 in your data reduction package.
+[01:40:24] In state Running, waiting for state Ready
+[01:40:59]     Setting State: Stopping
+[01:41:01]     Setting State: Ready
+[01:41:01] Detected state Ready
+[01:41:01] Ygor Telescope: WaitForStopping
+[01:41:01] DecLatMap: Subscan 6 of 35
+[01:41:02] In state Ready, waiting for state Running
+[01:41:03]     Setting State: Activating
+[01:41:03]     Setting State: Committed
+[01:41:08]     Setting State: Running
+[01:41:08] Detected state Running
+[01:41:08] *** Notice: This subscan will be numbered as scan #24 in your data reduction package.
+[01:41:08] In state Running, waiting for state Ready
+[01:41:43]     Setting State: Stopping
+[01:41:45]     Setting State: Ready
+[01:41:45] Detected state Ready
+[01:41:45] Ygor Telescope: WaitForStopping
+[01:41:45] DecLatMap: Subscan 7 of 35
+[01:41:46] In state Ready, waiting for state Running
+[01:41:47]     Setting State: Activating
+[01:41:47]     Setting State: Committed
+[01:41:52]     Setting State: Running
+[01:41:52] Detected state Running
+[01:41:52] *** Notice: This subscan will be numbered as scan #25 in your data reduction package.
+[01:41:52] In state Running, waiting for state Ready
+[01:42:27]     Setting State: Stopping
+[01:42:29]     Setting State: Ready
+[01:42:29] Detected state Ready
+[01:42:29] Ygor Telescope: WaitForStopping
+[01:42:29] DecLatMap: Subscan 8 of 35
+[01:42:35] In state Ready, waiting for state Running
+[01:42:36]     Setting State: Activating
+[01:42:36]     Setting State: Committed
+[01:42:41]     Setting State: Running
+[01:42:41] Detected state Running
+[01:42:41] *** Notice: This subscan will be numbered as scan #26 in your data reduction package.
+[01:42:41] In state Running, waiting for state Ready
+[01:43:16]     Setting State: Stopping
+[01:43:18]     Setting State: Ready
+[01:43:18] Detected state Ready
+[01:43:18] Ygor Telescope: WaitForStopping
+[01:43:18] DecLatMap: Subscan 9 of 35
+[01:43:19] In state Ready, waiting for state Running
+[01:43:20]     Setting State: Activating
+[01:43:20]     Setting State: Committed
+[01:43:25]     Setting State: Running
+[01:43:25] Detected state Running
+[01:43:25] *** Notice: This subscan will be numbered as scan #27 in your data reduction package.
+[01:43:25] In state Running, waiting for state Ready
+[01:44:00]     Setting State: Stopping
+[01:44:03]     Setting State: Ready
+[01:44:03] Detected state Ready
+[01:44:03] Ygor Telescope: WaitForStopping
+[01:44:03] DecLatMap: Subscan 10 of 35
+[01:44:03] In state Ready, waiting for state Running
+[01:44:04]     Setting State: Activating
+[01:44:04]     Setting State: Committed
+[01:44:09]     Setting State: Running
+[01:44:09] Detected state Running
+[01:44:09] *** Notice: This subscan will be numbered as scan #28 in your data reduction package.
+[01:44:09] In state Running, waiting for state Ready
+[01:44:44]     Setting State: Stopping
+[01:44:46]     Setting State: Ready
+[01:44:46] Detected state Ready
+[01:44:46] Ygor Telescope: WaitForStopping
+[01:44:46] DecLatMap: Subscan 11 of 35
+[01:44:47] In state Ready, waiting for state Running
+[01:44:48]     Setting State: Activating
+[01:44:48]     Setting State: Committed
+[01:44:53]     Setting State: Running
+[01:44:53] Detected state Running
+[01:44:53] *** Notice: This subscan will be numbered as scan #29 in your data reduction package.
+[01:44:53] In state Running, waiting for state Ready
+[01:45:28]     Setting State: Stopping
+[01:45:30]     Setting State: Ready
+[01:45:30] Detected state Ready
+[01:45:30] Ygor Telescope: WaitForStopping
+[01:45:30] DecLatMap: Subscan 12 of 35
+[01:45:36] In state Ready, waiting for state Running
+[01:45:37]     Setting State: Activating
+[01:45:37]     Setting State: Committed
+[01:45:42]     Setting State: Running
+[01:45:42] Detected state Running
+[01:45:42] *** Notice: This subscan will be numbered as scan #30 in your data reduction package.
+[01:45:42] In state Running, waiting for state Ready
+[01:46:17]     Setting State: Stopping
+[01:46:19]     Setting State: Ready
+[01:46:19] Detected state Ready
+[01:46:19] Ygor Telescope: WaitForStopping
+[01:46:19] DecLatMap: Subscan 13 of 35
+[01:46:20] In state Ready, waiting for state Running
+[01:46:21]     Setting State: Activating
+[01:46:21]     Setting State: Committed
+[01:46:26]     Setting State: Running
+[01:46:26] Detected state Running
+[01:46:26] *** Notice: This subscan will be numbered as scan #31 in your data reduction package.
+[01:46:26] In state Running, waiting for state Ready
+[01:47:01]     Setting State: Stopping
+[01:47:03]     Setting State: Ready
+[01:47:03] Detected state Ready
+[01:47:03] Ygor Telescope: WaitForStopping
+[01:47:03] DecLatMap: Subscan 14 of 35
+[01:47:04] In state Ready, waiting for state Running
+[01:47:05]     Setting State: Activating
+[01:47:05]     Setting State: Committed
+[01:47:10]     Setting State: Running
+[01:47:10] Detected state Running
+[01:47:10] *** Notice: This subscan will be numbered as scan #32 in your data reduction package.
+[01:47:10] In state Running, waiting for state Ready
+[01:47:45]     Setting State: Stopping
+[01:47:47]     Setting State: Ready
+[01:47:47] Detected state Ready
+[01:47:47] Ygor Telescope: WaitForStopping
+[01:47:47] DecLatMap: Subscan 15 of 35
+[01:47:48] In state Ready, waiting for state Running
+[01:47:49]     Setting State: Activating
+[01:47:49]     Setting State: Committed
+[01:47:54]     Setting State: Running
+[01:47:54] Detected state Running
+[01:47:54] *** Notice: This subscan will be numbered as scan #33 in your data reduction package.
+[01:47:54] In state Running, waiting for state Ready
+[01:48:29]     Setting State: Stopping
+[01:48:31]     Setting State: Ready
+[01:48:31] Detected state Ready
+[01:48:31] Ygor Telescope: WaitForStopping
+[01:48:31] DecLatMap: Subscan 16 of 35
+[01:48:32] In state Ready, waiting for state Running
+[01:48:33]     Setting State: Activating
+[01:48:33]     Setting State: Committed
+[01:48:38]     Setting State: Running
+[01:48:38] Detected state Running
+[01:48:38] *** Notice: This subscan will be numbered as scan #34 in your data reduction package.
+[01:48:38] In state Running, waiting for state Ready
+[01:49:13]     Setting State: Stopping
+[01:49:15]     Setting State: Ready
+[01:49:15] Detected state Ready
+[01:49:15] Ygor Telescope: WaitForStopping
+[01:49:15] DecLatMap: Subscan 17 of 35
+[01:49:16] In state Ready, waiting for state Running
+[01:49:17]     Setting State: Activating
+[01:49:17]     Setting State: Committed
+[01:49:22]     Setting State: Running
+[01:49:22] Detected state Running
+[01:49:22] *** Notice: This subscan will be numbered as scan #35 in your data reduction package.
+[01:49:22] In state Running, waiting for state Ready
+[01:49:57]     Setting State: Stopping
+[01:49:59]     Setting State: Ready
+[01:49:59] Detected state Ready
+[01:49:59] Ygor Telescope: WaitForStopping
+[01:49:59] DecLatMap: Subscan 18 of 35
+[01:50:00] In state Ready, waiting for state Running
+[01:50:01]     Setting State: Activating
+[01:50:01]     Setting State: Committed
+[01:50:11]     Setting State: Running
+[01:50:11] Detected state Running
+[01:50:11] *** Notice: This subscan will be numbered as scan #36 in your data reduction package.
+[01:50:11] In state Running, waiting for state Ready
+[01:50:41]     Setting State: Stopping
+[01:50:43]     Setting State: Ready
+[01:50:43] Detected state Ready
+[01:50:43] Ygor Telescope: WaitForStopping
+[01:50:43] DecLatMap: Subscan 19 of 35
+[01:50:49] In state Ready, waiting for state Running
+[01:50:54]     Setting State: Activating
+[01:50:54]     Setting State: Committed
+[01:50:56]     Setting State: Running
+[01:50:56] Detected state Running
+[01:50:56] *** Notice: This subscan will be numbered as scan #37 in your data reduction package.
+[01:50:56] In state Running, waiting for state Ready
+[01:51:30]     Setting State: Stopping
+[01:51:32]     Setting State: Ready
+[01:51:32] Detected state Ready
+[01:51:32] Ygor Telescope: WaitForStopping
+[01:51:32] DecLatMap: Subscan 20 of 35
+[01:51:33] In state Ready, waiting for state Running
+[01:51:34]     Setting State: Activating
+[01:51:34]     Setting State: Committed
+[01:51:39]     Setting State: Running
+[01:51:39] Detected state Running
+[01:51:39] *** Notice: This subscan will be numbered as scan #38 in your data reduction package.
+[01:51:39] In state Running, waiting for state Ready
+[01:52:14]     Setting State: Stopping
+[01:52:16]     Setting State: Ready
+[01:52:16] Detected state Ready
+[01:52:16] Ygor Telescope: WaitForStopping
+[01:52:16] DecLatMap: Subscan 21 of 35
+[01:52:17] In state Ready, waiting for state Running
+[01:52:18]     Setting State: Activating
+[01:52:18]     Setting State: Committed
+[01:52:23]     Setting State: Running
+[01:52:23] Detected state Running
+[01:52:23] *** Notice: This subscan will be numbered as scan #39 in your data reduction package.
+[01:52:23] In state Running, waiting for state Ready
+[01:52:58]     Setting State: Stopping
+[01:53:00]     Setting State: Ready
+[01:53:00] Detected state Ready
+[01:53:00] Ygor Telescope: WaitForStopping
+[01:53:00] DecLatMap: Subscan 22 of 35
+[01:53:01] In state Ready, waiting for state Running
+[01:53:02]     Setting State: Activating
+[01:53:02]     Setting State: Committed
+[01:53:07]     Setting State: Running
+[01:53:07] Detected state Running
+[01:53:07] *** Notice: This subscan will be numbered as scan #40 in your data reduction package.
+[01:53:07] In state Running, waiting for state Ready
+[01:53:42]     Setting State: Stopping
+[01:53:44]     Setting State: Ready
+[01:53:44] Detected state Ready
+[01:53:44] Ygor Telescope: WaitForStopping
+[01:53:44] DecLatMap: Subscan 23 of 35
+[01:53:45] In state Ready, waiting for state Running
+[01:53:46]     Setting State: Activating
+[01:53:46]     Setting State: Committed
+[01:53:51]     Setting State: Running
+[01:53:51] Detected state Running
+[01:53:51] *** Notice: This subscan will be numbered as scan #41 in your data reduction package.
+[01:53:51] In state Running, waiting for state Ready
+[01:54:26]     Setting State: Stopping
+[01:54:28]     Setting State: Ready
+[01:54:28] Detected state Ready
+[01:54:28] Ygor Telescope: WaitForStopping
+[01:54:28] DecLatMap: Subscan 24 of 35
+[01:54:29] In state Ready, waiting for state Running
+[01:54:30]     Setting State: Activating
+[01:54:30]     Setting State: Committed
+[01:54:35]     Setting State: Running
+[01:54:35] Detected state Running
+[01:54:35] *** Notice: This subscan will be numbered as scan #42 in your data reduction package.
+[01:54:35] In state Running, waiting for state Ready
+[01:55:10]     Setting State: Stopping
+[01:55:12]     Setting State: Ready
+[01:55:12] Detected state Ready
+[01:55:12] Ygor Telescope: WaitForStopping
+[01:55:12] DecLatMap: Subscan 25 of 35
+[01:55:13] In state Ready, waiting for state Running
+[01:55:14]     Setting State: Activating
+[01:55:14]     Setting State: Committed
+[01:55:19]     Setting State: Running
+[01:55:19] Detected state Running
+[01:55:19] *** Notice: This subscan will be numbered as scan #43 in your data reduction package.
+[01:55:19] In state Running, waiting for state Ready
+[01:55:54]     Setting State: Stopping
+[01:55:56]     Setting State: Ready
+[01:55:56] Detected state Ready
+[01:55:56] Ygor Telescope: WaitForStopping
+[01:55:56] DecLatMap: Subscan 26 of 35
+[01:55:57] In state Ready, waiting for state Running
+[01:55:58]     Setting State: Activating
+[01:55:58]     Setting State: Committed
+[01:56:03]     Setting State: Running
+[01:56:03] Detected state Running
+[01:56:03] *** Notice: This subscan will be numbered as scan #44 in your data reduction package.
+[01:56:03] In state Running, waiting for state Ready
+[01:56:38]     Setting State: Stopping
+[01:56:40]     Setting State: Ready
+[01:56:40] Detected state Ready
+[01:56:40] Ygor Telescope: WaitForStopping
+[01:56:40] DecLatMap: Subscan 27 of 35
+[01:56:41] In state Ready, waiting for state Running
+[01:56:42]     Setting State: Activating
+[01:56:42]     Setting State: Committed
+[01:56:47]     Setting State: Running
+[01:56:47] Detected state Running
+[01:56:47] *** Notice: This subscan will be numbered as scan #45 in your data reduction package.
+[01:56:47] In state Running, waiting for state Ready
+[01:57:22]     Setting State: Stopping
+[01:57:24]     Setting State: Ready
+[01:57:24] Detected state Ready
+[01:57:24] Ygor Telescope: WaitForStopping
+[01:57:24] DecLatMap: Subscan 28 of 35
+[01:57:25] In state Ready, waiting for state Running
+[01:57:26]     Setting State: Activating
+[01:57:26]     Setting State: Committed
+[01:57:31]     Setting State: Running
+[01:57:31] Detected state Running
+[01:57:31] *** Notice: This subscan will be numbered as scan #46 in your data reduction package.
+[01:57:31] In state Running, waiting for state Ready
+[01:58:06]     Setting State: Stopping
+[01:58:08]     Setting State: Ready
+[01:58:08] Detected state Ready
+[01:58:08] Ygor Telescope: WaitForStopping
+[01:58:08] DecLatMap: Subscan 29 of 35
+[01:58:09] In state Ready, waiting for state Running
+[01:58:10]     Setting State: Activating
+[01:58:10]     Setting State: Committed
+[01:58:15]     Setting State: Running
+[01:58:15] Detected state Running
+[01:58:15] *** Notice: This subscan will be numbered as scan #47 in your data reduction package.
+[01:58:15] In state Running, waiting for state Ready
+[01:58:50]     Setting State: Stopping
+[01:58:52]     Setting State: Ready
+[01:58:52] Detected state Ready
+[01:58:52] Ygor Telescope: WaitForStopping
+[01:58:52] DecLatMap: Subscan 30 of 35
+[01:58:53] In state Ready, waiting for state Running
+[01:58:54]     Setting State: Activating
+[01:58:54]     Setting State: Committed
+[01:58:59]     Setting State: Running
+[01:58:59] Detected state Running
+[01:58:59] *** Notice: This subscan will be numbered as scan #48 in your data reduction package.
+[01:58:59] In state Running, waiting for state Ready
+[01:59:34]     Setting State: Stopping
+[01:59:36]     Setting State: Ready
+[01:59:36] Detected state Ready
+[01:59:36] Ygor Telescope: WaitForStopping
+[01:59:36] DecLatMap: Subscan 31 of 35
+[01:59:38] In state Ready, waiting for state Running
+[01:59:38]     Setting State: Activating
+[01:59:38]     Setting State: Committed
+[01:59:43]     Setting State: Running
+[01:59:43] Detected state Running
+[01:59:43] *** Notice: This subscan will be numbered as scan #49 in your data reduction package.
+[01:59:43] In state Running, waiting for state Ready
+[02:00:18]     Setting State: Stopping
+[02:00:20]     Setting State: Ready
+[02:00:20] Detected state Ready
+[02:00:20] Ygor Telescope: WaitForStopping
+[02:00:20] DecLatMap: Subscan 32 of 35
+[02:00:21] In state Ready, waiting for state Running
+[02:00:22]     Setting State: Activating
+[02:00:22]     Setting State: Committed
+[02:00:27]     Setting State: Running
+[02:00:27] Detected state Running
+[02:00:27] *** Notice: This subscan will be numbered as scan #50 in your data reduction package.
+[02:00:27] In state Running, waiting for state Ready
+[02:01:02]     Setting State: Stopping
+[02:01:04]     Setting State: Ready
+[02:01:04] Detected state Ready
+[02:01:04] Ygor Telescope: WaitForStopping
+[02:01:04] DecLatMap: Subscan 33 of 35
+[02:01:05] In state Ready, waiting for state Running
+[02:01:06]     Setting State: Activating
+[02:01:06]     Setting State: Committed
+[02:01:11]     Setting State: Running
+[02:01:11] Detected state Running
+[02:01:11] *** Notice: This subscan will be numbered as scan #51 in your data reduction package.
+[02:01:11] In state Running, waiting for state Ready
+[02:01:46]     Setting State: Stopping
+[02:01:48]     Setting State: Ready
+[02:01:48] Detected state Ready
+[02:01:48] Ygor Telescope: WaitForStopping
+[02:01:48] DecLatMap: Subscan 34 of 35
+[02:01:54] In state Ready, waiting for state Running
+[02:01:54]     Setting State: Activating
+[02:01:55]     Setting State: Committed
+[02:01:59]     Setting State: Running
+[02:01:59] Detected state Running
+[02:01:59] *** Notice: This subscan will be numbered as scan #52 in your data reduction package.
+[02:01:59] In state Running, waiting for state Ready
+[02:02:34]     Setting State: Stopping
+[02:02:36]     Setting State: Ready
+[02:02:36] Detected state Ready
+[02:02:36] Ygor Telescope: WaitForStopping
+[02:02:36] DecLatMap: Subscan 35 of 35
+[02:02:37] In state Ready, waiting for state Running
+[02:02:38]     Setting State: Activating
+[02:02:38]     Setting State: Committed
+[02:02:43]     Setting State: Running
+[02:02:43] Detected state Running
+[02:02:43] *** Notice: This subscan will be numbered as scan #53 in your data reduction package.
+[02:02:43] In state Running, waiting for state Ready
+[02:03:18]     Setting State: Stopping
+[02:03:20]     Setting State: Ready
+[02:03:20] Detected state Ready
+[02:03:20] Ygor Telescope: WaitForStopping
+[02:03:21] Moving Vane to Cal
+[02:03:21] Track: Subscan 1 of 1
+[02:03:21] In state Ready, waiting for state Running
+[02:03:22]     Setting State: Activating
+[02:03:22]     Setting State: Committed
+[02:03:33]     Setting State: Running
+[02:03:33] Detected state Running
+[02:03:33] *** Notice: This subscan will be numbered as scan #54 in your data reduction package.
+[02:03:33] In state Running, waiting for state Ready
+[02:03:45]     Setting State: Stopping
+[02:03:47]     Setting State: Ready
+[02:03:47] Detected state Ready
+[02:03:47] Ygor Telescope: WaitForStopping
+[02:03:47] cal (59557, 7415.891012)
+[02:03:47] Moving Vane to Obs
+[02:03:47] Track: Subscan 1 of 1
+[02:03:48] In state Ready, waiting for state Running
+[02:03:48]     Setting State: Activating
+[02:03:49]     Setting State: Committed
+[02:03:59]     Setting State: Running
+[02:03:59] Detected state Running
+[02:03:59] *** Notice: This subscan will be numbered as scan #55 in your data reduction package.
+[02:03:59] In state Running, waiting for state Ready
+[02:04:11]     Setting State: Stopping
+[02:04:13]     Setting State: Ready
+[02:04:13] Detected state Ready
+[02:04:13] Ygor Telescope: WaitForStopping
+[02:04:13] obs (59557, 7442.386004)
+runSuccessful: True
+[02:04:13] ******** End Scheduling Block
+[02:04:13] ******** observer = Tony Wong, SB name = 10_DecMap, project ID = AGBT21B_024
+
+how much log? 24880 id: 261742self.history: <gbt.turtle.database.History.History instance at 0x6254290>self.history.connection: <gbt.turtle.database.TurtleConnection.TurtleConnection instance at 0x7fa66c0c4f38>how much converted log? 25090 
+#######################################################
+ 
+ 
+#######################################################
+ SCRIPT NUMBER 9, project:AGBT21B_024_06 
+ 261743 1090 Tony Wong 12 Rob Taggart 2021-12-09 02:06:37 obs_aborted 
+#######################################################
+#load catalogs
+#Catalog(qband_pointing)
+#Catalog(wband_pointing)
+Catalog(xband_pointing)
+#Catalog(fluxcal)
+Catalog(projectDir+"/alma_fluxcal_grid.cat")
+
+# choose appropriate source
+source = pointSrc
+
+Slew(source)
+
+Break("Ask the operator to switch the receiver to X-band (Rcvr8_10). Click yes when Xband is in place.")
+
+SetValues("ScanCoordinator", {"receiver": "Rcvr8_10"})
+SetValues("LO1",{"restFrequency_A":9000})
+
+AutoPeakFocus(source,configure=True) 
+
+#Break("enter pointing offsets")
+
+#Focus(source) 
+
+#Break("enter focus values if necessary")
+
+Break ("Ask the operator to switch back to Argus. Click yes when Argus is in place.")
+
+SetValues("ScanCoordinator", {"receiver": "RcvrArray75_115"})
+
+#ResetConfig()
+
+#configure Argus
+Configure(argus_config)
+print "Setting up the YIG filter and LO for Argus during the operator switch from X-band to Argus."
+
+#######################################################
+ LOG SESSION NUMBER 9 
+[02:06:38] ******** Begin Scheduling Block
+[02:06:38] ******** observer = Tony Wong, SB name = 07_PointFocus_Galaxy_Xband, project ID = AGBT21B_024, date = 09 Dec 2021
+
+[02:06:38] source : 0137+3309
+               OFFSET : 40.34
+               location : J2000 @ (01:37:41.30, 33:09:35.13)
+               Gold : P
+               S3.3 : 3.094
+[02:06:38] Slewing to source.
+[02:06:38] In state Ready, waiting for state Activating
+[02:06:38]     Setting State: Activating
+[02:06:38] Detected state Activating
+[02:06:38] In state Activating, waiting for state Ready
+[02:06:38]     Setting State: Aborting
+[02:06:38] ygor.Telescope: WaitForReady: Asking abort confirmation.
+[02:06:38] 
+[02:06:38] User queried: "Abort detected! Terminate block?" waiting for reply...
+[02:06:39] User replied: "Yes".
+[02:06:40] Exiting scheduling block.
+[02:06:40]     Setting State: Ready
+runSuccessful: False
+[02:06:40] ******** End Scheduling Block
+[02:06:40] ******** observer = Tony Wong, SB name = 07_PointFocus_Galaxy_Xband, project ID = AGBT21B_024
+
+how much log? 1036 id: 261743self.history: <gbt.turtle.database.History.History instance at 0x6254290>self.history.connection: <gbt.turtle.database.TurtleConnection.TurtleConnection instance at 0x7fa66c0c4f38>how much converted log? 1245 
+#######################################################
+ 
+ 
+#######################################################
+ SCRIPT NUMBER 10, project:AGBT21B_024_06 
+ 261744 1090 Tony Wong 12 Rob Taggart 2021-12-09 02:07:10 obs_completed 
+#######################################################
+#load catalogs
+#Catalog(qband_pointing)
+#Catalog(wband_pointing)
+Catalog(xband_pointing)
+#Catalog(fluxcal)
+Catalog(projectDir+"/alma_fluxcal_grid.cat")
+
+# choose appropriate source
+source = pointSrc
+
+Slew(source)
+
+Break("Ask the operator to switch the receiver to X-band (Rcvr8_10). Click yes when Xband is in place.")
+
+SetValues("ScanCoordinator", {"receiver": "Rcvr8_10"})
+SetValues("LO1",{"restFrequency_A":9000})
+
+AutoPeakFocus(source,configure=True) 
+
+#Break("enter pointing offsets")
+
+#Focus(source) 
+
+#Break("enter focus values if necessary")
+
+Break ("Ask the operator to switch back to Argus. Click yes when Argus is in place.")
+
+SetValues("ScanCoordinator", {"receiver": "RcvrArray75_115"})
+
+#ResetConfig()
+
+#configure Argus
+Configure(argus_config)
+print "Setting up the YIG filter and LO for Argus during the operator switch from X-band to Argus."
+
+#######################################################
+ LOG SESSION NUMBER 10 
+[02:07:10] ******** Begin Scheduling Block
+[02:07:10] ******** observer = Tony Wong, SB name = 07_PointFocus_Galaxy_Xband, project ID = AGBT21B_024, date = 09 Dec 2021
+
+[02:07:10] source : 0137+3309
+               OFFSET : 40.34
+               location : J2000 @ (01:37:41.30, 33:09:35.13)
+               Gold : P
+               S3.3 : 3.094
+[02:07:10] Slewing to source.
+[02:07:10] In state Ready, waiting for state Activating
+[02:07:10]     Setting State: Activating
+[02:07:10] Detected state Activating
+[02:07:10] In state Activating, waiting for state Ready
+[02:07:11]     Setting State: Aborting
+[02:07:11] ygor.Telescope: WaitForReady: Asking abort confirmation.
+[02:07:11] 
+[02:07:11] User queried: "Abort detected! Terminate block?" waiting for reply...
+[02:07:16] User replied: "No".
+[02:07:16] In state Aborting, waiting for state Ready
+[02:08:00]     Setting State: Ready
+[02:08:00] Detected state Ready
+[02:08:00] 
+[02:08:00] User queried: "Ask the operator to switch the receiver to X-band (Rcvr8_10). Click yes when Xband is in place. - Continue scheduling block?" waiting for reply...
+[02:08:07] User replied: "Yes".
+[02:08:08] Configuring telescope.
+[02:08:08]     Setting State: Activating
+[02:08:08]     Setting State: Aborting
+[02:08:10]     Setting State: Ready
+[02:08:11]     Setting State: Activating
+[02:08:12]     Setting State: Ready
+[02:08:12] Default values are
+[02:08:12] if3freq  =  [0]
+[02:08:12] polswitch  =  thru
+[02:08:12] Configuring for backend DCR...
+[02:08:12] The bad devices are: 
+[02:08:12] ConverterFilter14
+[02:08:12] ConverterFilter2
+[02:08:12] ConverterFilter16
+[02:08:12] ConverterFilter10
+[02:08:12] ConverterFilter12
+[02:08:12] Waiting for  IFRack to finish activating
+[02:08:12] . .
+[02:08:12] Checking telescope
+[02:08:12] Configuration Complete
+[02:08:12] source : 0137+3309
+[02:08:12] Slewing to source.
+[02:08:12] In state Ready, waiting for state Activating
+[02:08:12]     Setting State: Activating
+[02:08:12] Detected state Activating
+[02:08:12] In state Activating, waiting for state Ready
+[02:08:15]     Setting State: Ready
+[02:08:15] Detected state Ready
+[02:08:15] Balancing IF system.
+[02:08:15] Balancing IFRack
+[02:08:17] the sampler values are:
+[02:08:17] RF_power 1 : 0.05859375
+[02:08:17] RF_power 2 : 0.5908203
+[02:08:17] RF_power 3 : 0.078125
+[02:08:17] RF_power 4 : 0.5566406
+[02:08:17] RF_power 5 : 0.3417969
+[02:08:18] RF_power 6 : 0.9960938
+[02:08:18] RF_power 7 : 0.1708984
+[02:08:18] RF_power 8 : 0.3955078
+[02:08:18] Peak: Subscan 1 of 4
+[02:08:18]     Setting State: Activating
+[02:08:18]     Setting State: Ready
+[02:08:18] In state Ready, waiting for state Running
+[02:08:19]     Setting State: Activating
+[02:08:42]     Setting State: Committed
+[02:08:44]     Setting State: Running
+[02:08:44] Detected state Running
+[02:08:44] *** Notice: This subscan will be numbered as scan #56 in your data reduction package.
+[02:08:44] In state Running, waiting for state Ready
+[02:09:08]     Setting State: Stopping
+[02:09:18]     Setting State: Ready
+[02:09:18] Detected state Ready
+[02:09:18] Ygor Telescope: WaitForStopping
+[02:09:18] Peak: Subscan 2 of 4
+[02:09:19] In state Ready, waiting for state Running
+[02:09:19]     Setting State: Activating
+[02:09:26]     Setting State: Committed
+[02:09:28]     Setting State: Running
+[02:09:28] Detected state Running
+[02:09:28] *** Notice: This subscan will be numbered as scan #57 in your data reduction package.
+[02:09:28] In state Running, waiting for state Ready
+[02:09:52]     Setting State: Stopping
+[02:10:01]     Setting State: Ready
+[02:10:01] Detected state Ready
+[02:10:01] Ygor Telescope: WaitForStopping
+[02:10:02] . *** Updating antenna's pointing to az2=-0.4051 and el=0.2652 arcmins
+
+[02:10:02] Peak: Subscan 3 of 4
+[02:10:03] In state Ready, waiting for state Running
+[02:10:03]     Setting State: Activating
+[02:10:20]     Setting State: Committed
+[02:10:22]     Setting State: Running
+[02:10:22] Detected state Running
+[02:10:22] *** Notice: This subscan will be numbered as scan #58 in your data reduction package.
+[02:10:22] In state Running, waiting for state Ready
+[02:10:46]     Setting State: Stopping
+[02:10:49]     Setting State: Ready
+[02:10:49] Detected state Ready
+[02:10:49] Ygor Telescope: WaitForStopping
+[02:10:49] Peak: Subscan 4 of 4
+[02:10:49] In state Ready, waiting for state Running
+[02:10:50]     Setting State: Activating
+[02:10:54]     Setting State: Committed
+[02:10:56]     Setting State: Running
+[02:10:56] Detected state Running
+[02:10:56] *** Notice: This subscan will be numbered as scan #59 in your data reduction package.
+[02:10:56] In state Running, waiting for state Ready
+[02:11:20]     Setting State: Stopping
+[02:11:23]     Setting State: Ready
+[02:11:23] Detected state Ready
+[02:11:23] Ygor Telescope: WaitForStopping
+[02:11:24] . *** Updating antenna's pointing to az2=-0.4051 and el=0.0793 arcmins
+
+[02:11:24] Focus: Subscan 1 of 1
+[02:11:25] In state Ready, waiting for state Running
+[02:11:25]     Setting State: Activating
+[02:11:51]     Setting State: Committed
+[02:11:53]     Setting State: Running
+[02:11:53] Detected state Running
+[02:11:53] *** Notice: This subscan will be numbered as scan #60 in your data reduction package.
+[02:11:53] In state Running, waiting for state Ready
+[02:12:53]     Setting State: Stopping
+[02:12:55]     Setting State: Ready
+[02:12:55] Detected state Ready
+[02:12:55] Ygor Telescope: WaitForStopping
+[02:12:55] *** Poor fit, not updating antenna's corrections.
+
+[02:12:56] 
+[02:12:56] User queried: "Ask the operator to switch back to Argus. Click yes when Argus is in place. - Continue scheduling block?" waiting for reply...
+[02:13:54]     Setting State: Activating
+[02:15:22]     Setting State: Ready
+[02:15:33] User replied: "Yes".
+[02:15:34] Configuring telescope.
+[02:15:34]     Setting State: Activating
+[02:15:54]     Setting State: Ready
+[02:15:55]     Setting State: Activating
+[02:15:56]     Setting State: Ready
+[02:15:56] Default values are
+[02:15:56] if3freq  =  [0]
+[02:15:56] Configuring for backend VEGAS...
+[02:15:56] The bad devices are: 
+[02:15:56] ConverterFilter14
+[02:15:56] ConverterFilter2
+[02:15:56] ConverterFilter16
+[02:15:56] ConverterFilter10
+[02:15:56] ConverterFilter12
+[02:15:56] The bad devices are: 
+[02:15:56] ConverterFilter14
+[02:15:56] ConverterFilter2
+[02:15:56] ConverterFilter16
+[02:15:56] ConverterFilter10
+[02:15:56] ConverterFilter12
+[02:15:56] Waiting for  IFRack to finish activating
+[02:15:56] . . Waiting for  ScanCoordinator to finish activating
+[02:15:56] . . . . . . . . . . . . . . . . . .
+[02:15:56]  Finalizing VEGAS config...
+[02:15:56] Checking telescope
+[02:15:56] Configuration Complete
+[02:15:57] Setting up the YIG filter and LO for Argus during the operator switch from X-band to Argus.
+runSuccessful: True
+[02:15:57] ******** End Scheduling Block
+[02:15:57] ******** observer = Tony Wong, SB name = 07_PointFocus_Galaxy_Xband, project ID = AGBT21B_024
+
+how much log? 6934 id: 261744self.history: <gbt.turtle.database.History.History instance at 0x6254290>self.history.connection: <gbt.turtle.database.TurtleConnection.TurtleConnection instance at 0x7fa66c0c4f38>how much converted log? 7146 
+#######################################################
+ 
+ 
+#######################################################
+ SCRIPT NUMBER 11, project:AGBT21B_024_06 
+ 261745 1090 Tony Wong 12 Rob Taggart 2021-12-09 02:17:19 obs_completed 
+#######################################################
+Catalog(projectDir+"/GBTEDGE.cat")
+
+print "Mapping galaxy: ", galaxyName
+print "Integration time per row (s): ", mymap['scanDuration']
+print "Offset between map rows (arcsec): ", mymap['step']
+print "Length of scan (arcmin): ", mymap['scanLength']
+print "Height of map (arcmin): ",  mymap['mapHeight']
+
+Configure(argus_config)
+execfile(projectDir+"/addwx.py")
+
+Slew(galaxyName)
+Balance()
+
+execfile("/home/astro-util/projects/Argus/OBS/argus_vanecal")
+
+RALongMap( galaxyName,
+           Offset("J2000", mymap['scanLength']/60., 0.0, cosv=True),
+           Offset("J2000", 0.0,  mymap['mapHeight']/60., cosv=True),
+           Offset("J2000", 0.0, mymap['step']/3600., cosv=True),
+           scanDuration=mymap['scanDuration'], beamName='C')
+
+	   # can add start and stop row parameters to the above, 
+	   # e.g., start=2, stop=13
+
+execfile("/home/astro-util/projects/Argus/OBS/argus_vanecal")
+
+
+#######################################################
+ LOG SESSION NUMBER 11 
+[02:17:19] ******** Begin Scheduling Block
+[02:17:19] ******** observer = Tony Wong, SB name = 10_RAMap, project ID = AGBT21B_024, date = 09 Dec 2021
+
+[02:17:19] Mapping galaxy:  NGC0495
+[02:17:19] Integration time per row (s):  33.0645
+[02:17:19] Offset between map rows (arcsec):  2.6471
+[02:17:19] Length of scan (arcmin):  1.5
+[02:17:19] Height of map (arcmin):  1.5
+[02:17:19] Configuring telescope.
+[02:17:19]     Setting State: Activating
+[02:17:39]     Setting State: Ready
+[02:17:40]     Setting State: Activating
+[02:17:41]     Setting State: Ready
+[02:17:41] Default values are
+[02:17:41] if3freq  =  [0]
+[02:17:41] Configuring for backend VEGAS...
+[02:17:41] The bad devices are: 
+[02:17:41] ConverterFilter14
+[02:17:41] ConverterFilter2
+[02:17:41] ConverterFilter16
+[02:17:41] ConverterFilter10
+[02:17:41] ConverterFilter12
+[02:17:41] The bad devices are: 
+[02:17:41] ConverterFilter14
+[02:17:41] ConverterFilter2
+[02:17:41] ConverterFilter16
+[02:17:41] ConverterFilter10
+[02:17:41] ConverterFilter12
+[02:17:41] Waiting for  IFRack to finish activating
+[02:17:41] . . . Waiting for  ScanCoordinator to finish activating
+[02:17:41] . . . . . . . . . . . . . . . . .
+[02:17:41]  Finalizing VEGAS config...
+[02:17:41] Checking telescope
+[02:17:41] Configuration Complete
+[02:17:42] source : NGC0495
+               LOGSFR : -1.93
+               COMPLETE : 0.0
+               VOPT-Z : 4045.8
+               velocitydefinition : Radio
+               restframe : KinematicalLSR
+               location : J2000 @ (01:22:55.92, 33:28:17.10)
+               VELDEF : VRAD-LSR
+               VEL : 0.0
+               Z : 0.0135
+               LOGMst : 10.63
+               RESTFREQ : 113736.2941
+[02:17:42] Slewing to source.
+[02:17:42] In state Ready, waiting for state Activating
+[02:17:42]     Setting State: Activating
+[02:17:42] Detected state Activating
+[02:17:42] In state Activating, waiting for state Ready
+[02:18:28]     Setting State: Ready
+[02:18:28] Detected state Ready
+[02:18:28] Balancing IF system.
+[02:18:28] Balancing IFRack
+[02:18:30]     Setting State: Activating
+[02:18:30]     Setting State: Ready
+[02:18:30] the sampler values are:
+[02:18:30] RF_power 1 : 1.455078
+[02:18:30] RF_power 2 : 1.396484
+[02:18:30] RF_power 3 : 1.411133
+[02:18:30] RF_power 4 : 1.674805
+[02:18:30] RF_power 5 : 1.396484
+[02:18:30] RF_power 6 : 1.616211
+[02:18:30] RF_power 7 : 1.59668
+[02:18:30] RF_power 8 : 1.538086
+[02:18:30] Balancing VEGAS
+[02:18:31]     Setting State: Activating
+[02:18:31]     Setting State: Ready
+[02:18:32]     Setting State: Activating
+[02:18:32]     Setting State: Ready
+[02:18:32] Moving Vane to Cal
+[02:18:32] Track: Subscan 1 of 1
+[02:18:33] In state Ready, waiting for state Running
+[02:18:34]     Setting State: Activating
+[02:18:34]     Setting State: Committed
+[02:18:56]     Setting State: Running
+[02:18:56] Detected state Running
+[02:18:56] *** Notice: This subscan will be numbered as scan #61 in your data reduction package.
+[02:18:56] In state Running, waiting for state Ready
+[02:19:08]     Setting State: Stopping
+[02:19:10]     Setting State: Ready
+[02:19:10] Detected state Ready
+[02:19:10] Ygor Telescope: WaitForStopping
+[02:19:10] cal (59557, 8338.486619)
+[02:19:10] Moving Vane to Obs
+[02:19:10] Track: Subscan 1 of 1
+[02:19:11] In state Ready, waiting for state Running
+[02:19:11]     Setting State: Activating
+[02:19:11]     Setting State: Committed
+[02:19:22]     Setting State: Running
+[02:19:22] Detected state Running
+[02:19:22] *** Notice: This subscan will be numbered as scan #62 in your data reduction package.
+[02:19:22] In state Running, waiting for state Ready
+[02:19:34]     Setting State: Stopping
+[02:19:36]     Setting State: Ready
+[02:19:36] Detected state Ready
+[02:19:36] Ygor Telescope: WaitForStopping
+[02:19:36] obs (59557, 8365.333438)
+[02:19:36] source : NGC0495
+               LOGSFR : -1.93
+               COMPLETE : 0.0
+               VOPT-Z : 4045.8
+               velocitydefinition : Radio
+               restframe : KinematicalLSR
+               location : J2000 @ (01:22:55.92, 33:28:17.10)
+               VELDEF : VRAD-LSR
+               VEL : 0.0
+               Z : 0.0135
+               LOGMst : 10.63
+               RESTFREQ : 113736.2941
+[02:19:36] RALongMap: Subscan 1 of 35
+[02:19:37] In state Ready, waiting for state Running
+[02:19:38]     Setting State: Activating
+[02:19:38]     Setting State: Committed
+[02:19:45]     Setting State: Running
+[02:19:45] Detected state Running
+[02:19:45] *** Notice: This subscan will be numbered as scan #63 in your data reduction package.
+[02:19:45] In state Running, waiting for state Ready
+[02:20:20]     Setting State: Stopping
+[02:20:22]     Setting State: Ready
+[02:20:22] Detected state Ready
+[02:20:22] Ygor Telescope: WaitForStopping
+[02:20:22] RALongMap: Subscan 2 of 35
+[02:20:23] In state Ready, waiting for state Running
+[02:20:23]     Setting State: Activating
+[02:20:24]     Setting State: Committed
+[02:20:28]     Setting State: Running
+[02:20:28] Detected state Running
+[02:20:28] *** Notice: This subscan will be numbered as scan #64 in your data reduction package.
+[02:20:28] In state Running, waiting for state Ready
+[02:21:03]     Setting State: Stopping
+[02:21:05]     Setting State: Ready
+[02:21:05] Detected state Ready
+[02:21:05] Ygor Telescope: WaitForStopping
+[02:21:05] RALongMap: Subscan 3 of 35
+[02:21:06] In state Ready, waiting for state Running
+[02:21:06]     Setting State: Activating
+[02:21:06]     Setting State: Committed
+[02:21:13]     Setting State: Running
+[02:21:13] Detected state Running
+[02:21:13] *** Notice: This subscan will be numbered as scan #65 in your data reduction package.
+[02:21:13] In state Running, waiting for state Ready
+[02:21:46]     Setting State: Stopping
+[02:21:48]     Setting State: Ready
+[02:21:48] Detected state Ready
+[02:21:48] Ygor Telescope: WaitForStopping
+[02:21:48] RALongMap: Subscan 4 of 35
+[02:21:49] In state Ready, waiting for state Running
+[02:21:49]     Setting State: Activating
+[02:21:49]     Setting State: Committed
+[02:21:54]     Setting State: Running
+[02:21:54] Detected state Running
+[02:21:54] *** Notice: This subscan will be numbered as scan #66 in your data reduction package.
+[02:21:54] In state Running, waiting for state Ready
+[02:22:29]     Setting State: Stopping
+[02:22:31]     Setting State: Ready
+[02:22:31] Detected state Ready
+[02:22:31] Ygor Telescope: WaitForStopping
+[02:22:31] RALongMap: Subscan 5 of 35
+[02:22:31] In state Ready, waiting for state Running
+[02:22:32]     Setting State: Activating
+[02:22:32]     Setting State: Committed
+[02:22:37]     Setting State: Running
+[02:22:37] Detected state Running
+[02:22:37] *** Notice: This subscan will be numbered as scan #67 in your data reduction package.
+[02:22:37] In state Running, waiting for state Ready
+[02:23:12]     Setting State: Stopping
+[02:23:14]     Setting State: Ready
+[02:23:14] Detected state Ready
+[02:23:14] Ygor Telescope: WaitForStopping
+[02:23:14] RALongMap: Subscan 6 of 35
+[02:23:15] In state Ready, waiting for state Running
+[02:23:15]     Setting State: Activating
+[02:23:15]     Setting State: Committed
+[02:23:25]     Setting State: Running
+[02:23:25] Detected state Running
+[02:23:25] *** Notice: This subscan will be numbered as scan #68 in your data reduction package.
+[02:23:25] In state Running, waiting for state Ready
+[02:23:55]     Setting State: Stopping
+[02:23:57]     Setting State: Ready
+[02:23:57] Detected state Ready
+[02:23:57] Ygor Telescope: WaitForStopping
+[02:23:57] RALongMap: Subscan 7 of 35
+[02:23:58] In state Ready, waiting for state Running
+[02:23:58]     Setting State: Activating
+[02:23:58]     Setting State: Committed
+[02:24:03]     Setting State: Running
+[02:24:03] Detected state Running
+[02:24:03] *** Notice: This subscan will be numbered as scan #69 in your data reduction package.
+[02:24:03] In state Running, waiting for state Ready
+[02:24:38]     Setting State: Stopping
+[02:24:40]     Setting State: Ready
+[02:24:40] Detected state Ready
+[02:24:40] Ygor Telescope: WaitForStopping
+[02:24:40] RALongMap: Subscan 8 of 35
+[02:24:41] In state Ready, waiting for state Running
+[02:24:41]     Setting State: Activating
+[02:24:42]     Setting State: Committed
+[02:24:46]     Setting State: Running
+[02:24:46] Detected state Running
+[02:24:46] *** Notice: This subscan will be numbered as scan #70 in your data reduction package.
+[02:24:46] In state Running, waiting for state Ready
+[02:25:21]     Setting State: Stopping
+[02:25:23]     Setting State: Ready
+[02:25:23] Detected state Ready
+[02:25:23] Ygor Telescope: WaitForStopping
+[02:25:23] RALongMap: Subscan 9 of 35
+[02:25:24] In state Ready, waiting for state Running
+[02:25:24]     Setting State: Activating
+[02:25:24]     Setting State: Committed
+[02:25:29]     Setting State: Running
+[02:25:29] Detected state Running
+[02:25:29] *** Notice: This subscan will be numbered as scan #71 in your data reduction package.
+[02:25:29] In state Running, waiting for state Ready
+[02:26:04]     Setting State: Stopping
+[02:26:06]     Setting State: Ready
+[02:26:06] Detected state Ready
+[02:26:06] Ygor Telescope: WaitForStopping
+[02:26:06] RALongMap: Subscan 10 of 35
+[02:26:06] In state Ready, waiting for state Running
+[02:26:07]     Setting State: Activating
+[02:26:07]     Setting State: Committed
+[02:26:12]     Setting State: Running
+[02:26:12] Detected state Running
+[02:26:12] *** Notice: This subscan will be numbered as scan #72 in your data reduction package.
+[02:26:12] In state Running, waiting for state Ready
+[02:26:47]     Setting State: Stopping
+[02:26:49]     Setting State: Ready
+[02:26:49] Detected state Ready
+[02:26:49] Ygor Telescope: WaitForStopping
+[02:26:49] RALongMap: Subscan 11 of 35
+[02:26:49] In state Ready, waiting for state Running
+[02:26:50]     Setting State: Activating
+[02:26:50]     Setting State: Committed
+[02:26:55]     Setting State: Running
+[02:26:55] Detected state Running
+[02:26:55] *** Notice: This subscan will be numbered as scan #73 in your data reduction package.
+[02:26:55] In state Running, waiting for state Ready
+[02:27:30]     Setting State: Stopping
+[02:27:32]     Setting State: Ready
+[02:27:32] Detected state Ready
+[02:27:32] Ygor Telescope: WaitForStopping
+[02:27:32] RALongMap: Subscan 12 of 35
+[02:27:32] In state Ready, waiting for state Running
+[02:27:33]     Setting State: Activating
+[02:27:34]     Setting State: Committed
+[02:27:38]     Setting State: Running
+[02:27:38] Detected state Running
+[02:27:38] *** Notice: This subscan will be numbered as scan #74 in your data reduction package.
+[02:27:38] In state Running, waiting for state Ready
+[02:28:13]     Setting State: Stopping
+[02:28:15]     Setting State: Ready
+[02:28:15] Detected state Ready
+[02:28:15] Ygor Telescope: WaitForStopping
+[02:28:15] RALongMap: Subscan 13 of 35
+[02:28:16] In state Ready, waiting for state Running
+[02:28:17]     Setting State: Activating
+[02:28:17]     Setting State: Committed
+[02:28:22]     Setting State: Running
+[02:28:22] Detected state Running
+[02:28:22] *** Notice: This subscan will be numbered as scan #75 in your data reduction package.
+[02:28:22] In state Running, waiting for state Ready
+[02:28:57]     Setting State: Stopping
+[02:28:59]     Setting State: Ready
+[02:28:59] Detected state Ready
+[02:28:59] Ygor Telescope: WaitForStopping
+[02:28:59] RALongMap: Subscan 14 of 35
+[02:28:59] In state Ready, waiting for state Running
+[02:29:00]     Setting State: Activating
+[02:29:00]     Setting State: Committed
+[02:29:05]     Setting State: Running
+[02:29:05] Detected state Running
+[02:29:05] *** Notice: This subscan will be numbered as scan #76 in your data reduction package.
+[02:29:05] In state Running, waiting for state Ready
+[02:29:40]     Setting State: Stopping
+[02:29:42]     Setting State: Ready
+[02:29:42] Detected state Ready
+[02:29:42] Ygor Telescope: WaitForStopping
+[02:29:42] RALongMap: Subscan 15 of 35
+[02:29:43] In state Ready, waiting for state Running
+[02:29:44]     Setting State: Activating
+[02:29:44]     Setting State: Committed
+[02:29:49]     Setting State: Running
+[02:29:49] Detected state Running
+[02:29:49] *** Notice: This subscan will be numbered as scan #77 in your data reduction package.
+[02:29:49] In state Running, waiting for state Ready
+[02:30:24]     Setting State: Stopping
+[02:30:26]     Setting State: Ready
+[02:30:26] Detected state Ready
+[02:30:26] Ygor Telescope: WaitForStopping
+[02:30:26] RALongMap: Subscan 16 of 35
+[02:30:26] In state Ready, waiting for state Running
+[02:30:27]     Setting State: Activating
+[02:30:27]     Setting State: Committed
+[02:30:32]     Setting State: Running
+[02:30:32] Detected state Running
+[02:30:32] *** Notice: This subscan will be numbered as scan #78 in your data reduction package.
+[02:30:32] In state Running, waiting for state Ready
+[02:31:07]     Setting State: Stopping
+[02:31:09]     Setting State: Ready
+[02:31:09] Detected state Ready
+[02:31:09] Ygor Telescope: WaitForStopping
+[02:31:09] RALongMap: Subscan 17 of 35
+[02:31:09] In state Ready, waiting for state Running
+[02:31:10]     Setting State: Activating
+[02:31:10]     Setting State: Committed
+[02:31:15]     Setting State: Running
+[02:31:15] Detected state Running
+[02:31:15] *** Notice: This subscan will be numbered as scan #79 in your data reduction package.
+[02:31:15] In state Running, waiting for state Ready
+[02:31:50]     Setting State: Stopping
+[02:31:52]     Setting State: Ready
+[02:31:52] Detected state Ready
+[02:31:52] Ygor Telescope: WaitForStopping
+[02:31:52] RALongMap: Subscan 18 of 35
+[02:31:53] In state Ready, waiting for state Running
+[02:31:53]     Setting State: Activating
+[02:31:54]     Setting State: Committed
+[02:31:58]     Setting State: Running
+[02:31:58] Detected state Running
+[02:31:58] *** Notice: This subscan will be numbered as scan #80 in your data reduction package.
+[02:31:58] In state Running, waiting for state Ready
+[02:32:33]     Setting State: Stopping
+[02:32:35]     Setting State: Ready
+[02:32:35] Detected state Ready
+[02:32:35] Ygor Telescope: WaitForStopping
+[02:32:35] RALongMap: Subscan 19 of 35
+[02:32:36] In state Ready, waiting for state Running
+[02:32:36]     Setting State: Activating
+[02:32:36]     Setting State: Committed
+[02:32:41]     Setting State: Running
+[02:32:41] Detected state Running
+[02:32:41] *** Notice: This subscan will be numbered as scan #81 in your data reduction package.
+[02:32:41] In state Running, waiting for state Ready
+[02:33:16]     Setting State: Stopping
+[02:33:18]     Setting State: Ready
+[02:33:18] Detected state Ready
+[02:33:18] Ygor Telescope: WaitForStopping
+[02:33:18] RALongMap: Subscan 20 of 35
+[02:33:18] In state Ready, waiting for state Running
+[02:33:19]     Setting State: Activating
+[02:33:19]     Setting State: Committed
+[02:33:24]     Setting State: Running
+[02:33:24] Detected state Running
+[02:33:24] *** Notice: This subscan will be numbered as scan #82 in your data reduction package.
+[02:33:24] In state Running, waiting for state Ready
+[02:33:59]     Setting State: Stopping
+[02:34:01]     Setting State: Ready
+[02:34:01] Detected state Ready
+[02:34:01] Ygor Telescope: WaitForStopping
+[02:34:01] RALongMap: Subscan 21 of 35
+[02:34:01] In state Ready, waiting for state Running
+[02:34:02]     Setting State: Activating
+[02:34:02]     Setting State: Committed
+[02:34:07]     Setting State: Running
+[02:34:07] Detected state Running
+[02:34:07] *** Notice: This subscan will be numbered as scan #83 in your data reduction package.
+[02:34:07] In state Running, waiting for state Ready
+[02:34:42]     Setting State: Stopping
+[02:34:44]     Setting State: Ready
+[02:34:44] Detected state Ready
+[02:34:44] Ygor Telescope: WaitForStopping
+[02:34:44] RALongMap: Subscan 22 of 35
+[02:34:44] In state Ready, waiting for state Running
+[02:34:45]     Setting State: Activating
+[02:34:45]     Setting State: Committed
+[02:34:50]     Setting State: Running
+[02:34:50] Detected state Running
+[02:34:50] *** Notice: This subscan will be numbered as scan #84 in your data reduction package.
+[02:34:50] In state Running, waiting for state Ready
+[02:35:25]     Setting State: Stopping
+[02:35:27]     Setting State: Ready
+[02:35:27] Detected state Ready
+[02:35:27] Ygor Telescope: WaitForStopping
+[02:35:27] RALongMap: Subscan 23 of 35
+[02:35:27] In state Ready, waiting for state Running
+[02:35:28]     Setting State: Activating
+[02:35:28]     Setting State: Committed
+[02:35:33]     Setting State: Running
+[02:35:33] Detected state Running
+[02:35:33] *** Notice: This subscan will be numbered as scan #85 in your data reduction package.
+[02:35:33] In state Running, waiting for state Ready
+[02:36:08]     Setting State: Stopping
+[02:36:10]     Setting State: Ready
+[02:36:10] Detected state Ready
+[02:36:10] Ygor Telescope: WaitForStopping
+[02:36:10] RALongMap: Subscan 24 of 35
+[02:36:10] In state Ready, waiting for state Running
+[02:36:11]     Setting State: Activating
+[02:36:11]     Setting State: Committed
+[02:36:16]     Setting State: Running
+[02:36:16] Detected state Running
+[02:36:16] *** Notice: This subscan will be numbered as scan #86 in your data reduction package.
+[02:36:16] In state Running, waiting for state Ready
+[02:36:51]     Setting State: Stopping
+[02:36:53]     Setting State: Ready
+[02:36:53] Detected state Ready
+[02:36:53] Ygor Telescope: WaitForStopping
+[02:36:53] RALongMap: Subscan 25 of 35
+[02:36:53] In state Ready, waiting for state Running
+[02:36:54]     Setting State: Activating
+[02:36:54]     Setting State: Committed
+[02:36:59]     Setting State: Running
+[02:36:59] Detected state Running
+[02:36:59] *** Notice: This subscan will be numbered as scan #87 in your data reduction package.
+[02:36:59] In state Running, waiting for state Ready
+[02:37:34]     Setting State: Stopping
+[02:37:36]     Setting State: Ready
+[02:37:36] Detected state Ready
+[02:37:36] Ygor Telescope: WaitForStopping
+[02:37:36] RALongMap: Subscan 26 of 35
+[02:37:46] In state Ready, waiting for state Running
+[02:37:46]     Setting State: Activating
+[02:37:47]     Setting State: Committed
+[02:37:51]     Setting State: Running
+[02:37:51] Detected state Running
+[02:37:51] *** Notice: This subscan will be numbered as scan #88 in your data reduction package.
+[02:37:51] In state Running, waiting for state Ready
+[02:38:26]     Setting State: Stopping
+[02:38:28]     Setting State: Ready
+[02:38:28] Detected state Ready
+[02:38:28] Ygor Telescope: WaitForStopping
+[02:38:28] RALongMap: Subscan 27 of 35
+[02:38:28] In state Ready, waiting for state Running
+[02:38:29]     Setting State: Activating
+[02:38:29]     Setting State: Committed
+[02:38:34]     Setting State: Running
+[02:38:34] Detected state Running
+[02:38:34] *** Notice: This subscan will be numbered as scan #89 in your data reduction package.
+[02:38:34] In state Running, waiting for state Ready
+[02:39:09]     Setting State: Stopping
+[02:39:11]     Setting State: Ready
+[02:39:11] Detected state Ready
+[02:39:11] Ygor Telescope: WaitForStopping
+[02:39:11] RALongMap: Subscan 28 of 35
+[02:39:12] In state Ready, waiting for state Running
+[02:39:12]     Setting State: Activating
+[02:39:13]     Setting State: Committed
+[02:39:17]     Setting State: Running
+[02:39:17] Detected state Running
+[02:39:17] *** Notice: This subscan will be numbered as scan #90 in your data reduction package.
+[02:39:17] In state Running, waiting for state Ready
+[02:39:52]     Setting State: Stopping
+[02:39:54]     Setting State: Ready
+[02:39:54] Detected state Ready
+[02:39:54] Ygor Telescope: WaitForStopping
+[02:39:54] RALongMap: Subscan 29 of 35
+[02:39:54] In state Ready, waiting for state Running
+[02:39:55]     Setting State: Activating
+[02:39:55]     Setting State: Committed
+[02:40:00]     Setting State: Running
+[02:40:00] Detected state Running
+[02:40:00] *** Notice: This subscan will be numbered as scan #91 in your data reduction package.
+[02:40:00] In state Running, waiting for state Ready
+[02:40:35]     Setting State: Stopping
+[02:40:37]     Setting State: Ready
+[02:40:37] Detected state Ready
+[02:40:37] Ygor Telescope: WaitForStopping
+[02:40:37] RALongMap: Subscan 30 of 35
+[02:40:37] In state Ready, waiting for state Running
+[02:40:38]     Setting State: Activating
+[02:40:38]     Setting State: Committed
+[02:40:43]     Setting State: Running
+[02:40:43] Detected state Running
+[02:40:43] *** Notice: This subscan will be numbered as scan #92 in your data reduction package.
+[02:40:43] In state Running, waiting for state Ready
+[02:41:18]     Setting State: Stopping
+[02:41:20]     Setting State: Ready
+[02:41:20] Detected state Ready
+[02:41:20] Ygor Telescope: WaitForStopping
+[02:41:20] RALongMap: Subscan 31 of 35
+[02:41:20] In state Ready, waiting for state Running
+[02:41:21]     Setting State: Activating
+[02:41:26]     Setting State: Committed
+[02:41:29]     Setting State: Running
+[02:41:29] Detected state Running
+[02:41:29] *** Notice: This subscan will be numbered as scan #93 in your data reduction package.
+[02:41:29] In state Running, waiting for state Ready
+[02:42:01]     Setting State: Stopping
+[02:42:03]     Setting State: Ready
+[02:42:03] Detected state Ready
+[02:42:03] Ygor Telescope: WaitForStopping
+[02:42:03] RALongMap: Subscan 32 of 35
+[02:42:03] In state Ready, waiting for state Running
+[02:42:05]     Setting State: Activating
+[02:42:06]     Setting State: Committed
+[02:42:10]     Setting State: Running
+[02:42:10] Detected state Running
+[02:42:10] *** Notice: This subscan will be numbered as scan #94 in your data reduction package.
+[02:42:10] In state Running, waiting for state Ready
+[02:42:45]     Setting State: Stopping
+[02:42:47]     Setting State: Ready
+[02:42:47] Detected state Ready
+[02:42:47] Ygor Telescope: WaitForStopping
+[02:42:47] RALongMap: Subscan 33 of 35
+[02:42:48] In state Ready, waiting for state Running
+[02:42:48]     Setting State: Activating
+[02:42:48]     Setting State: Committed
+[02:42:53]     Setting State: Running
+[02:42:53] Detected state Running
+[02:42:53] *** Notice: This subscan will be numbered as scan #95 in your data reduction package.
+[02:42:53] In state Running, waiting for state Ready
+[02:43:28]     Setting State: Stopping
+[02:43:30]     Setting State: Ready
+[02:43:30] Detected state Ready
+[02:43:30] Ygor Telescope: WaitForStopping
+[02:43:30] RALongMap: Subscan 34 of 35
+[02:43:31] In state Ready, waiting for state Running
+[02:43:31]     Setting State: Activating
+[02:43:32]     Setting State: Committed
+[02:43:36]     Setting State: Running
+[02:43:36] Detected state Running
+[02:43:36] *** Notice: This subscan will be numbered as scan #96 in your data reduction package.
+[02:43:36] In state Running, waiting for state Ready
+[02:44:11]     Setting State: Stopping
+[02:44:13]     Setting State: Ready
+[02:44:13] Detected state Ready
+[02:44:13] Ygor Telescope: WaitForStopping
+[02:44:13] RALongMap: Subscan 35 of 35
+[02:44:14] In state Ready, waiting for state Running
+[02:44:14]     Setting State: Activating
+[02:44:14]     Setting State: Committed
+[02:44:19]     Setting State: Running
+[02:44:19] Detected state Running
+[02:44:19] *** Notice: This subscan will be numbered as scan #97 in your data reduction package.
+[02:44:19] In state Running, waiting for state Ready
+[02:44:54]     Setting State: Stopping
+[02:44:56]     Setting State: Ready
+[02:44:56] Detected state Ready
+[02:44:56] Ygor Telescope: WaitForStopping
+[02:44:56] Moving Vane to Cal
+[02:44:56] Track: Subscan 1 of 1
+[02:44:57] In state Ready, waiting for state Running
+[02:44:57]     Setting State: Activating
+[02:44:58]     Setting State: Committed
+[02:45:08]     Setting State: Running
+[02:45:08] Detected state Running
+[02:45:08] *** Notice: This subscan will be numbered as scan #98 in your data reduction package.
+[02:45:08] In state Running, waiting for state Ready
+[02:45:20]     Setting State: Stopping
+[02:45:22]     Setting State: Ready
+[02:45:22] Detected state Ready
+[02:45:22] Ygor Telescope: WaitForStopping
+[02:45:22] cal (59557, 9911.503161)
+[02:45:22] Moving Vane to Obs
+[02:45:22] Track: Subscan 1 of 1
+[02:45:23] In state Ready, waiting for state Running
+[02:45:23]     Setting State: Activating
+[02:45:23]     Setting State: Committed
+[02:45:34]     Setting State: Running
+[02:45:34] Detected state Running
+[02:45:34] *** Notice: This subscan will be numbered as scan #99 in your data reduction package.
+[02:45:34] In state Running, waiting for state Ready
+[02:45:46]     Setting State: Stopping
+[02:45:48]     Setting State: Ready
+[02:45:48] Detected state Ready
+[02:45:48] Ygor Telescope: WaitForStopping
+[02:45:48] obs (59557, 9937.297781)
+runSuccessful: True
+[02:45:48] ******** End Scheduling Block
+[02:45:48] ******** observer = Tony Wong, SB name = 10_RAMap, project ID = AGBT21B_024
+
+how much log? 24652 id: 261745self.history: <gbt.turtle.database.History.History instance at 0x6254290>self.history.connection: <gbt.turtle.database.TurtleConnection.TurtleConnection instance at 0x7fa66c0c4f38>how much converted log? 24862 
+#######################################################
+ 
+ 
+#######################################################
+ SCRIPT NUMBER 12, project:AGBT21B_024_06 
+ 261746 1090 Tony Wong 12 Rob Taggart 2021-12-09 02:48:22 obs_completed 
+#######################################################
+#load catalogs
+#Catalog(qband_pointing)
+#Catalog(wband_pointing)
+Catalog(xband_pointing)
+#Catalog(fluxcal)
+Catalog(projectDir+"/alma_fluxcal_grid.cat")
+
+# choose appropriate source
+source = pointSrc
+
+Slew(source)
+
+Break("Ask the operator to switch the receiver to X-band (Rcvr8_10). Click yes when Xband is in place.")
+
+SetValues("ScanCoordinator", {"receiver": "Rcvr8_10"})
+SetValues("LO1",{"restFrequency_A":9000})
+
+AutoPeakFocus(source,configure=True) 
+
+#Break("enter pointing offsets")
+
+#Focus(source) 
+
+#Break("enter focus values if necessary")
+
+Break ("Ask the operator to switch back to Argus. Click yes when Argus is in place.")
+
+SetValues("ScanCoordinator", {"receiver": "RcvrArray75_115"})
+
+#ResetConfig()
+
+#configure Argus
+Configure(argus_config)
+print "Setting up the YIG filter and LO for Argus during the operator switch from X-band to Argus."
+
+#######################################################
+ LOG SESSION NUMBER 12 
+[02:48:22] ******** Begin Scheduling Block
+[02:48:22] ******** observer = Tony Wong, SB name = 07_PointFocus_Galaxy_Xband, project ID = AGBT21B_024, date = 09 Dec 2021
+
+[02:48:22] source : 0137+3309
+               OFFSET : 40.34
+               location : J2000 @ (01:37:41.30, 33:09:35.13)
+               Gold : P
+               S3.3 : 3.094
+[02:48:22] Slewing to source.
+[02:48:22] In state Ready, waiting for state Activating
+[02:48:22]     Setting State: Activating
+[02:48:22] Detected state Activating
+[02:48:22] In state Activating, waiting for state Ready
+[02:48:22]     Setting State: Aborting
+[02:48:22] ygor.Telescope: WaitForReady: Asking abort confirmation.
+[02:48:22] 
+[02:48:22] User queried: "Abort detected! Terminate block?" waiting for reply...
+[02:48:27] User replied: "No".
+[02:48:27] In state Aborting, waiting for state Ready
+[02:48:53]     Setting State: Ready
+[02:48:53] Detected state Ready
+[02:48:53] 
+[02:48:53] User queried: "Ask the operator to switch the receiver to X-band (Rcvr8_10). Click yes when Xband is in place. - Continue scheduling block?" waiting for reply...
+[02:49:03] User replied: "Yes".
+[02:49:04] Configuring telescope.
+[02:49:04]     Setting State: Activating
+[02:49:06]     Setting State: Ready
+[02:49:08]     Setting State: Activating
+[02:49:09]     Setting State: Ready
+[02:49:09] Default values are
+[02:49:09] if3freq  =  [0]
+[02:49:09] polswitch  =  thru
+[02:49:09] Configuring for backend DCR...
+[02:49:09] The bad devices are: 
+[02:49:09] ConverterFilter14
+[02:49:09] ConverterFilter2
+[02:49:09] ConverterFilter16
+[02:49:09] ConverterFilter10
+[02:49:09] ConverterFilter12
+[02:49:09] Waiting for  IFRack to finish activating
+[02:49:09] . . .
+[02:49:09] Checking telescope
+[02:49:09] Configuration Complete
+[02:49:09] source : 0137+3309
+[02:49:09] Slewing to source.
+[02:49:10] In state Ready, waiting for state Activating
+[02:49:10]     Setting State: Activating
+[02:49:10] Detected state Activating
+[02:49:10] In state Activating, waiting for state Ready
+[02:49:12]     Setting State: Ready
+[02:49:12] Detected state Ready
+[02:49:12] Balancing IF system.
+[02:49:13] Balancing IFRack
+[02:49:15] the sampler values are:
+[02:49:15] RF_power 1 : 0.05859375
+[02:49:15] RF_power 2 : 0.5615234
+[02:49:15] RF_power 3 : 0.078125
+[02:49:15] RF_power 4 : 0.6005859
+[02:49:15] RF_power 5 : 0.3466797
+[02:49:15] RF_power 6 : 1.000977
+[02:49:15] RF_power 7 : 0.1806641
+[02:49:15] RF_power 8 : 0.4052734
+[02:49:15] Peak: Subscan 1 of 4
+[02:49:15] In state Ready, waiting for state Running
+[02:49:16]     Setting State: Activating
+[02:49:41]     Setting State: Committed
+[02:49:44]     Setting State: Running
+[02:49:44] Detected state Running
+[02:49:44] *** Notice: This subscan will be numbered as scan #100 in your data reduction package.
+[02:49:44] In state Running, waiting for state Ready
+[02:50:07]     Setting State: Stopping
+[02:50:11]     Setting State: Ready
+[02:50:11] Detected state Ready
+[02:50:11] Ygor Telescope: WaitForStopping
+[02:50:11] Peak: Subscan 2 of 4
+[02:50:11] In state Ready, waiting for state Running
+[02:50:12]     Setting State: Activating
+[02:50:17]     Setting State: Committed
+[02:50:19]     Setting State: Running
+[02:50:19] Detected state Running
+[02:50:19] *** Notice: This subscan will be numbered as scan #101 in your data reduction package.
+[02:50:19] In state Running, waiting for state Ready
+[02:50:43]     Setting State: Stopping
+[02:50:47]     Setting State: Ready
+[02:50:47] Detected state Ready
+[02:50:47] Ygor Telescope: WaitForStopping
+[02:50:48] *** Updating antenna's pointing to az2=-0.1470 and el=0.0793 arcmins
+
+[02:50:48] Peak: Subscan 3 of 4
+[02:50:48] In state Ready, waiting for state Running
+[02:50:49]     Setting State: Activating
+[02:51:01]     Setting State: Committed
+[02:51:03]     Setting State: Running
+[02:51:03] Detected state Running
+[02:51:03] *** Notice: This subscan will be numbered as scan #102 in your data reduction package.
+[02:51:03] In state Running, waiting for state Ready
+[02:51:27]     Setting State: Stopping
+[02:51:29]     Setting State: Ready
+[02:51:29] Detected state Ready
+[02:51:29] Ygor Telescope: WaitForStopping
+[02:51:29] Peak: Subscan 4 of 4
+[02:51:30] In state Ready, waiting for state Running
+[02:51:30]     Setting State: Activating
+[02:51:34]     Setting State: Committed
+[02:51:36]     Setting State: Running
+[02:51:36] Detected state Running
+[02:51:36] *** Notice: This subscan will be numbered as scan #103 in your data reduction package.
+[02:51:36] In state Running, waiting for state Ready
+[02:52:00]     Setting State: Stopping
+[02:52:03]     Setting State: Ready
+[02:52:03] Detected state Ready
+[02:52:03] Ygor Telescope: WaitForStopping
+[02:52:04] . *** Updating antenna's pointing to az2=-0.1470 and el=0.2150 arcmins
+
+[02:52:04] Focus: Subscan 1 of 1
+[02:52:05] In state Ready, waiting for state Running
+[02:52:05]     Setting State: Activating
+[02:52:31]     Setting State: Committed
+[02:52:35]     Setting State: Running
+[02:52:35] Detected state Running
+[02:52:35] *** Notice: This subscan will be numbered as scan #104 in your data reduction package.
+[02:52:35] In state Running, waiting for state Ready
+[02:53:33]     Setting State: Stopping
+[02:53:35]     Setting State: Ready
+[02:53:35] Detected state Ready
+[02:53:35] Ygor Telescope: WaitForStopping
+[02:53:36] . *** Updating antenna's focus to -1.80 mm
+
+[02:53:37] 
+[02:53:37] User queried: "Ask the operator to switch back to Argus. Click yes when Argus is in place. - Continue scheduling block?" waiting for reply...
+[02:54:17]     Setting State: Activating
+[02:55:46]     Setting State: Ready
+[02:55:55] User replied: "Yes".
+[02:55:55] Configuring telescope.
+[02:55:55]     Setting State: Activating
+[02:56:16]     Setting State: Ready
+[02:56:17]     Setting State: Activating
+[02:56:18]     Setting State: Ready
+[02:56:18] Default values are
+[02:56:18] if3freq  =  [0]
+[02:56:18] Configuring for backend VEGAS...
+[02:56:18] The bad devices are: 
+[02:56:18] ConverterFilter14
+[02:56:18] ConverterFilter2
+[02:56:18] ConverterFilter16
+[02:56:18] ConverterFilter10
+[02:56:18] ConverterFilter12
+[02:56:18] The bad devices are: 
+[02:56:18] ConverterFilter14
+[02:56:18] ConverterFilter2
+[02:56:18] ConverterFilter16
+[02:56:18] ConverterFilter10
+[02:56:18] ConverterFilter12
+[02:56:18] Waiting for  IFRack to finish activating
+[02:56:18] . . . Waiting for  ScanCoordinator to finish activating
+[02:56:18] . . . . . . . . . . . . . . . . .
+[02:56:18]  Finalizing VEGAS config...
+[02:56:18] Checking telescope
+[02:56:18] Configuration Complete
+[02:56:18] Setting up the YIG filter and LO for Argus during the operator switch from X-band to Argus.
+runSuccessful: True
+[02:56:18] ******** End Scheduling Block
+[02:56:18] ******** observer = Tony Wong, SB name = 07_PointFocus_Galaxy_Xband, project ID = AGBT21B_024
+
+how much log? 6815 id: 261746self.history: <gbt.turtle.database.History.History instance at 0x6254290>self.history.connection: <gbt.turtle.database.TurtleConnection.TurtleConnection instance at 0x7fa66c0c4f38>how much converted log? 7027 
+#######################################################
+ 
+ 
+#######################################################
+ SCRIPT NUMBER 13, project:AGBT21B_024_06 
+ 261747 1090 Tony Wong 12 Rob Taggart 2021-12-09 02:56:35 obs_completed 
+#######################################################
+##----------------------------------------------------------------------
+## If you restart Astrid, you will need to rerun this script!!
+## ----------------------------------------------------------------------
+
+# Plan for session 1 on Dec 9 (7:30 pm)
+#galaxyName="NGC0495"  # source 1
+galaxyName="CGCG536-030"  # source 2
+#galaxyName="IC1683"  # CARMA Check
+
+# Plan for session 2 on Dec 9 (2:15 am)
+#galaxyName="UGC04136" # extra source RAmap only
+#galaxyName="UGC05236"  # source 2
+#galaxyName="NGC3106"  # source 1
+#galaxyName="NGC4047"  # CARMA Check
+
+# AutoOOF source
+oofSrc='0319+4130'
+
+# Flux scalibration source 
+fluxSrc = '0319+4130' # good if OOFing
+#fluxSrc = "1058+0133"
+# fluxSrc = '0854+2006' # good if not OOFing
+
+# Avoid using pointing corrections when pointing source is in 
+# key-hole (elev >~85 deg)
+pointSrc="0137+3309"
+#pointSrc="0813+4813"
+#pointSrc="0927+3902" 
+#pointSrc="0834+5534"
+
+print "autoOOF source = ", oofSrc
+print "flux source =  ", fluxSrc
+print "point source = ", pointSrc
+
+#----------------------------------------------------------------------
+#               Nothing below here should be changed
+#----------------------------------------------------------------------       
+
+# location of project files
+projectDir = "/home/astro-util/projects/gbt-edge"
+
+# Load in relevant catalogs
+Catalog(qband_pointing)
+Catalog(wband_pointing)
+Catalog(fluxcal)
+c = Catalog(projectDir+"/GBTEDGE.cat") 
+
+print "observing source:",  galaxyName, "at ", c[galaxyName]['location']
+
+# set up configuration file and mapping parameters
+
+# backend configuration
+configFile = projectDir+"/12co.config" 
+execfile(configFile)
+
+# pointing configuration 
+# If we're going to point at X-band don't need this. Leaving in place just in case.
+configFile = projectDir+"/pointfocus.config" 
+execfile(configFile)
+
+# map setup 
+mymap = {}
+mymap['step'] = 2.6471 # arcsec
+mymap['scanDuration'] = 33.0645 # s
+mymap['nrows'] = 35
+mymap['scanLength'] = 1.5 # arcmin
+mymap['mapHeight'] = 1.5 # arcmin
+
+
+
+#######################################################
+ LOG SESSION NUMBER 13 
+[02:56:35] ******** Begin Scheduling Block
+[02:56:35] ******** observer = Tony Wong, SB name = 01_setup, project ID = AGBT21B_024, date = 09 Dec 2021
+
+[02:56:35] autoOOF source =  0319+4130
+[02:56:35] flux source =   0319+4130
+[02:56:35] point source =  0137+3309
+[02:56:35] observing source: CGCG536-030 at  J2000 @ (01:21:09.25, 40:28:14.60)
+[02:56:35] setting restfreq = skyfreq = 113019.237MHz
+[02:56:35] setting restfreq = skyfreq = 113019.237MHz
+runSuccessful: True
+[02:56:35] ******** End Scheduling Block
+[02:56:35] ******** observer = Tony Wong, SB name = 01_setup, project ID = AGBT21B_024
+
+how much log? 601 id: 261747self.history: <gbt.turtle.database.History.History instance at 0x6254290>self.history.connection: <gbt.turtle.database.TurtleConnection.TurtleConnection instance at 0x7fa66c0c4f38>how much converted log? 809 
+#######################################################
+ 
+ 
+#######################################################
+ SCRIPT NUMBER 14, project:AGBT21B_024_06 
+ 261748 1090 Tony Wong 12 Rob Taggart 2021-12-09 02:57:02 obs_completed 
+#######################################################
+Catalog(projectDir+"/GBTEDGE.cat") 
+
+print "Mapping galaxy: ", galaxyName
+print "Integration time per row (s): ", mymap['scanDuration']
+print "Offset between map rows (arcsec): ", mymap['step']
+print "Length of scan (arcmin): ", mymap['scanLength']
+print "Height of map (arcmin): ", mymap['mapHeight']
+
+Configure(argus_config)
+execfile(projectDir+"/addwx.py")
+
+Slew(galaxyName)
+Balance()
+
+execfile("/home/astro-util/projects/Argus/OBS/argus_vanecal")
+
+DecLatMap( galaxyName,
+           Offset("J2000", mymap['mapHeight']/60., 0.0, cosv=True),
+           Offset("J2000", 0.0, mymap['scanLength']/60., cosv=True),
+           Offset("J2000", mymap['step']/3600., 0.0, cosv=True),
+           scanDuration=mymap['scanDuration'], beamName='C')
+
+	   # can add start and stop row parameters to the above, 
+	   # e.g., start=2, stop=13
+
+
+execfile("/home/astro-util/projects/Argus/OBS/argus_vanecal")
+
+#######################################################
+ LOG SESSION NUMBER 14 
+[02:57:02] ******** Begin Scheduling Block
+[02:57:02] ******** observer = Tony Wong, SB name = 10_DecMap, project ID = AGBT21B_024, date = 09 Dec 2021
+
+[02:57:02] Mapping galaxy:  CGCG536-030
+[02:57:02] Integration time per row (s):  33.0645
+[02:57:02] Offset between map rows (arcsec):  2.6471
+[02:57:02] Length of scan (arcmin):  1.5
+[02:57:02] Height of map (arcmin):  1.5
+[02:57:02] Configuring telescope.
+[02:57:02]     Setting State: Activating
+[02:57:22]     Setting State: Ready
+[02:57:23]     Setting State: Activating
+[02:57:24]     Setting State: Ready
+[02:57:24] Default values are
+[02:57:24] if3freq  =  [0]
+[02:57:24] Configuring for backend VEGAS...
+[02:57:25] The bad devices are: 
+[02:57:25] ConverterFilter14
+[02:57:25] ConverterFilter2
+[02:57:25] ConverterFilter16
+[02:57:25] ConverterFilter10
+[02:57:25] ConverterFilter12
+[02:57:25] The bad devices are: 
+[02:57:25] ConverterFilter14
+[02:57:25] ConverterFilter2
+[02:57:25] ConverterFilter16
+[02:57:25] ConverterFilter10
+[02:57:25] ConverterFilter12
+[02:57:25] Waiting for  IFRack to finish activating
+[02:57:25] . . Waiting for  ScanCoordinator to finish activating
+[02:57:25] . . . . . . . . . . . . . . . . . .
+[02:57:25]  Finalizing VEGAS config...
+[02:57:25] Checking telescope
+[02:57:25] Configuration Complete
+[02:57:25] source : CGCG536-030
+               LOGSFR : 0.09
+               COMPLETE : 0.0
+               VOPT-Z : 5973.5
+               velocitydefinition : Radio
+               restframe : KinematicalLSR
+               location : J2000 @ (01:21:09.25, 40:28:14.60)
+               VELDEF : VRAD-LSR
+               VEL : 0.0
+               Z : 0.01993
+               LOGMst : 10.07
+               RESTFREQ : 113019.237
+[02:57:25] Slewing to source.
+[02:57:26] In state Ready, waiting for state Activating
+[02:57:26]     Setting State: Activating
+[02:57:26] Detected state Activating
+[02:57:26] In state Activating, waiting for state Ready
+[02:58:40]     Setting State: Ready
+[02:58:40] Detected state Ready
+[02:58:40] Balancing IF system.
+[02:58:40] Balancing IFRack
+[02:58:42] the sampler values are:
+[02:58:42] RF_power 1 : 0.4199219
+[02:58:42] RF_power 2 : 4.799805
+[02:58:42] RF_power 3 : 2.363281
+[02:58:42] RF_power 4 : 3.178711
+[02:58:42] RF_power 5 : 3.037109
+[02:58:42] RF_power 6 : 4.916992
+[02:58:42] RF_power 7 : 0.6201172
+[02:58:42] RF_power 8 : 2.016602
+[02:58:42] Balancing VEGAS
+[02:58:42]     Setting State: Activating
+[02:58:42]     Setting State: Ready
+[02:58:42]     Setting State: Activating
+[02:58:42]     Setting State: Ready
+[02:58:43]     Setting State: Activating
+[02:58:43]     Setting State: Ready
+[02:58:43]     Setting State: Activating
+[02:58:44]     Setting State: Ready
+[02:58:46]     Setting State: Activating
+[02:58:46]     Setting State: Ready
+[02:58:46] Moving Vane to Cal
+[02:58:46] Track: Subscan 1 of 1
+[02:58:47] In state Ready, waiting for state Running
+[02:58:47]     Setting State: Activating
+[02:58:48]     Setting State: Committed
+[02:59:09]     Setting State: Running
+[02:59:09] Detected state Running
+[02:59:09] *** Notice: This subscan will be numbered as scan #105 in your data reduction package.
+[02:59:09] In state Running, waiting for state Ready
+[02:59:21]     Setting State: Stopping
+[02:59:23]     Setting State: Ready
+[02:59:23] Detected state Ready
+[02:59:23] Ygor Telescope: WaitForStopping
+[02:59:23] cal (59557, 10752.056155)
+[02:59:23] Moving Vane to Obs
+[02:59:23] Track: Subscan 1 of 1
+[02:59:24] In state Ready, waiting for state Running
+[02:59:24]     Setting State: Activating
+[02:59:25]     Setting State: Committed
+[02:59:35]     Setting State: Running
+[02:59:35] Detected state Running
+[02:59:35] *** Notice: This subscan will be numbered as scan #106 in your data reduction package.
+[02:59:35] In state Running, waiting for state Ready
+[02:59:47]     Setting State: Stopping
+[02:59:49]     Setting State: Ready
+[02:59:49] Detected state Ready
+[02:59:49] Ygor Telescope: WaitForStopping
+[02:59:49] obs (59557, 10778.455581)
+[02:59:49] source : CGCG536-030
+               LOGSFR : 0.09
+               COMPLETE : 0.0
+               VOPT-Z : 5973.5
+               velocitydefinition : Radio
+               restframe : KinematicalLSR
+               location : J2000 @ (01:21:09.25, 40:28:14.60)
+               VELDEF : VRAD-LSR
+               VEL : 0.0
+               Z : 0.01993
+               LOGMst : 10.07
+               RESTFREQ : 113019.237
+[02:59:49] DecLatMap: Subscan 1 of 35
+[02:59:50] In state Ready, waiting for state Running
+[02:59:51]     Setting State: Activating
+[02:59:51]     Setting State: Committed
+[03:00:00]     Setting State: Running
+[03:00:00] Detected state Running
+[03:00:00] *** Notice: This subscan will be numbered as scan #107 in your data reduction package.
+[03:00:00] In state Running, waiting for state Ready
+[03:00:35]     Setting State: Stopping
+[03:00:37]     Setting State: Ready
+[03:00:37] Detected state Ready
+[03:00:37] Ygor Telescope: WaitForStopping
+[03:00:37] DecLatMap: Subscan 2 of 35
+[03:00:38] In state Ready, waiting for state Running
+[03:00:39]     Setting State: Activating
+[03:00:39]     Setting State: Committed
+[03:00:44]     Setting State: Running
+[03:00:44] Detected state Running
+[03:00:44] *** Notice: This subscan will be numbered as scan #108 in your data reduction package.
+[03:00:44] In state Running, waiting for state Ready
+[03:01:19]     Setting State: Stopping
+[03:01:21]     Setting State: Ready
+[03:01:21] Detected state Ready
+[03:01:21] Ygor Telescope: WaitForStopping
+[03:01:21] DecLatMap: Subscan 3 of 35
+[03:01:22] In state Ready, waiting for state Running
+[03:01:23]     Setting State: Activating
+[03:01:23]     Setting State: Committed
+[03:01:28]     Setting State: Running
+[03:01:28] Detected state Running
+[03:01:28] *** Notice: This subscan will be numbered as scan #109 in your data reduction package.
+[03:01:28] In state Running, waiting for state Ready
+[03:02:03]     Setting State: Stopping
+[03:02:05]     Setting State: Ready
+[03:02:05] Detected state Ready
+[03:02:05] Ygor Telescope: WaitForStopping
+[03:02:05] DecLatMap: Subscan 4 of 35
+[03:02:11] In state Ready, waiting for state Running
+[03:02:11]     Setting State: Activating
+[03:02:11]     Setting State: Committed
+[03:02:16]     Setting State: Running
+[03:02:16] Detected state Running
+[03:02:16] *** Notice: This subscan will be numbered as scan #110 in your data reduction package.
+[03:02:16] In state Running, waiting for state Ready
+[03:02:51]     Setting State: Stopping
+[03:02:53]     Setting State: Ready
+[03:02:53] Detected state Ready
+[03:02:53] Ygor Telescope: WaitForStopping
+[03:02:53] DecLatMap: Subscan 5 of 35
+[03:02:54] In state Ready, waiting for state Running
+[03:02:55]     Setting State: Activating
+[03:02:55]     Setting State: Committed
+[03:03:00]     Setting State: Running
+[03:03:00] Detected state Running
+[03:03:00] *** Notice: This subscan will be numbered as scan #111 in your data reduction package.
+[03:03:00] In state Running, waiting for state Ready
+[03:03:35]     Setting State: Stopping
+[03:03:37]     Setting State: Ready
+[03:03:37] Detected state Ready
+[03:03:37] Ygor Telescope: WaitForStopping
+[03:03:37] DecLatMap: Subscan 6 of 35
+[03:03:38] In state Ready, waiting for state Running
+[03:03:39]     Setting State: Activating
+[03:03:39]     Setting State: Committed
+[03:03:44]     Setting State: Running
+[03:03:44] Detected state Running
+[03:03:44] *** Notice: This subscan will be numbered as scan #112 in your data reduction package.
+[03:03:44] In state Running, waiting for state Ready
+[03:04:19]     Setting State: Stopping
+[03:04:21]     Setting State: Ready
+[03:04:21] Detected state Ready
+[03:04:21] Ygor Telescope: WaitForStopping
+[03:04:21] DecLatMap: Subscan 7 of 35
+[03:04:22] In state Ready, waiting for state Running
+[03:04:23]     Setting State: Activating
+[03:04:23]     Setting State: Committed
+[03:04:28]     Setting State: Running
+[03:04:28] Detected state Running
+[03:04:28] *** Notice: This subscan will be numbered as scan #113 in your data reduction package.
+[03:04:28] In state Running, waiting for state Ready
+[03:05:03]     Setting State: Stopping
+[03:05:05]     Setting State: Ready
+[03:05:05] Detected state Ready
+[03:05:05] Ygor Telescope: WaitForStopping
+[03:05:05] DecLatMap: Subscan 8 of 35
+[03:05:06] In state Ready, waiting for state Running
+[03:05:07]     Setting State: Activating
+[03:05:07]     Setting State: Committed
+[03:05:12]     Setting State: Running
+[03:05:12] Detected state Running
+[03:05:12] *** Notice: This subscan will be numbered as scan #114 in your data reduction package.
+[03:05:12] In state Running, waiting for state Ready
+[03:05:47]     Setting State: Stopping
+[03:05:49]     Setting State: Ready
+[03:05:49] Detected state Ready
+[03:05:49] Ygor Telescope: WaitForStopping
+[03:05:49] DecLatMap: Subscan 9 of 35
+[03:05:57] In state Ready, waiting for state Running
+[03:05:57]     Setting State: Activating
+[03:05:57]     Setting State: Committed
+[03:06:02]     Setting State: Running
+[03:06:02] Detected state Running
+[03:06:02] *** Notice: This subscan will be numbered as scan #115 in your data reduction package.
+[03:06:02] In state Running, waiting for state Ready
+[03:06:37]     Setting State: Stopping
+[03:06:39]     Setting State: Ready
+[03:06:39] Detected state Ready
+[03:06:39] Ygor Telescope: WaitForStopping
+[03:06:39] DecLatMap: Subscan 10 of 35
+[03:06:40] In state Ready, waiting for state Running
+[03:06:41]     Setting State: Activating
+[03:06:41]     Setting State: Committed
+[03:06:46]     Setting State: Running
+[03:06:46] Detected state Running
+[03:06:46] *** Notice: This subscan will be numbered as scan #116 in your data reduction package.
+[03:06:46] In state Running, waiting for state Ready
+[03:07:21]     Setting State: Stopping
+[03:07:23]     Setting State: Ready
+[03:07:23] Detected state Ready
+[03:07:23] Ygor Telescope: WaitForStopping
+[03:07:23] DecLatMap: Subscan 11 of 35
+[03:07:29] In state Ready, waiting for state Running
+[03:07:29]     Setting State: Activating
+[03:07:30]     Setting State: Committed
+[03:07:34]     Setting State: Running
+[03:07:34] Detected state Running
+[03:07:34] *** Notice: This subscan will be numbered as scan #117 in your data reduction package.
+[03:07:34] In state Running, waiting for state Ready
+[03:08:09]     Setting State: Stopping
+[03:08:11]     Setting State: Ready
+[03:08:11] Detected state Ready
+[03:08:11] Ygor Telescope: WaitForStopping
+[03:08:11] DecLatMap: Subscan 12 of 35
+[03:08:12] In state Ready, waiting for state Running
+[03:08:13]     Setting State: Activating
+[03:08:13]     Setting State: Committed
+[03:08:18]     Setting State: Running
+[03:08:18] Detected state Running
+[03:08:18] *** Notice: This subscan will be numbered as scan #118 in your data reduction package.
+[03:08:18] In state Running, waiting for state Ready
+[03:08:53]     Setting State: Stopping
+[03:08:55]     Setting State: Ready
+[03:08:55] Detected state Ready
+[03:08:55] Ygor Telescope: WaitForStopping
+[03:08:55] DecLatMap: Subscan 13 of 35
+[03:08:56] In state Ready, waiting for state Running
+[03:08:57]     Setting State: Activating
+[03:08:57]     Setting State: Committed
+[03:09:02]     Setting State: Running
+[03:09:02] Detected state Running
+[03:09:02] *** Notice: This subscan will be numbered as scan #119 in your data reduction package.
+[03:09:02] In state Running, waiting for state Ready
+[03:09:37]     Setting State: Stopping
+[03:09:39]     Setting State: Ready
+[03:09:39] Detected state Ready
+[03:09:39] Ygor Telescope: WaitForStopping
+[03:09:39] DecLatMap: Subscan 14 of 35
+[03:09:40] In state Ready, waiting for state Running
+[03:09:41]     Setting State: Activating
+[03:09:41]     Setting State: Committed
+[03:09:46]     Setting State: Running
+[03:09:46] Detected state Running
+[03:09:46] *** Notice: This subscan will be numbered as scan #120 in your data reduction package.
+[03:09:46] In state Running, waiting for state Ready
+[03:10:21]     Setting State: Stopping
+[03:10:23]     Setting State: Ready
+[03:10:23] Detected state Ready
+[03:10:23] Ygor Telescope: WaitForStopping
+[03:10:23] DecLatMap: Subscan 15 of 35
+[03:10:24] In state Ready, waiting for state Running
+[03:10:25]     Setting State: Activating
+[03:10:25]     Setting State: Committed
+[03:10:30]     Setting State: Running
+[03:10:30] Detected state Running
+[03:10:30] *** Notice: This subscan will be numbered as scan #121 in your data reduction package.
+[03:10:30] In state Running, waiting for state Ready
+[03:11:05]     Setting State: Stopping
+[03:11:07]     Setting State: Ready
+[03:11:07] Detected state Ready
+[03:11:07] Ygor Telescope: WaitForStopping
+[03:11:07] DecLatMap: Subscan 16 of 35
+[03:11:08] In state Ready, waiting for state Running
+[03:11:09]     Setting State: Activating
+[03:11:09]     Setting State: Committed
+[03:11:14]     Setting State: Running
+[03:11:14] Detected state Running
+[03:11:14] *** Notice: This subscan will be numbered as scan #122 in your data reduction package.
+[03:11:14] In state Running, waiting for state Ready
+[03:11:49]     Setting State: Stopping
+[03:11:51]     Setting State: Ready
+[03:11:51] Detected state Ready
+[03:11:51] Ygor Telescope: WaitForStopping
+[03:11:51] DecLatMap: Subscan 17 of 35
+[03:11:52] In state Ready, waiting for state Running
+[03:11:53]     Setting State: Activating
+[03:11:53]     Setting State: Committed
+[03:11:58]     Setting State: Running
+[03:11:58] Detected state Running
+[03:11:58] *** Notice: This subscan will be numbered as scan #123 in your data reduction package.
+[03:11:58] In state Running, waiting for state Ready
+[03:12:33]     Setting State: Stopping
+[03:12:35]     Setting State: Ready
+[03:12:35] Detected state Ready
+[03:12:35] Ygor Telescope: WaitForStopping
+[03:12:35] DecLatMap: Subscan 18 of 35
+[03:12:41] In state Ready, waiting for state Running
+[03:12:41]     Setting State: Activating
+[03:12:42]     Setting State: Committed
+[03:12:46]     Setting State: Running
+[03:12:46] Detected state Running
+[03:12:46] *** Notice: This subscan will be numbered as scan #124 in your data reduction package.
+[03:12:46] In state Running, waiting for state Ready
+[03:13:21]     Setting State: Stopping
+[03:13:23]     Setting State: Ready
+[03:13:23] Detected state Ready
+[03:13:23] Ygor Telescope: WaitForStopping
+[03:13:23] DecLatMap: Subscan 19 of 35
+[03:13:24] In state Ready, waiting for state Running
+[03:13:25]     Setting State: Activating
+[03:13:25]     Setting State: Committed
+[03:13:30]     Setting State: Running
+[03:13:30] Detected state Running
+[03:13:30] *** Notice: This subscan will be numbered as scan #125 in your data reduction package.
+[03:13:30] In state Running, waiting for state Ready
+[03:14:05]     Setting State: Stopping
+[03:14:07]     Setting State: Ready
+[03:14:07] Detected state Ready
+[03:14:07] Ygor Telescope: WaitForStopping
+[03:14:07] DecLatMap: Subscan 20 of 35
+[03:14:08] In state Ready, waiting for state Running
+[03:14:09]     Setting State: Activating
+[03:14:09]     Setting State: Committed
+[03:14:14]     Setting State: Running
+[03:14:14] Detected state Running
+[03:14:14] *** Notice: This subscan will be numbered as scan #126 in your data reduction package.
+[03:14:14] In state Running, waiting for state Ready
+[03:14:49]     Setting State: Stopping
+[03:14:51]     Setting State: Ready
+[03:14:51] Detected state Ready
+[03:14:51] Ygor Telescope: WaitForStopping
+[03:14:51] DecLatMap: Subscan 21 of 35
+[03:14:52] In state Ready, waiting for state Running
+[03:14:53]     Setting State: Activating
+[03:14:53]     Setting State: Committed
+[03:15:03]     Setting State: Running
+[03:15:03] Detected state Running
+[03:15:03] *** Notice: This subscan will be numbered as scan #127 in your data reduction package.
+[03:15:03] In state Running, waiting for state Ready
+[03:15:33]     Setting State: Stopping
+[03:15:35]     Setting State: Ready
+[03:15:35] Detected state Ready
+[03:15:35] Ygor Telescope: WaitForStopping
+[03:15:35] DecLatMap: Subscan 22 of 35
+[03:15:36] In state Ready, waiting for state Running
+[03:15:37]     Setting State: Activating
+[03:15:37]     Setting State: Committed
+[03:15:42]     Setting State: Running
+[03:15:42] Detected state Running
+[03:15:42] *** Notice: This subscan will be numbered as scan #128 in your data reduction package.
+[03:15:42] In state Running, waiting for state Ready
+[03:16:17]     Setting State: Stopping
+[03:16:19]     Setting State: Ready
+[03:16:19] Detected state Ready
+[03:16:19] Ygor Telescope: WaitForStopping
+[03:16:19] DecLatMap: Subscan 23 of 35
+[03:16:20] In state Ready, waiting for state Running
+[03:16:21]     Setting State: Activating
+[03:16:21]     Setting State: Committed
+[03:16:26]     Setting State: Running
+[03:16:26] Detected state Running
+[03:16:26] *** Notice: This subscan will be numbered as scan #129 in your data reduction package.
+[03:16:26] In state Running, waiting for state Ready
+[03:17:01]     Setting State: Stopping
+[03:17:03]     Setting State: Ready
+[03:17:03] Detected state Ready
+[03:17:03] Ygor Telescope: WaitForStopping
+[03:17:03] DecLatMap: Subscan 24 of 35
+[03:17:04] In state Ready, waiting for state Running
+[03:17:05]     Setting State: Activating
+[03:17:05]     Setting State: Committed
+[03:17:10]     Setting State: Running
+[03:17:10] Detected state Running
+[03:17:10] *** Notice: This subscan will be numbered as scan #130 in your data reduction package.
+[03:17:10] In state Running, waiting for state Ready
+[03:17:45]     Setting State: Stopping
+[03:17:47]     Setting State: Ready
+[03:17:47] Detected state Ready
+[03:17:47] Ygor Telescope: WaitForStopping
+[03:17:47] DecLatMap: Subscan 25 of 35
+[03:17:48] In state Ready, waiting for state Running
+[03:17:49]     Setting State: Activating
+[03:17:49]     Setting State: Committed
+[03:17:54]     Setting State: Running
+[03:17:54] Detected state Running
+[03:17:54] *** Notice: This subscan will be numbered as scan #131 in your data reduction package.
+[03:17:54] In state Running, waiting for state Ready
+[03:18:29]     Setting State: Stopping
+[03:18:31]     Setting State: Ready
+[03:18:31] Detected state Ready
+[03:18:31] Ygor Telescope: WaitForStopping
+[03:18:31] DecLatMap: Subscan 26 of 35
+[03:18:32] In state Ready, waiting for state Running
+[03:18:33]     Setting State: Activating
+[03:18:33]     Setting State: Committed
+[03:18:38]     Setting State: Running
+[03:18:38] Detected state Running
+[03:18:38] *** Notice: This subscan will be numbered as scan #132 in your data reduction package.
+[03:18:38] In state Running, waiting for state Ready
+[03:19:13]     Setting State: Stopping
+[03:19:15]     Setting State: Ready
+[03:19:15] Detected state Ready
+[03:19:15] Ygor Telescope: WaitForStopping
+[03:19:15] DecLatMap: Subscan 27 of 35
+[03:19:16] In state Ready, waiting for state Running
+[03:19:17]     Setting State: Activating
+[03:19:17]     Setting State: Committed
+[03:19:22]     Setting State: Running
+[03:19:22] Detected state Running
+[03:19:22] *** Notice: This subscan will be numbered as scan #133 in your data reduction package.
+[03:19:22] In state Running, waiting for state Ready
+[03:19:57]     Setting State: Stopping
+[03:19:59]     Setting State: Ready
+[03:19:59] Detected state Ready
+[03:19:59] Ygor Telescope: WaitForStopping
+[03:19:59] DecLatMap: Subscan 28 of 35
+[03:20:00] In state Ready, waiting for state Running
+[03:20:01]     Setting State: Activating
+[03:20:01]     Setting State: Committed
+[03:20:06]     Setting State: Running
+[03:20:06] Detected state Running
+[03:20:06] *** Notice: This subscan will be numbered as scan #134 in your data reduction package.
+[03:20:06] In state Running, waiting for state Ready
+[03:20:41]     Setting State: Stopping
+[03:20:43]     Setting State: Ready
+[03:20:43] Detected state Ready
+[03:20:43] Ygor Telescope: WaitForStopping
+[03:20:43] DecLatMap: Subscan 29 of 35
+[03:20:44] In state Ready, waiting for state Running
+[03:20:45]     Setting State: Activating
+[03:20:45]     Setting State: Committed
+[03:20:50]     Setting State: Running
+[03:20:50] Detected state Running
+[03:20:50] *** Notice: This subscan will be numbered as scan #135 in your data reduction package.
+[03:20:50] In state Running, waiting for state Ready
+[03:21:25]     Setting State: Stopping
+[03:21:27]     Setting State: Ready
+[03:21:27] Detected state Ready
+[03:21:27] Ygor Telescope: WaitForStopping
+[03:21:27] DecLatMap: Subscan 30 of 35
+[03:21:28] In state Ready, waiting for state Running
+[03:21:29]     Setting State: Activating
+[03:21:29]     Setting State: Committed
+[03:21:34]     Setting State: Running
+[03:21:34] Detected state Running
+[03:21:34] *** Notice: This subscan will be numbered as scan #136 in your data reduction package.
+[03:21:34] In state Running, waiting for state Ready
+[03:22:09]     Setting State: Stopping
+[03:22:11]     Setting State: Ready
+[03:22:11] Detected state Ready
+[03:22:11] Ygor Telescope: WaitForStopping
+[03:22:11] DecLatMap: Subscan 31 of 35
+[03:22:12] In state Ready, waiting for state Running
+[03:22:13]     Setting State: Activating
+[03:22:13]     Setting State: Committed
+[03:22:18]     Setting State: Running
+[03:22:18] Detected state Running
+[03:22:18] *** Notice: This subscan will be numbered as scan #137 in your data reduction package.
+[03:22:18] In state Running, waiting for state Ready
+[03:22:53]     Setting State: Stopping
+[03:22:55]     Setting State: Ready
+[03:22:55] Detected state Ready
+[03:22:55] Ygor Telescope: WaitForStopping
+[03:22:55] DecLatMap: Subscan 32 of 35
+[03:22:56] In state Ready, waiting for state Running
+[03:22:57]     Setting State: Activating
+[03:22:57]     Setting State: Committed
+[03:23:02]     Setting State: Running
+[03:23:02] Detected state Running
+[03:23:02] *** Notice: This subscan will be numbered as scan #138 in your data reduction package.
+[03:23:02] In state Running, waiting for state Ready
+[03:23:37]     Setting State: Stopping
+[03:23:39]     Setting State: Ready
+[03:23:39] Detected state Ready
+[03:23:39] Ygor Telescope: WaitForStopping
+[03:23:39] DecLatMap: Subscan 33 of 35
+[03:23:40] In state Ready, waiting for state Running
+[03:23:41]     Setting State: Activating
+[03:23:41]     Setting State: Committed
+[03:23:46]     Setting State: Running
+[03:23:46] Detected state Running
+[03:23:46] *** Notice: This subscan will be numbered as scan #139 in your data reduction package.
+[03:23:46] In state Running, waiting for state Ready
+[03:24:21]     Setting State: Stopping
+[03:24:23]     Setting State: Ready
+[03:24:23] Detected state Ready
+[03:24:23] Ygor Telescope: WaitForStopping
+[03:24:23] DecLatMap: Subscan 34 of 35
+[03:24:24] In state Ready, waiting for state Running
+[03:24:25]     Setting State: Activating
+[03:24:25]     Setting State: Committed
+[03:24:30]     Setting State: Running
+[03:24:30] Detected state Running
+[03:24:30] *** Notice: This subscan will be numbered as scan #140 in your data reduction package.
+[03:24:30] In state Running, waiting for state Ready
+[03:25:05]     Setting State: Stopping
+[03:25:07]     Setting State: Ready
+[03:25:07] Detected state Ready
+[03:25:07] Ygor Telescope: WaitForStopping
+[03:25:07] DecLatMap: Subscan 35 of 35
+[03:25:08] In state Ready, waiting for state Running
+[03:25:09]     Setting State: Activating
+[03:25:09]     Setting State: Committed
+[03:25:14]     Setting State: Running
+[03:25:14] Detected state Running
+[03:25:14] *** Notice: This subscan will be numbered as scan #141 in your data reduction package.
+[03:25:14] In state Running, waiting for state Ready
+[03:25:49]     Setting State: Stopping
+[03:25:51]     Setting State: Ready
+[03:25:51] Detected state Ready
+[03:25:51] Ygor Telescope: WaitForStopping
+[03:25:51] Moving Vane to Cal
+[03:25:51] Track: Subscan 1 of 1
+[03:25:52] In state Ready, waiting for state Running
+[03:25:53]     Setting State: Activating
+[03:25:53]     Setting State: Committed
+[03:26:04]     Setting State: Running
+[03:26:04] Detected state Running
+[03:26:04] *** Notice: This subscan will be numbered as scan #142 in your data reduction package.
+[03:26:04] In state Running, waiting for state Ready
+[03:26:16]     Setting State: Stopping
+[03:26:18]     Setting State: Ready
+[03:26:18] Detected state Ready
+[03:26:18] Ygor Telescope: WaitForStopping
+[03:26:18] cal (59557, 12366.869598)
+[03:26:18] Moving Vane to Obs
+[03:26:18] Track: Subscan 1 of 1
+[03:26:19] In state Ready, waiting for state Running
+[03:26:20]     Setting State: Activating
+[03:26:20]     Setting State: Committed
+[03:26:31]     Setting State: Running
+[03:26:31] Detected state Running
+[03:26:31] *** Notice: This subscan will be numbered as scan #143 in your data reduction package.
+[03:26:31] In state Running, waiting for state Ready
+[03:26:43]     Setting State: Stopping
+[03:26:45]     Setting State: Ready
+[03:26:45] Detected state Ready
+[03:26:45] Ygor Telescope: WaitForStopping
+[03:26:45] obs (59557, 12393.816696)
+runSuccessful: True
+[03:26:45] ******** End Scheduling Block
+[03:26:45] ******** observer = Tony Wong, SB name = 10_DecMap, project ID = AGBT21B_024
+
+how much log? 24864 id: 261748self.history: <gbt.turtle.database.History.History instance at 0x6254290>self.history.connection: <gbt.turtle.database.TurtleConnection.TurtleConnection instance at 0x7fa66c0c4f38>how much converted log? 25074 
+#######################################################

@@ -100,3 +100,12 @@ CGCG536-030   10   11  45    #  maybe some signal in a dec-vel plot, very weak  
 
 
 UGC02222      10   55  89     # 10**-1.4    rms=16 mK  - nothing obvious
+
+# session 11 was first scrapped on jan 4,  then re-done on jan 11
+
+# new plan
+UGC04054      11   19  53         # logSFR = -0.6 z=0.00681
+UGC04054      11   63  97
+
+
+# UGC03960   # logSFR = -2.6 z=0.00741

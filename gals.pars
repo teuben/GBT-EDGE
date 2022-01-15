@@ -109,3 +109,8 @@ UGC04054      11   63  97
 
 
 # UGC03960   # logSFR = -2.6 z=0.00741
+
+# session 12
+UGC09598     # logSFR = 0.0     VSYS=5577 W=405     PA=120 INC=68 ->   vmax=240   CCW
+# NGC5908 carma check
+NGC5630      # log SFR = 0.1    VSYS=2672 W=250     PA=100 INC=70 ->   vmax=135   CCW

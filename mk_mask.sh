@@ -9,8 +9,18 @@
 #     ./mk_mask.sh refmap=UGC01659/UGC01659_12CO_rebase3_smooth2_hanning2.fits  mask=masks/mask_UGC01659.fits  inc=66 pa=30  vsys=8195 v1=100
 #     ./mk_mask.sh refmap=UGC02134/UGC02134_12CO_rebase3_smooth2_hanning2.fits  mask=masks/mask_UGC02134.fits  inc=65 pa=285 vsys=4510 v1=165 r1=50
 #     ./mk_mask.sh refmap=UGC04245/UGC04245_12CO_rebase3_smooth2_hanning2.fits  mask=masks/mask_UGC04245.fits  inc=70 pa=110 vsys=5110 v1=190 r1=40
+#?
+#     ./mk_mask.sh refmap=UGC04054/UGC04054_12CO_rebase3_smooth2_hanning2.fits  mask=masks/mask_UGC04054.fits  inc=75 pa=175 vsys=2115 v1=150 r1=40  
+#     ./mk_mask.sh refmap=UGC04054/UGC04054_12CO_rebase3_smooth2_hanning2.fits  mask=masks/mask_UGC04054.fits  inc=75 pa=355 vsys=2115 v1=150 r1=40  
+#?
+#     ./mk_mask.sh refmap=UGC09598/UGC09598_12CO_rebase3_smooth2_hanning2.fits  mask=masks/mask_UGC09598.fits  inc=68 pa=120 vsys=5577 v1=240 r1=40  
+#     ./mk_mask.sh refmap=UGC09598/UGC09598_12CO_rebase3_smooth2_hanning2.fits  mask=masks/mask_UGC09598.fits  inc=68 pa=300 vsys=5577 v1=240 r1=40  
+#
+
 #
 # From https://www.astro.umd.edu/~bolatto/EDGE/data/galaxy_parameters.dat
+
+# NAME                   RA        DEC REFF_MAJ EPS PA
 # NGC0001           1.816084  27.708082    14.0     0.324   107.60
 # NGC0169           9.215034  23.990973    19.0     0.473    90.70
 # NGC0776          29.977188  23.644276    21.0     0.101    41.30
@@ -20,7 +30,7 @@
 # UGC01659         32.487083  16.032585    20.0     0.594    35.20
 # UGC02134         39.715862  27.847286    26.0     0.602   101.80
 # UGC04245        122.190956  18.194210    17.0     0.683   107.20
-# 
+# UGC04054        117.733551  23.895914    25.0     0.688   174.30
 # 
 # 
 # 

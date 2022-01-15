@@ -104,8 +104,8 @@ UGC02222      10   55  89     # 10**-1.4    rms=16 mK  - nothing obvious
 # session 11 was first scrapped on jan 4,  then re-done on jan 11
 
 # new plan
-UGC04054      11   19  53         # logSFR = -0.6 z=0.00681
-UGC04054      11   63  97
+UGC04054      11   19  53         # logSFR = -0.6 z=0.00681      2115 (vs. 2040.9?)
+UGC04054      11   63  97         # pa=170 inc=77 w50=250  rot=CW
 
 
 # UGC03960   # logSFR = -2.6 z=0.00741

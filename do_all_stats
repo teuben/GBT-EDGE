@@ -3,11 +3,12 @@
 #  get some stats of the reduced galaxies
 #
 
-set -x
+#set -x
 
 ext=12CO_rebase3_smooth1.3_hanning1.fits
 ext=12CO_rebase3_smooth2_hanning2.fits
 cbf=0.4
+sum=summary.txt
 
 
 ngc=$(grep ^NGC gals.pars | awk '{print $1}' | sort | uniq)
@@ -23,7 +24,11 @@ log=do_all_stats.log
 rm -f $log
 for gal in $gals; do
     if [ -e ${gal}/${gal}_${ext} ]; then
-	echo -n "$gal " >> $log
+        comment=$(txtpar $sum  p0=$gal,1,2)
+	if [ -z $comment ]; then
+	    comment="???"
+	fi
+	echo -n "$gal ${comment}" >> $log
 	fitsccd ${gal}/${gal}_${ext} - |  ccdsub - - centerbox=$cbf,$cbf,$cbf | ccdstat - bad=0 qac=t >> $log
     fi
 done
@@ -32,4 +37,4 @@ cat $log
 
 # print out galaxy name and RMS in mK
 echo "Galaxy      RMS [mK]  sratio($cbf) pratio     S/N   - for $ext"
-awk '{printf("%-12s %5.1f     %6.3f      %6.3f    %6.3f\n",$1,1000*$5,$9,  ($7+$6)/($7-$6), $7/$5  )}' $log
+awk '{printf("%-12s  %5.1f     %6.3f      %6.3f    %6.3f  %s\n",$1, 1000*$6,$10,  ($8+$7)/($8-$7), $8/$6, $2  )}' $log

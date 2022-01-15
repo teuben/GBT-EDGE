@@ -1,3 +1,4 @@
+#    annotation file for do_all_stats
 NGC0001 clear
 NGC0169 clear
 NGC0495 -

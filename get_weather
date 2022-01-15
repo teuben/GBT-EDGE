@@ -1,0 +1,25 @@
+#! /usr/bin/bash
+#
+#   for your amusement... make a movie of the weather predictions
+#
+
+url=https://www.gb.nrao.edu/~rmaddale/Weather/DSSOverview.jpg
+jpg=DSSOverview.jpg
+sleep=10
+
+pmd5=0
+
+while true; do
+    wget -q $url
+    date=$(date -u +%Y-%m-%dT%H:%M:%S)
+    md5=$(md5sum $jpg | cut -c1-32)
+    echo $date $md5
+    if [ $md5 != $pmd5 ]; then
+	mv $jpg ${date}.jpg
+	pmd5=$md5
+	echo "*** New ${date}.jpg"
+    else
+	rm $jpg
+    fi
+    sleep $sleep
+done

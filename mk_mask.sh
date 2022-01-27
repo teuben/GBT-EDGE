@@ -16,6 +16,7 @@
 #     ./mk_mask.sh refmap=UGC09598/UGC09598_12CO_rebase3_smooth2_hanning2.fits  mask=masks/mask_UGC09598.fits  inc=68 pa=120 vsys=5577 v1=240 r1=40  
 #     ./mk_mask.sh refmap=UGC09598/UGC09598_12CO_rebase3_smooth2_hanning2.fits  mask=masks/mask_UGC09598.fits  inc=68 pa=300 vsys=5577 v1=240 r1=40  
 #
+#     ./mk_mask.sh refmap=UGC09629/UGC09629_12CO_rebase3_smooth2_hanning2.fits  mask=masks/mask_UGC09629.fits  inc=70 pa=170 vsys=7838 v1=200 r1=20
 
 #
 # From https://www.astro.umd.edu/~bolatto/EDGE/data/galaxy_parameters.dat

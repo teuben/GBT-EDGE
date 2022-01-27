@@ -121,8 +121,8 @@ UGC09598     13 28 62
 #                                 # rms = 10.0
 #                                 #             combining all 3 -> rms = 6.7
 
-UGC09629     13  77 111           # logSFR = -0.6
-UGC09629     13  121 155
+UGC09629     13  77 111           # logSFR = -0.6     PA=170 INC=70 VLSR=7838
+UGC09629     13  121 155          # rms = 6.3 mK   with PA=170 rms=6.4   with PA=350 rms=6.4
 
 
 # NGC5908 carma check

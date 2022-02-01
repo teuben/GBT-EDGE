@@ -37,6 +37,7 @@ am=1./sin(el*!pi/180.)
 ;;
 tbg=2.725
 tcal=(tatm -tbg) + (twarm-tatm)*exp(tau*am)
+tsys=0
 for i=0,nfd-1 do begin
   gettp,scan1,ifnum=ifnum,fdnum=i,/quiet
   copy,0,2
@@ -44,9 +45,11 @@ for i=0,nfd-1 do begin
   copy,0,1
   subtract,2,1
   divide,0,1
-  print,'fdnum, beam, Tsys*[K]: ',i,!g.s[0].feed,tcal/median(getdata(0))    
+  print,'fdnum, beam, Tsys*[K]: ',i,!g.s[0].feed,tcal/median(getdata(0))
+  tsys=tsys+tcal/median(getdata(0))
 endfor
 print,'Tcal, Twarm, tatm:',tcal,twarm,tatm
+print,'<Tsys>',tsys/nfd
 return
 end
 

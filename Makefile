@@ -156,7 +156,7 @@ other:
 #  rsync:   only useful if you are at GBO and want to rsync to your offline location
 #  if you want to fully reduce the data off-line
 SEQ = 01
-REM = teuben@lma.astro.umd.edu:/lma1/teuben/
+REM = teuben@lma.astro.umd.edu:/n/lma1/teuben/
 rsync:
 	@echo rsync to REM=$(REM) and SEQ=$(SEQ)
 	du -sh $(SDIR)/AGBT21B_024_$(SEQ)
@@ -187,5 +187,5 @@ all:
 
 # mask_CGCG536-030_Havfield_v1.fits
 
-# getastridlog save AGBT21B_024_10
+# getastridlog AGBT21B_024_10
  

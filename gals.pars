@@ -141,10 +141,52 @@ NGC3614   14   72    106
 NGC3614   14   116   150
 
 
-NGC5720    14   160   184
+NGC5720    14   160   194
 NGC5720    14   204   238
 
 
 #   this is crashing pipeline - reason unknown yet
 NGC5630    14   248   282
 NGC5630    14   292   326
+
+# session 15
+
+# 26 64   70 108
+NGC3619   15   28  62       # logSFR -0.9
+NGC3619   15   72  106
+
+# 114 152   158 196
+UGC08004   15   116 150      # logSFR 0.0 - very maybe
+UGC08004   15   160 194
+
+# 202 240   246 284
+CGCG163-062   15 204 238     # logSFR -0.6
+CGCG163-062   15 248 282
+
+# 290 328          noise went from 13.6 -> 9.6 when applying mask
+UGC09777   15  292  326      # logSFR 0.3 - detection , mostly on approaching (SE) side ?     PA=320
+
+
+# session 17  (16 was skipped, some error)
+
+# 26-58 bad  64-102 ok 109-147 ok
+# NGC3395 17  28 56    # bad    logSFR=0.1  
+NGC3395 17  66  100 
+NGC3395 17  111  145
+
+#  153-191  197-235
+IC3598    17  155 189              # logSFR=-0.1
+IC3598    17  199 233
+
+
+#
+UGC08733  17   243 277               # logSFR=-0.6
+
+
+
+
+
+
+###    NOTE !!!
+###    any galaxies in this list, and not summarized in summary.txt will not get listed by do_all_stats
+

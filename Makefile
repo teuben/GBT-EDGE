@@ -141,6 +141,8 @@ bench1:	NGC0001
 	fitsccd NGC0001/NGC0001_12CO_rebase3_smooth2_hanning2.fits -|ccdstat - bad=0 qac=t
 	fitsccd NGC0001/NGC0001_12CO_rebase3_smooth2_hanning2.fits -|ccdstat - bad=0 qac=t robust=t
 
+
+
 # 1 processor:   
 bench2:
 	$(OMP) $(TIME) ./reduce.py -M NGC0001
@@ -189,3 +191,6 @@ all:
 
 # getastridlog AGBT21B_024_10
  
+
+stats:
+	./do_all_stats > do_all_stats.log

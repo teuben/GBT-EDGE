@@ -14,27 +14,42 @@ sum=summary.txt
 ngc=$(grep ^NGC gals.pars | awk '{print $1}' | sort | uniq)
 ugc=$(grep ^UGC gals.pars | awk '{print $1}' | sort | uniq)
 cgc=$(grep ^CGC gals.pars | awk '{print $1}' | sort | uniq)
+igc=$(grep ^IC  gals.pars | awk '{print $1}' | sort | uniq)
 
-gals="$ngc $ugc $cgc"
+gals="$ngc $ugc $cgc $igc"
 
-echo $gals
+#echo $gals
 
-log=do_all_stats.log
+log=do_all_stats.tmp
+export DEBUG=-1
 
 rm -f $log
 for gal in $gals; do
     if [ -e ${gal}/${gal}_${ext} ]; then
-        comment=$(txtpar $sum  p0=$gal,1,2)
+	tsys=$(txtpar $sum  p0=$gal,1,2)
+        comment=$(txtpar $sum  p0=$gal,1,3)
 	if [ -z $comment ]; then
 	    comment="???"
 	fi
-	echo -n "$gal ${comment}" >> $log
+	if [ $tsys != 0 ]; then
+	    n=$(echo $tsys | awk -F+ '{print NF}')
+	    tsum=$(nemoinp "($tsys)/$n/sqrt($n)")
+	    # echo "TSYS $gal,$tsys,$tsum"
+	else
+	    tsum=0
+	fi
+	
+	echo -n "$gal ${tsys} ${tsum} ${comment} " >> $log
 	fitsccd ${gal}/${gal}_${ext} - |  ccdsub - - centerbox=$cbf,$cbf,$cbf | ccdstat - bad=0 qac=t >> $log
     fi
 done
 
-cat $log
+# cat $log
 
 # print out galaxy name and RMS in mK
-echo "Galaxy      RMS [mK]  sratio($cbf) pratio     S/N   - for $ext"
-awk '{printf("%-12s  %5.1f     %6.3f      %6.3f    %6.3f  %s\n",$1, 1000*$6,$10,  ($8+$7)/($8-$7), $8/$6, $2  )}' $log
+echo "#   Galaxy_$ext"
+echo "#   Galaxy      RMS [mK]  sratio($cbf)   pratio       S/N  Tsys                     <Tsys> RMS/<Tsys>   comments"
+awk '{printf("%3d %-12s  %5.1f     %6.3f      %6.3f    %6.3f  %-25s  %5.1f %4.1f %s\n",NR,$1, 1000*$8, $12, ($10+$9)/($10-$9), $10/$8, $2, $3, $3/(1000*$8), $4  )}' $log
+
+
+echo "#  last updated on $(date)" 

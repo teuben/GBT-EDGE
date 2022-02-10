@@ -1,0 +1,5 @@
+The command
+     ./tsys.py AGBT21B_024_10
+makes the file
+     pro/AGBT21B_024_10.tsys
+which should be copied here and saved in git

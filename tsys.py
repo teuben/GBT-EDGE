@@ -8,21 +8,24 @@ project = sys.argv[1]
 #  rawdata/project must exist, as a check
 #
 
-#                  our GBTIDL procedures live here
-printf("### Working in pro")
+#                  our GBTIDL procedures live in pro/
+print("### Working in pro")
 os.chdir('pro')
 
-printf("### writing do1.pro")
+
+print("### writing do1.pro to set the summary")
 fp = open('do1.pro','w')
 fp.write('offline,"%s"\n' % project)
 fp.write('summary,"%s.summary"\n' % project)
 fp.write('exit\n')
 fp.close
 
-printf("### gbtidl do1.pro")
+
+print("### gbtidl do1.pro")
 os.system('gbtidl do1.pro')
 
-printf("### parsing %s.summary" % project)
+
+print("### parsing %s.summary to find the VANE scans" % project)
 vanes = []
 fp = open("%s.summary" % project)
 lines = fp.readlines()
@@ -32,8 +35,9 @@ for line in lines:
         if words[1] == 'VANE':
             vanes.append(words[0])
 fp.close()
+nvanes = len(vanes)
 
-printf("### writing do1.pro")
+print("### writing do2.pro")
 fp = open('do2.pro','w')
 fp.write('offline,"%s"\n' % project)
 for v in vanes:
@@ -42,10 +46,11 @@ fp.write('exit\n')
 fp.close()
 
 
-printf("### gbtidl do2.pro")
+print("### gbtidl do2.pro > do2.log")
 os.system('gbtidl do2.pro > do2.log')
 
-printf("### parsing do2.log")
+
+print("### parsing do2.log to find the tsys lines for the %d VANES" % nvanes)
 fp = open("do2.log")
 lines = fp.readlines()
 grab = False
@@ -62,7 +67,7 @@ fp.close()
 print(tsys)
 
 
-printf("### writing %s.tsys" % project)
+print("### writing %s.tsys with %d vanes" % (project,nvanes))
 fp = open("%s.tsys" % project, "w")
 fp.write("#  %s\n" % project)
 for t in tsys:

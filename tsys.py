@@ -9,19 +9,21 @@ project = sys.argv[1]
 #
 
 #                  our GBTIDL procedures live here
+printf("### Working in pro")
 os.chdir('pro')
 
+printf("### writing do1.pro")
 fp = open('do1.pro','w')
 fp.write('offline,"%s"\n' % project)
 fp.write('summary,"%s.summary"\n' % project)
 fp.write('exit\n')
 fp.close
 
-
+printf("### gbtidl do1.pro")
 os.system('gbtidl do1.pro')
 
+printf("### parsing %s.summary" % project)
 vanes = []
-
 fp = open("%s.summary" % project)
 lines = fp.readlines()
 for line in lines:
@@ -31,7 +33,7 @@ for line in lines:
             vanes.append(words[0])
 fp.close()
 
-
+printf("### writing do1.pro")
 fp = open('do2.pro','w')
 fp.write('offline,"%s"\n' % project)
 for v in vanes:
@@ -40,11 +42,10 @@ fp.write('exit\n')
 fp.close()
 
 
-
+printf("### gbtidl do2.pro")
 os.system('gbtidl do2.pro > do2.log')
 
-project = 'AGBT21B_024_02'
-
+printf("### parsing do2.log")
 fp = open("do2.log")
 lines = fp.readlines()
 grab = False
@@ -61,7 +62,7 @@ fp.close()
 print(tsys)
 
 
-
+printf("### writing %s.tsys" % project)
 fp = open("%s.tsys" % project, "w")
 fp.write("#  %s\n" % project)
 for t in tsys:

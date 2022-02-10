@@ -8,6 +8,7 @@
 
    Produces pro/AGBT21B_024_06.tsys which looks something like this:
 
+#   SCAN       Tsys_mean       Tsys_rms        Tsys_min        Tsys_max
       17       181.86916       14.323252       158.81550       216.11503
       54       178.42336       13.545066       155.68764       210.57443
       61       180.99135       14.369497       156.98510       214.64585
@@ -28,7 +29,7 @@ print("### Working in pro")
 os.chdir('pro')
 
 
-print("### writing do1.pro to set the summary")
+print("### writing pro/do1.pro to set the summary")
 fp = open('do1.pro','w')
 fp.write('offline,"%s"\n' % project)
 fp.write('summary,"%s.summary"\n' % project)
@@ -40,7 +41,7 @@ print("### gbtidl do1.pro > do1.log")
 os.system('gbtidl do1.pro > do1.log')
 
 
-print("### parsing %s.summary to find the VANE scans" % project)
+print("### parsing pro/%s.summary to find the VANE scans" % project)
 vanes = []
 fp = open("%s.summary" % project)
 lines = fp.readlines()
@@ -52,7 +53,7 @@ for line in lines:
 fp.close()
 nvanes = len(vanes)
 
-print("### writing do2.pro")
+print("### writing pro/do2.pro")
 fp = open('do2.pro','w')
 fp.write('offline,"%s"\n' % project)
 for v in vanes:
@@ -65,7 +66,7 @@ print("### gbtidl do2.pro > do2.log")
 os.system('gbtidl do2.pro > do2.log')
 
 
-print("### parsing do2.log to find the tsys lines for the %d VANES" % nvanes)
+print("### parsing pro/do2.log to find the tsys lines for the %d VANES" % nvanes)
 fp = open("do2.log")
 lines = fp.readlines()
 grab = False
@@ -81,10 +82,10 @@ for line in lines:
 fp.close()
 
 
-print("### writing %s.tsys with %d vanes" % (project,nvanes))
+print("### writing pro/%s.tsys with %d vanes" % (project,nvanes))
 fp = open("%s.tsys" % project, "w")
 fp.write("#  %s\n" % project)
-fp.write("#     SCAN       Tsys_mean       Tsys_rms        Tsys_min        Tsys_max\n")
+fp.write("#   SCAN       Tsys_mean       Tsys_rms        Tsys_min        Tsys_max\n")
 for t in tsys:
     fp.write(t)
 fp.close()

@@ -1,5 +1,20 @@
 #! /usr/bin/env python
 #
+#      compute <Tsys> for all VANES in a GBT session
+
+"""
+   Example Usage:
+       ./tsys.py AGBT21B_024_06
+
+   Produces pro/AGBT21B_024_06.tsys which looks something like this:
+
+      17       181.86916       14.323252       158.81550       216.11503
+      54       178.42336       13.545066       155.68764       210.57443
+      61       180.99135       14.369497       156.98510       214.64585
+      98       183.66805       14.172011       159.27379       217.18325
+     105       165.61667       16.774871       146.14036       216.92920
+     142       169.82475       17.154855       149.82684       222.31952
+"""
 
 import os
 import sys
@@ -69,6 +84,7 @@ fp.close()
 print("### writing %s.tsys with %d vanes" % (project,nvanes))
 fp = open("%s.tsys" % project, "w")
 fp.write("#  %s\n" % project)
+fp.write("#     SCAN       Tsys_mean       Tsys_rms        Tsys_min        Tsys_max\n")
 for t in tsys:
     fp.write(t)
 fp.close()

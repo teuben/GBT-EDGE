@@ -15,83 +15,85 @@
       98       183.66805       14.172011       159.27379       217.18325
      105       165.61667       16.774871       146.14036       216.92920
      142       169.82475       17.154855       149.82684       222.31952
+
+    Timing:  AGBT21B_024_02 took 38 mins on fourier  (29 VANE's)
 """
 
 import os
 import sys
 
-project = sys.argv[1]
-#  rawdata/project must exist, as a check
-#
 
-#                  our GBTIDL procedures live in pro/
-print("### Working in pro")
-os.chdir('pro')
+for project in sys.argv[1:]:
+    #  rawdata/project must exist, as a check
 
-
-print("### writing pro/do1.pro to set the summary")
-fp = open('do1.pro','w')
-fp.write('offline,"%s"\n' % project)
-fp.write('summary,"%s.summary"\n' % project)
-fp.write('exit\n')
-fp.close()
+    #                  our GBTIDL procedures live in pro/
+    print("### Working in pro")
+    os.chdir('pro')
 
 
-print("### gbtidl do1.pro > do1.log")
-os.system('gbtidl do1.pro > do1.log')
+    print("### writing pro/do1.pro to set the summary")
+    fp = open('do1.pro','w')
+    fp.write('offline,"%s"\n' % project)
+    fp.write('summary,"%s.summary"\n' % project)
+    fp.write('exit\n')
+    fp.close()
 
 
-print("### parsing pro/%s.summary to find the VANE scans" % project)
-vanes = []
-fp = open("%s.summary" % project)
-lines = fp.readlines()
-for line in lines:
-    words = line.strip().split()
-    if len(words) > 2:
-        if words[1] == 'VANE':
-            vanes.append(words[0])
-fp.close()
-nvanes = len(vanes)
-
-print("### writing pro/do2.pro")
-fp = open('do2.pro','w')
-fp.write('offline,"%s"\n' % project)
-for v in vanes:
-    fp.write('vanecal2,%s\n' % v)
-fp.write('exit\n')
-fp.close()
+    print("### gbtidl do1.pro > do1.log")
+    os.system('gbtidl do1.pro > do1.log')
 
 
-print("### gbtidl do2.pro > do2.log")
-os.system('gbtidl do2.pro > do2.log')
+    print("### parsing pro/%s.summary to find the VANE scans" % project)
+    vanes = []
+    fp = open("%s.summary" % project)
+    lines = fp.readlines()
+    for line in lines:
+        words = line.strip().split()
+        if len(words) > 2:
+            if words[1] == 'VANE':
+                vanes.append(words[0])
+    fp.close()
+    nvanes = len(vanes)
+
+    print("### writing pro/do2.pro")
+    fp = open('do2.pro','w')
+    fp.write('offline,"%s"\n' % project)
+    for v in vanes:
+        fp.write('vanecal2,%s\n' % v)
+    fp.write('exit\n')
+    fp.close()
 
 
-print("### parsing pro/do2.log to find the tsys lines for the %d VANES" % nvanes)
-fp = open("do2.log")
-lines = fp.readlines()
-grab = False
-tsys = []
-for line in lines:
-    words = line.strip().split()
-    if len(words) > 2:
-        if grab:
-            tsys.append(line)
-            grab = False
-        if words[0][:4] == 'Tatm':
-            grab = True
-fp.close()
+    print("### gbtidl do2.pro > do2.log")
+    os.system('gbtidl do2.pro > do2.log')
 
 
-print("### writing pro/%s.tsys with %d vanes" % (project,nvanes))
-fp = open("%s.tsys" % project, "w")
-fp.write("#  %s\n" % project)
-fp.write("#   SCAN       Tsys_mean       Tsys_rms        Tsys_min        Tsys_max\n")
-for t in tsys:
-    fp.write(t)
-fp.close()
+    print("### parsing pro/do2.log to find the tsys lines for the %d VANES" % nvanes)
+    fp = open("do2.log")
+    lines = fp.readlines()
+    grab = False
+    tsys = []
+    for line in lines:
+        words = line.strip().split()
+        if len(words) > 2:
+            if grab:
+                tsys.append(line)
+                grab = False
+            if words[0][:4] == 'Tatm':
+                grab = True
+    fp.close()
 
 
+    print("### writing pro/%s.tsys with %d vanes" % (project,nvanes))
+    fp = open("%s.tsys" % project, "w")
+    fp.write("#  %s\n" % project)
+    fp.write("#   SCAN       Tsys_mean       Tsys_rms        Tsys_min        Tsys_max\n")
+    for t in tsys:
+        fp.write(t)
+    fp.close()
 
+
+print("All done!")
 
 
 """

@@ -18,11 +18,11 @@ fp = open('do1.pro','w')
 fp.write('offline,"%s"\n' % project)
 fp.write('summary,"%s.summary"\n' % project)
 fp.write('exit\n')
-fp.close
+fp.close()
 
 
-print("### gbtidl do1.pro")
-os.system('gbtidl do1.pro')
+print("### gbtidl do1.pro > do1.log")
+os.system('gbtidl do1.pro > do1.log')
 
 
 print("### parsing %s.summary to find the VANE scans" % project)
@@ -64,7 +64,6 @@ for line in lines:
         if words[0][:4] == 'Tatm':
             grab = True
 fp.close()
-print(tsys)
 
 
 print("### writing %s.tsys with %d vanes" % (project,nvanes))

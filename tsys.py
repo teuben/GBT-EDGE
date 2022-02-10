@@ -22,13 +22,12 @@
 import os
 import sys
 
+#                  our GBTIDL procedures live in pro/
+print("### Working in pro")
+os.chdir('pro')
 
 for project in sys.argv[1:]:
-    #  rawdata/project must exist, as a check
-
-    #                  our GBTIDL procedures live in pro/
-    print("### Working in pro")
-    os.chdir('pro')
+    #  @todo rawdata/project must exist, as a check
 
 
     print("### writing pro/do1.pro to set the summary")

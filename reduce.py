@@ -75,11 +75,18 @@ def edgegrid(galaxy, badfeed=[], maskfile=None):
     # Erik's original
     smooth_v = 1
     smooth_xy = 1.3
-    # default pipeline 
+    # do a bit
+    smooth_v = 1
+    smooth_xy = 1
+    # default smooth pipeline 
+    smooth_v = 3
+    smooth_xy = 3
+    # do nothing
+    smooth_v = 0
+    smooth_xy = 0
+    # default quicklook pipeline 
     smooth_v = 2
     smooth_xy = 2
-    
-    # maskfle = None       # this case lower noise 12 mK -> 8 mK
 
     griddata(filelist,
              startChannel=edgetrim,

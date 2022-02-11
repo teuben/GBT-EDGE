@@ -4,7 +4,7 @@
 
 """
    Example Usage:
-       ./tsys.py AGBT21B_024_06
+       ./tsys.py AGBT21B_024_06 
 
    Produces pro/AGBT21B_024_06.tsys which looks something like this:
 
@@ -17,6 +17,8 @@
      142       169.82475       17.154855       149.82684       222.31952
 
     Timing:  AGBT21B_024_02 took 38 mins on fourier  (29 VANE's)
+
+    Multiple sessions can be given in the command line arguments
 """
 
 import os
@@ -28,6 +30,7 @@ os.chdir('pro')
 
 for project in sys.argv[1:]:
     #  @todo rawdata/project must exist, as a check
+    print("### Working on %s" % project)
 
 
     print("### writing pro/do1.pro to set the summary")

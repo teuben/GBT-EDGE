@@ -51,6 +51,7 @@ for i=0,nfd-1 do begin
   subtract,2,1
   divide,0,1
   ; print,'fdnum, beam, Tsys*[K]: ',i,!g.s[0].feed,tcal/median(getdata(0))
+<<<<<<< HEAD
   tsys  = tcal/median(getdata(0))
   tsys1 = tsys1 + tsys1
   tsys2 = tsys2 + tsys1*tsys1
@@ -59,6 +60,16 @@ for i=0,nfd-1 do begin
 endfor
 ;print,'Tcal, Twarm, tatm:',tcal,twarm,tatm
 tsys_m = tsys1/nfd
+=======
+  tsys1 = tcal/median(getdata(0))
+  tsys  = tsys + tsys1
+  tsys2 = tsys2 + tsys1*tsys1
+  if (tsys1 lt tsys_min) then tsys_min = tsys1
+  if (tsys1 gt tsys_max) then tsys_max = tsys1  
+endfor
+;print,'Tcal, Twarm, tatm:',tcal,twarm,tatm
+tsys_m = tsys/nfd
+>>>>>>> 7fccf044cf19dcf3203be0f97ac26c3ee94bc041
 tsys_s = sqrt(tsys2/nfd - tsys_m*tsys_m)
 print,scan1,tsys_m,tsys_s,tsys_min,tsys_max
 return

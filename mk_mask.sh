@@ -19,6 +19,9 @@
 #     ./mk_mask.sh refmap=UGC09777/UGC09777_12CO_rebase3_smooth2_hanning2.fits  mask=masks/mask_UGC09777.fits  inc=60 pa=320 vsys=4663 v1=200 r1=20
 #     ./mk_mask.sh refmap=NGC6132/NGC6132_12CO_rebase3_smooth2_hanning2.fits    mask=masks/mask_NGC6132.fits   inc=60 pa=125 vsys=4986 v1=200 r1=20
 #     ./mk_mask.sh refmap=NGC6132/NGC6132_12CO_rebase3_smooth2_hanning2.fits    mask=masks/mask_NGC6132.fits   inc=60 pa=305 vsys=4986 v1=200 r1=20 better
+#
+#     ./mk_mask.sh refmap=IC0674/IC0674_12CO_rebase3_smooth2_hanning2.fits    mask=masks/mask_IC0674.fits   inc=50 pa=117 vsys=7498 v1=200 r1=20
+#     ./mk_mask.sh refmap=IC0674/IC0674_12CO_rebase3_smooth2_hanning2.fits    mask=masks/mask_IC0674.fits   inc=50 pa=297 vsys=7498 v1=200 r1=20 
 
 
 #

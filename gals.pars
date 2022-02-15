@@ -10,19 +10,19 @@
 NGC0001   1    67   101  #  65,102 #  5 Msun/yr    clear double horn, SN ~ 10  rms=0.025292  0.023344
 NGC0001   1    23    57  #  21,58  #  vlsr 4485.7     good for mk_mask.sh
 
-UGC01659  1   117   151            #  3 Msun/yr    weak, SN ~ 4   rms=0.025292  slightly NE of center
+UGC01659  1   117   151            #  3 Msun/yr    weak, SN ~ 4    slightly NE of center
 UGC01659  1   161   195            #  8195.4
 
 # 211
-UGC02239  1   214   248            #  0.8 Msun/yr    weak, if any  rms=0.023122
+UGC02239  1   214   248            #  0.8 Msun/yr    weak
 UGC02239  2   213   247            #  4776.1 
 
 # 18-56  a.k.a. Arp 282
-NGC0169   2    20    54            #  3 Msun/yr   clear, SN~10   rms=0.024697, one side only?
+NGC0169   2    20    54            #  3 Msun/yr   clear, SN~10     one side only?
 NGC0169   2    64    98            #  4598.2      
 
 # 123-161  167-205
-NGC0932   2   125   159            #  0.4 Msun/yr    weak, if any   rms=0.025292
+NGC0932   2   125   159            #  0.4 Msun/yr    weak, messy
 NGC0932   2   169   203            #  4072.8
 
 # 292-330
@@ -200,6 +200,16 @@ NGC6132  18  290 324      # logSFR  = 0.3    maybe just maybe
 NGC6132  18  334 368
 
 
+
+# session 19
+
+# 24-62  68-106
+NGC5376   19    26   60     # logSFR=-0.1    maybe
+NGC5376   19    70  104
+
+#  112-150 
+NGC5267   19   114  148     # logSFR=0.2
+NGC5267   19   158 192
 
 
 

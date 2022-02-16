@@ -87,7 +87,7 @@ def edgegrid(galaxy, badfeed=[], maskfile=None):
     # default quicklook pipeline 
     smooth_v = 2
     smooth_xy = 2
-
+    
     griddata(filelist,
              startChannel=edgetrim,
              endChannel=1024-edgetrim,
@@ -209,7 +209,7 @@ def main(args):
             print("Usage: %s [-h] [-s] [[-M] [-f f1,f2,...] galaxy [galaxy ...]" % sys.argv[0])
             print("  -h      help")
             print("  -s      skip scan building (assumed you've done it before).")
-            print("  -f      comma separated list of bad feeds")
+            print("  -f      comma separated list of bad feeds (0-based numbers)")
             print("  -M      add masking (needs special masks/mask_GAL.fits file)")
             print("  galaxy  galaxy name(s), e.g. NGC0001, as they appear in gals.pars")
             continue

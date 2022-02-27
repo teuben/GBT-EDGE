@@ -21,9 +21,13 @@
 #     ./mk_mask.sh refmap=NGC6132/NGC6132_12CO_rebase3_smooth2_hanning2.fits    mask=masks/mask_NGC6132.fits   inc=60 pa=305 vsys=4986 v1=200 r1=20 better
 #
 #     ./mk_mask.sh refmap=IC0674/IC0674_12CO_rebase3_smooth2_hanning2.fits    mask=masks/mask_IC0674.fits   inc=50 pa=117 vsys=7498 v1=200 r1=20
-#     ./mk_mask.sh refmap=IC0674/IC0674_12CO_rebase3_smooth2_hanning2.fits    mask=masks/mask_IC0674.fits   inc=50 pa=297 vsys=7498 v1=200 r1=20 
-
-
+#     ./mk_mask.sh refmap=IC0674/IC0674_12CO_rebase3_smooth2_hanning2.fits    mask=masks/mask_IC0674.fits   inc=50 pa=297 vsys=7498 v1=200 r1=20
+#
+#     ./mk_mask.sh refmap=UGC04136/UGC04136_12CO_rebase3_smooth2_hanning2.fits    mask=masks/mask_UGC04136.fits   inc=77 pa=140 vsys=6645 v1=200 r1=20 
+#     ./mk_mask.sh refmap=UGC04136/UGC04136_12CO_rebase3_smooth2_hanning2.fits    mask=masks/mask_UGC04136.fits   inc=77 pa=320 vsys=6645 v1=200 r1=20
+#
+#     ./mk_mask.sh refmap=NGC2596/NGC2596_12CO_rebase3_smooth2_hanning2.fits    mask=masks/mask_NGC2596.fits   inc=65 pa=60 vsys=5926 v1=200 r1=20 
+    
 #
 # From https://www.astro.umd.edu/~bolatto/EDGE/data/galaxy_parameters.dat
 

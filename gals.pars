@@ -238,3 +238,24 @@ NGC5888   21  264  298
 ###    NOTE !!!
 ###    any galaxies in this list, and not summarized in summary.txt will not get listed by do_all_stats
 
+# session 22
+
+# 103-141
+UGC04136     22  105  139         # logSFR =0.9
+
+
+# 149-187    188-226    notice no pointing between !!
+NGC2596     22   151 185     #   logSFR=0.7     CCW  PA~60  INC~65
+NGC2596     22   190 224     #  rms=8.9 (no mask)    rms=6.3  (60)     
+  
+# session 23
+# 24-62 (bad?)    71-109
+UGC9663    23  117  151     #  logSFR=-0.6
+UGC9663    23  73  107      #  large fraction of flagged scans (10-15)
+
+# 115-153   171-209
+UGC10097   23  117  151            # logSFR=0.2
+UGC10097   23  173  207
+
+# 215-
+UGC10905  23 217 251           # logSFR=0.2

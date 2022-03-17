@@ -14,15 +14,15 @@ dec0 = 27.708083
 
 ra0 = 1.8144539
 dec0 = 27.7091176
-radmax = 5
+size = 10
 
 if len(sys.argv) < 7:
-    print("Usage %s  ra dec radius(arcsec)  dra ddec sdfitsfile(s)" % sys.argv[0])
+    print("Usage %s  ra dec size(arcsec)  dra ddec sdfitsfile(s)" % sys.argv[0])
     sys.exit(0)
 
 ra0    = float(sys.argv[1])
 dec0   = float(sys.argv[2])
-radmax = float(sys.argv[3])
+size   = float(sys.argv[3])
 dra    = float(sys.argv[4])
 ddec   = float(sys.argv[5])
 
@@ -31,10 +31,10 @@ ddec   = float(sys.argv[5])
 cosd0 = np.cos(dec0*np.pi/180)
 dec0  = dec0 + ddec/3600.0
 ra0   = ra0 + dra/3600.0/cosd0
+radmax = size / 2 /  3600.0
 nchan = 0
 edge = 50
 c = 299792.458
-radmax = radmax / 3600
 
 plt.figure()
 
@@ -52,7 +52,8 @@ for ff in sys.argv[6:]:
         spec = np.zeros(nchan)
         freq = (chan - crpix1)  * cdelt1 + crval1
         vlsr = (1-freq/restfr)*c
-        nspec = 0 
+        nspec = 0
+        gal = ff.split('_')[0]
         print("Found nchan",nchan," channels ",vlsr[1]-vlsr[0])
     ra = d2['CRVAL2']
     dec = d2['CRVAL3']
@@ -69,7 +70,7 @@ spec = 1000 * spec / nspec
 plt.plot(vlsr[edge:-edge], spec[edge:-edge])
 plt.xlabel('Vrad (km/s)')
 plt.ylabel('T_A* (mK)')
-plt.title('NGC0001 @ %g %g rad %g"' % (ra0,dec0,radmax*3600))
+plt.title('%s @ %g %g size %g"' % (gal,ra0,dec0,size))
 plt.show()
 
 # @todo:   weight by Tsys

@@ -36,8 +36,6 @@ nchan = 0
 edge = 50
 c = 299792.458
 
-plt.figure()
-
 for ff in sys.argv[6:]:
     hdu = fits.open(ff)
     d2 = hdu[1].data
@@ -67,10 +65,22 @@ for ff in sys.argv[6:]:
     spec = spec + d2['DATA'][idx].sum(axis=0)
 spec = 1000 * spec / nspec
 
-plt.plot(vlsr[edge:-edge], spec[edge:-edge])
-plt.xlabel('Vrad (km/s)')
-plt.ylabel('T_A* (mK)')
-plt.title('%s @ %g %g size %g"' % (gal,ra0,dec0,size))
-plt.show()
+tab = "plot_spectrum.txt"
+fp = open(tab,"w")
+for (v,s) in zip(vlsr[edge:-edge], spec[edge:-edge]):
+    fp.write("%g %g\n" % (v,s))
+fp.close()
+print("Wrote %s average of %d spectra" % (tab,nspec))
+
+
+if True:
+    plt.figure()
+    plt.plot(vlsr[edge:-edge], spec[edge:-edge])
+    plt.xlabel('Vrad (km/s)')
+    plt.ylabel('T_A* (mK)')
+    plt.title('%s @ %g %g size %g"' % (gal,ra0,dec0,size))
+    plt.show()
+
+
 
 # @todo:   weight by Tsys

@@ -79,6 +79,7 @@ if True:
     plt.xlabel('Vrad (km/s)')
     plt.ylabel('T_A* (mK)')
     plt.title('%s @ %g %g size %g"' % (gal,ra0,dec0,size))
+    plt.xlim([vlsr[-edge],vlsr[edge]])
     plt.show()
 
 

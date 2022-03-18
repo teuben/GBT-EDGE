@@ -29,6 +29,7 @@
 #     ./mk_mask.sh refmap=NGC2596/NGC2596_12CO_rebase3_smooth2_hanning2.fits    mask=masks/mask_NGC2596.fits   inc=65 pa=60 vsys=5926 v1=200 r1=20 
     
 #
+# pretty maps https://cseligman.com/text/atlas
 # From https://www.astro.umd.edu/~bolatto/EDGE/data/galaxy_parameters.dat
 
 # NAME                   RA        DEC REFF_MAJ EPS PA

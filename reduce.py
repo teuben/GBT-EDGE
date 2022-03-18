@@ -41,7 +41,10 @@ def edgemask(galaxy, maskfile=None):
         maskname = '../masks/mask_{0}.fits'.format(galaxy)
         print("Reading default mask file %s" % maskname)
     else:
-        maskname = maskfile
+        if maskfile[0] == '/':
+            maskname = maskfile
+        else:
+            maskname = '../masks/' + maskfile
     buildmasks(maskname, galname=galaxy, outdir='./',
                setups=['12CO'], grow_v=20, grow_xy=3)
     # this writes a file   outdir + galname+'.12co.mask.fits'
@@ -78,7 +81,7 @@ def edgegrid(galaxy, badfeed=[], maskfile=None):
     # do a bit
     smooth_v = 1
     smooth_xy = 1
-    # default smooth pipeline 
+    # way too smooth pipeline 
     smooth_v = 3
     smooth_xy = 3
     # do nothing
@@ -87,6 +90,16 @@ def edgegrid(galaxy, badfeed=[], maskfile=None):
     # default quicklook pipeline 
     smooth_v = 2
     smooth_xy = 2
+    # Erik's original
+    smooth_v = 1
+    smooth_xy = 1.3
+    # Alberto's preference
+    smooth_v = 2
+    smooth_xy = 0
+    # default quicklook pipeline 
+    smooth_v = 2
+    smooth_xy = 2
+    
     
     griddata(filelist,
              startChannel=edgetrim,
@@ -184,13 +197,20 @@ def main(args):
     do_mask = False
     badfeed = []
     grabwild = False
+    grabmask = False
     do_seed = False
+    mask2   = None
     for gal in args:
         if grabwild:
             print("Warning: removing feeds '%s'" % gal)
             badfeed =  [int(x) for x in gal.split(',')]
             grabwild = False
             print("badfeeds",badfeed)
+            continue
+        if grabmask:
+            mask2 = gal
+            print("Warning: using mask '%s'" % mask2)
+            grabmask = False
             continue
         if gal == '-s':
             print("Warning: skipping accumulating scans, only doing gridding")
@@ -203,14 +223,16 @@ def main(args):
             do_mask = True
             continue
         if gal == '-m':
+            grabmask = True
             do_mask = True
             continue
         if gal == '-h':
-            print("Usage: %s [-h] [-s] [[-M] [-f f1,f2,...] galaxy [galaxy ...]" % sys.argv[0])
-            print("  -h      help")
-            print("  -s      skip scan building (assumed you've done it before).")
-            print("  -f      comma separated list of bad feeds (0-based numbers)")
-            print("  -M      add masking (needs special masks/mask_GAL.fits file)")
+            print("Usage: %s [-h] [-s] [-M] [-m mfile] [-f f1,f2,...] galaxy [galaxy ...]" % sys.argv[0])
+            print("  -h        help")
+            print("  -s        skip scan building (assumed you've done it before).")
+            print("  -f        comma separated list of bad feeds (0-based numbers)")
+            print("  -M        add masking (needs special masks/mask_GAL.fits file)")
+            print("  -m mfile  use masking file and deeper GAL/MASK/<results>")
             print("  galaxy  galaxy name(s), e.g. NGC0001, as they appear in gals.pars")
             continue
 
@@ -225,7 +247,7 @@ def main(args):
             os.makedirs(gal, exist_ok=True)
             os.chdir(gal)
             if do_mask:
-                maskfile = edgemask(gal)               # make mask file
+                maskfile = edgemask(gal, mask2)               # make mask file
                 print("Using mask from %s" % maskfile)
                 hdu = fits.open(maskfile)
                 maskstrategy=partial(SpatialSpectralMask, mask=hdu[0].data, wcs=wcs.WCS(hdu[0].header), offpct=50)
@@ -238,7 +260,7 @@ def main(args):
             edgegrid(gal, badfeed, maskfile)
             os.chdir('..')
         else:
-            print("Skipping %s: no entry found" % gal)
+            print("Skipping %s: no entry found in gals.pars" % gal)
 
 
 if __name__ == "__main__":

@@ -96,6 +96,28 @@ instructions](https://github.com/GBTSpectroscopy/degas/blob/master/README.md#loc
 go in more detail, our **Makefile** has some useful targets to aid in
 the setup.
 
+## Nod_Galaxy
+
+Example how to look at Tsys and Nod_Galaxy on NGC5908
+
+      offline,'AGBT21B_024_14'
+      vanecal,327
+      # shows Tsys in range 150-248 (previous RAmap)
+      # The NOD has scans 329-334
+      vanecal,329
+      # shows Tsys in range 184-242 (NOD)
+      # fdnum=0..15     4 and 7 are the ones used by us
+      argus_onoff,331,332,329,fdnum=4
+      argus_onoff,332,331,329,fdnum=4
+      argus_onoff,333,334,329,fdnum=4
+      argus_onoff,334,333,329,fdnum=4
+      # -> tsys=200
+      argus_onoff,331,332,329,fdnum=7
+      argus_onoff,332,331,329,fdnum=7
+      argus_onoff,333,334,329,fdnum=7
+      argus_onoff,334,333,329,fdnum=7
+      # -> tsys=203
+
 # Caveats/Issues
 
 Some of these issues will be worked on in  the code, and will disappear. See also https://github.com/teuben/GBT-EDGE/issues
@@ -144,6 +166,17 @@ Otherwise just be aware of the listed ones here:
 8. The use of the maskfile in griddata() and postprocess.cleansplit() seems not used. This makes the -s useful
    to experiment with the -f flag to remove feeds from the gridding stage.
 
+9. A script "rerun_parallel" has been prepared to allow simple reruns, in particular if you can run them
+   in parallel on a bigger machine:
+
+        OMP_NUM_THREADS=1 /usr/bin/time parallel --jobs 16 < rerun_parallel
+
+   this took XX minutes on the "lma" machine for 49 galaxies. Note this assumes the calibration has been run once.=
+   so the "-s" flag can be optimally used.
+   TBD:    bad beams cannot be edited out without removing the offending feed fits file!
+   
+
+
 
 # Important Files and Directories
 
@@ -154,6 +187,8 @@ Otherwise just be aware of the listed ones here:
        masks/        - here you need to place the mask_GAL.fits file (or symlink) for the -M flag
        rawdata/      - (symlink to) where the rawdata are stored
        weather/      - (symlink to) where the GBT Weather data are stored (with Coeff*.txt files)
+       astridlogs/   - keeps the astrid logs created with "getastridlog"
+       tsyslogs/     - keeps the tsys logs created with ./tsys.py
 
 and specific to being at GBT:
 

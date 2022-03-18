@@ -141,13 +141,15 @@ NGC3614   14   72    106
 NGC3614   14   116   150
 
 
-NGC5720    14   160   194
+NGC5720    14   160   194      #  PA ~ 140  INC ~ 55  - bar at 90deg from PA
 NGC5720    14   204   238
 
-
 #   this is crashing pipeline - reason unknown yet
-NGC5630    14   248   282
-NGC5630    14   292   326
+#NGC5630    14   248   282
+#NGC5630    14   292   326
+#   oopsie same source redone
+NGC5720    14   248   282
+NGC5720    14   292   326
 
 # session 15
 
@@ -213,8 +215,8 @@ NGC5267   19   158 192
 
 # session 20
 #   20-58  64-102
-NGC5954   20   22   56      # logSFR=0.2   whopping
-NGC5954   20   66   100
+#NGC5954   20   22   56      # logSFR=0.2   whopping
+#NGC5954   20   66   100
 
 
 NGC5888   20  110 144        # logSFR=0.4   nothing
@@ -235,8 +237,6 @@ NGC5987   21  165  199
 NGC5888   21  220  254    # maybe some weak now
 NGC5888   21  264  298
 
-###    NOTE !!!
-###    any galaxies in this list, and not summarized in summary.txt will not get listed by do_all_stats
 
 # session 22
 
@@ -250,12 +250,40 @@ NGC2596     22   190 224     #  rms=8.9 (no mask)    rms=6.3  (60)
   
 # session 23
 # 24-62 (bad?)    71-109
-UGC9663    23  117  151     #  logSFR=-0.6
-UGC9663    23  73  107      #  large fraction of flagged scans (10-15)
+UGC9663    23  26  60       #  logSFR=-0.6
+UGC9663    23  73  107      #  large fraction of flagged scans (10-15)    tsys 221 254
 
 # 115-153   171-209
-UGC10097   23  117  151            # logSFR=0.2
-UGC10097   23  173  207
+UGC10097   23  117  151            # logSFR=0.2       tsys 175 188
+UGC10097   23  173  207            #                  tsys 165 169
 
 # 215-
-UGC10905  23 217 251           # logSFR=0.2
+UGC10905  23 217 251           # logSFR=0.2    tsys 146  146
+
+# session 24
+
+# 24-62  68-103 (weird)
+UGC08231   24 26   60       # nothing obvious
+# UGC08231   24 70          # might try a one-sided calibration?
+
+# 109-147
+UGC9663  24    111  145
+
+# 153-191  197-235
+UGC9837  24    155  189
+UGC9837  24    199  233  
+
+# 241-279
+UGC10905 24    243  277
+
+
+
+# session 25
+
+NGC5216    25    13  47                    # logSFR = -1.1
+NGC5216    25    57  91
+NGC5216    25   101 135                    # oops, again
+
+###    NOTE !!!
+###    any galaxies in this list, and not summarized in summary.txt will not get listed by do_all_stats
+

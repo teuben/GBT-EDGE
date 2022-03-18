@@ -18,6 +18,7 @@ ext=12CO_rebase3_hanning1.fits
 ext=12CO_rebase3_smooth1.3_hanning1.fits
 ext=12CO_rebase3_smooth3_hanning3.fits
 ext=12CO_rebase3_hanning0.fits
+ext=12CO_rebase3_hanning2.fits
 ext=12CO_rebase3_smooth2_hanning2.fits
 cbf=0.4
 sum=summary.txt
@@ -63,7 +64,7 @@ echo "# Status summary of RMS stats of GBT EDGE QuickLook - produced via:   'mak
 echo "#   Galaxy_$ext is basis for the statistics"
 echo "#                                                                       technicaly <Tsys> = SUM(Tsys)/(N*sqrt(N))"
 echo "#   Galaxy      RMS [mK]  sratio($cbf)   pratio       S/N  Tsys                     <Tsys> <Tsys>/RMS   detection?"
-awk '{printf("%3d %-12s  %5.1f     %6.3f      %6.3f    %6.3f  %-25s  %5.1f %4.1f %s\n",NR,$1, 1000*$8, $12, ($10+$9)/($10-$9), $10/$8, $2, $3, $3/(1000*$8), $4  )}' $log
+awk '{printf("%3d %-12s  %5.1f     %6.3f      %6.3f    %6.3f  %-35s  %5.1f %4.1f %s\n",NR,$1, 1000*$8, $12, ($10+$9)/($10-$9), $10/$8, $2, $3, $3/(1000*$8), $4  )}' $log
 
 
 echo "#  last updated on $(date)" 

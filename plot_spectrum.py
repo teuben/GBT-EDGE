@@ -34,7 +34,6 @@ cosd0 = np.cos(dec0*np.pi/180)
 dec0  = dec0 + ddec/3600.0
 ra0   = ra0 + dra/3600.0/cosd0
 radmax = size / 2 /  3600.0
-nchan = 0
 edge = 50
 c = 299792.458
 
@@ -47,33 +46,29 @@ if hdu[0].header['NAXIS'] > 2:
     ds9 = 'fk5; circle(%.10f, %.10f, %g")'  % (ra0,dec0,size/2)
     print('DS9',ds9)
     spectrum = cube.subcube_from_ds9region(ds9).mean(axis=(1, 2))
-    spectrum = 1000 * spectrum
+    spec1 = 1000 * spectrum
 
     crpix3 = hdu[0].header['CRPIX3']
     crval3 = hdu[0].header['CRVAL3']
     cdelt3 = hdu[0].header['CDELT3']
     restfr = hdu[0].header['RESTFRQ']
     nchan = len(spectrum)
-    chan = np.arange(0,nchan)+1
-    vrad = (chan-crpix3) * cdelt3 + crval3
-    
-    # gal = ff.split('_')[0]
-    gal = ff
-    plt.figure()
-    plt.plot(vrad,spectrum)
-    plt.plot([vrad[0],vrad[-1]],[0,0],c='black')
-    plt.xlabel('Vrad (km/s)')
-    plt.ylabel('T_A* (mK)')
-    plt.title('%s @ %g %g size %g"' % (gal,ra0,dec0,size))
-    #plt.xlim([vlsr[-edge],vlsr[edge]])
-    plt.show()
+    chan  = np.arange(0,nchan)+1
+    vrad1 = (chan-crpix3) * cdelt3 + crval3
+    gal   = ff.split('_')[0]    
+    gal1  = ff
+    sdfits = sys.argv[7:]
+else:
+    spec1 = None
+    sdfits = sys.argv[6:]    
 
-    sys.exit(0)
-
+spec2 = None
+nspec = 0
+nchan = 0
 
 # if no cube, assume they are SDFITS file(s)
 
-for ff in sys.argv[6:]:
+for ff in sdfits:
     hdu = fits.open(ff)
     d2 = hdu[1].data
     crpix1 = d2['CRPIX1'][0]
@@ -84,14 +79,14 @@ for ff in sys.argv[6:]:
     tsys   = d2['TSYS'][0]
     if nchan == 0:
         nchan = len(d2['DATA'][0])
-        chan = np.arange(0,nchan) + 1
-        spec = np.zeros(nchan)
-        freq = (chan - crpix1)  * cdelt1 + crval1
-        vlsr = (1-freq/restfr)*c
+        chan  = np.arange(0,nchan) + 1
+        spec2 = np.zeros(nchan)
+        freq  = (chan - crpix1)  * cdelt1 + crval1
+        vrad2 = (1-freq/restfr)*c
         nspec = 0
-        # gal = ff.split('_')[0]
-        gal = ff
-        print("Found nchan",nchan," channels ",vlsr[1]-vlsr[0])
+        gal   = ff.split('_')[0]
+        gal2  = ff
+        print("Found nchan",nchan," channels ",vrad2[1]-vrad2[0])
     ra = d2['CRVAL2']
     dec = d2['CRVAL3']
     idx2 = ra[ra==0]
@@ -99,29 +94,45 @@ for ff in sys.argv[6:]:
     rad = np.sqrt( (ra-ra0)**2 + (dec-dec0)**2)
     r2c = rad[rad<radmax]
     idx = np.where(rad<radmax)[0]
-    print(ff,len(idx),tsys,restfr,crval1,cdelt1,crpix1)
+    print(ff,len(idx),tsys)
     nspec = nspec + len(idx)
-    spec = spec + d2['DATA'][idx].sum(axis=0)
-spec = 1000 * spec / nspec
+    spec2 = spec2 + d2['DATA'][idx].sum(axis=0)
 
-tab = "plot_spectrum.txt"
-fp = open(tab,"w")
-for (v,s) in zip(vlsr[edge:-edge], spec[edge:-edge]):
-    fp.write("%g %g\n" % (v,s))
-fp.close()
-print("Wrote %s average of %d spectra" % (tab,nspec))
+if nspec > 0:
+    spec2 = 1000 * spec2 / nspec
+
+if False:    
+    tab = "plot_spectrum.txt"
+    fp = open(tab,"w")
+    for (v,s) in zip(vlsr[edge:-edge], spec[edge:-edge]):
+        fp.write("%g %g\n" % (v,s))
+    fp.close()
+    print("Wrote %s average of %d spectra" % (tab,nspec))
 
 
 if True:
     plt.figure()
-    plt.plot(vlsr[edge:-edge], spec[edge:-edge])
-    plt.plot([vlsr[0],vlsr[-1]], [0,0], c='black')
+    xlim = []
+    if spec1 != None:
+        plt.plot(vrad1,spec1,label=gal1)
+        xlim = [vrad1[0],vrad1[-1]]
+        plt.plot(xlim,[0,0],c='black')
+        
+    if nspec > 0:
+        plt.plot(vrad2[edge:-edge], spec2[edge:-edge],label=gal2)
+        plt.plot([vrad2[0],vrad2[-1]], [0,0], c='black')
+        if len(xlim) == 0:
+            xlim = [vrad2[0],vrad2[-1]]
+        
     plt.xlabel('Vrad (km/s)')
-    plt.ylabel('T_A* (mK)')
-    plt.title('%s @ %g %g size %g"' % (gal,ra0,dec0,size))
-    plt.xlim([vlsr[-edge],vlsr[edge]])
+    plt.ylabel('T (mK)')
+    if xlim[0] < xlim[1]:
+        plt.xlim(xlim)
+    else:
+        plt.xlim([xlim[-1],xlim[0]])
+    plt.title('%s @ %f %f size %g"' % (gal,ra0,dec0,size))
+    plt.legend()
     plt.show()
-
 
 
 # @todo:   weight by Tsys

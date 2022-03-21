@@ -51,7 +51,10 @@ if hdu[0].header['NAXIS'] > 2:
     crpix3 = hdu[0].header['CRPIX3']
     crval3 = hdu[0].header['CRVAL3']
     cdelt3 = hdu[0].header['CDELT3']
-    restfr = hdu[0].header['RESTFRQ']
+    if 'RESTFRQ' in hdu[0].header:
+        restfr = hdu[0].header['RESTFRQ']
+    elif 'RESTFREQ' in hdu[0].header:
+        restfr = hdu[0].header['RESTFREQ']        
     nchan = len(spectrum)
     chan  = np.arange(0,nchan)+1
     vrad1 = (chan-crpix3) * cdelt3 + crval3
@@ -101,7 +104,7 @@ for ff in sdfits:
 if nspec > 0:
     spec2 = 1000 * spec2 / nspec
 
-if True:
+if nspec > 0:
     tab = "plot_spectrum.txt"
     fp = open(tab,"w")
     for (v,s) in zip(vrad2[edge:-edge], spec2[edge:-edge]):

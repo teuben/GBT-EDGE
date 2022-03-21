@@ -101,10 +101,10 @@ for ff in sdfits:
 if nspec > 0:
     spec2 = 1000 * spec2 / nspec
 
-if False:    
+if True:
     tab = "plot_spectrum.txt"
     fp = open(tab,"w")
-    for (v,s) in zip(vlsr[edge:-edge], spec[edge:-edge]):
+    for (v,s) in zip(vrad2[edge:-edge], spec2[edge:-edge]):
         fp.write("%g %g\n" % (v,s))
     fp.close()
     print("Wrote %s average of %d spectra" % (tab,nspec))

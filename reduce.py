@@ -30,7 +30,12 @@ from gbtpipe.ArgusCal import calscans, ZoneOfAvoidance, SpatialSpectralMask
 from gbtpipe import griddata
 from degas import postprocess
 from degas.masking import buildmasks
-# from docopt import docopt
+#from astropy.wcs import wcs
+#from astropy.io import fits
+#from skimage import morphology as morph
+#from spectral_cube import SpectralCube
+#from radio_beam import Beam
+import argparse
 
 def edgemask(galaxy, maskfile=None):
     """
@@ -46,7 +51,7 @@ def edgemask(galaxy, maskfile=None):
         else:
             maskname = '../masks/' + maskfile
     buildmasks(maskname, galname=galaxy, outdir='./',
-               setups=['12CO'], grow_v=20, grow_xy=3)
+               setups=['12CO'], grow_v=50, grow_xy=2)
     # this writes a file   outdir + galname+'.12co.mask.fits'
     # but it should return that filename
     return galaxy+'.12co.mask.fits'
@@ -93,27 +98,27 @@ def edgegrid(galaxy, badfeed=[], maskfile=None):
     # Erik's original
     smooth_v = 1
     smooth_xy = 1.3
-    # Alberto's preference
-    smooth_v = 2
-    smooth_xy = 0
     # default quicklook pipeline 
     smooth_v = 2
     smooth_xy = 2
+    # Alberto's preference
+    smooth_v = 2
+    smooth_xy = 0
     
     
     griddata(filelist,
              startChannel=edgetrim,
              endChannel=1024-edgetrim,
              outdir='.',
-             flagSpike=True, spikeThresh=3,
+             flagSpike=True, spikeThresh=1.5,
              flagRMS=True,  plotTimeSeries=plotTimeSeries,
-             flagRipple=True, rippleThresh=1.2,
+             flagRipple=True, rippleThresh=1.3,
              pixPerBeam=4.0,
-             rmsThresh=1.1,
+             rmsThresh=1.3,
              robust=False,
              blorder=scanblorder,
              plotsubdir='timeseries/',
-             windowStrategy='simple',
+             windowStrategy='cubemask',
              maskfile=maskfile,
              outname=filename)
 
@@ -121,6 +126,7 @@ def edgegrid(galaxy, badfeed=[], maskfile=None):
                            spectralSetup='12CO',
                            HanningLoops=smooth_v,           # was: 1
                            spatialSmooth=smooth_xy,         # was: 1.3
+                           Vwindow=1500*u.km/u.s,
                            CatalogFile='../GBTEDGE.cat',
                            maskfile=maskfile,
                            blorder=posblorder)

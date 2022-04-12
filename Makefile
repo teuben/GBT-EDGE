@@ -30,6 +30,7 @@ URL2  = https://github.com/GBTSpectroscopy/degas
 URL3  = https://github.com/astroumd/lmtoy
 URL4  = https://github.com/teuben/maskmoment
 URL5  = https://github.com/tonywong94/edge_pydb
+URL6  = https://github.com/richteague/bettermoments
 
 .PHONY:  help install build
 

@@ -37,6 +37,8 @@ from degas.masking import buildmasks
 #from radio_beam import Beam
 import argparse
 
+__version__ = "14-apr-2022"
+
 def edgemask(galaxy, maskfile=None):
     """
     based on an input mask file (0,1) this will use
@@ -102,12 +104,12 @@ def edgegrid(galaxy, badfeed=[], maskfile=None):
     # Erik's original
     smooth_v = 1
     smooth_xy = 1.3
-    # Alberto's preference
-    smooth_v = 2
-    smooth_xy = 0
     # default quicklook pipeline 
     smooth_v = 2
     smooth_xy = 2
+    # Alberto's preference
+    smooth_v = 2
+    smooth_xy = 0
     
     griddata(filelist,
              startChannel=edgetrim,
@@ -228,7 +230,7 @@ def main(args):
             grabmask = False
             continue
         if gal == '-s':
-            print("Warning: skipping accumulating scans, only doing gridding")
+            print("Warning: skipping accumulating scans, only doing gridding. Affects mask")
             do_scan = False
             continue
         if gal == '-f':
@@ -243,8 +245,10 @@ def main(args):
             continue
         if gal == '-h':
             print("Usage: %s [-h] [-s] [-M] [-m mfile] [-f f1,f2,...] galaxy [galaxy ...]" % sys.argv[0])
+            print("Version: %s" % __version__)
             print("  -h        help")
             print("  -s        skip scan building (assumed you've done it before).")
+            print("            if mask changed, do not use -s")
             print("  -f        comma separated list of bad feeds (0-based numbers)")
             print("  -M        add masking (needs special masks/mask_GAL.fits file)")
             print("  -m mfile  use masking file and deeper GAL/MASK/<results>")

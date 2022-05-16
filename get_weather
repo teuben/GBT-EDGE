@@ -2,12 +2,20 @@
 #
 #   for your amusement... make a movie of the weather predictions
 #
+#
+#   Typical use:
+#   find the md5 of the last one,and run
+#      ./get_weather pmd5=1b0a83ec2c433bbdb143fc502a6f60a7
+#   in order to prevent a duplicate file
 
 url=https://www.gb.nrao.edu/~rmaddale/Weather/DSSOverview.jpg
 jpg=DSSOverview.jpg
-sleep=10
-
+sleep=600
 pmd5=0
+
+for arg in $*; do
+    export $arg
+done
 
 while true; do
     wget -q $url

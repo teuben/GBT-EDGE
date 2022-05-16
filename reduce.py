@@ -26,7 +26,7 @@ from astropy.coordinates import SkyCoord
 from astropy.wcs import wcs
 from astropy.io import fits
 import astropy.units as u
-from gbtpipe.ArgusCal import calscans, ZoneOfAvoidance, SpatialSpectralMask
+from gbtpipe.ArgusCal import calscans, ZoneOfAvoidance,SpatialMask, SpatialSpectralMask, NoMask
 from gbtpipe import griddata
 from degas import postprocess
 from degas.masking import buildmasks
@@ -80,6 +80,10 @@ def edgegrid(galaxy, badfeed=[], maskfile=None):
     plotTimeSeries=True
     scanblorder=7
     posblorder=3
+    if maskfile == None:
+        windowStrategy='simple'
+    else:
+        windowStrategy='cubemask'
     # Erik's original
     smooth_v = 1
     smooth_xy = 1.3
@@ -98,13 +102,12 @@ def edgegrid(galaxy, badfeed=[], maskfile=None):
     # Erik's original
     smooth_v = 1
     smooth_xy = 1.3
-    # default quicklook pipeline 
-    smooth_v = 2
-    smooth_xy = 2
     # Alberto's preference
     smooth_v = 2
     smooth_xy = 0
-    
+    # default quicklook pipeline 
+    smooth_v = 2
+    smooth_xy = 2
     
     griddata(filelist,
              startChannel=edgetrim,
@@ -118,7 +121,7 @@ def edgegrid(galaxy, badfeed=[], maskfile=None):
              robust=False,
              blorder=scanblorder,
              plotsubdir='timeseries/',
-             windowStrategy='cubemask',
+             windowStrategy=windowStrategy,
              maskfile=maskfile,
              outname=filename)
 
@@ -130,6 +133,12 @@ def edgegrid(galaxy, badfeed=[], maskfile=None):
                            CatalogFile='../GBTEDGE.cat',
                            maskfile=maskfile,
                            blorder=posblorder)
+
+    # @todo
+    #    s = SpectralCube.read(galaxy+'_12CO_rebase{0}_smooth1.3_hanning1.fits'.format(posblorder))
+    #   s2 = s.convolve_to(Beam(12*u.arcsec))
+    #   s2.write(galaxy+'_12CO_12arcsec.fits', overwrite=True)
+
 def galcenter(galaxy):
     """
     """
@@ -190,9 +199,9 @@ def my_calscans(gal, scan, maskstrategy, maskfile, pid='AGBT21B_024', rawdir='..
     refscans = scan[3]
     dirname  = '%s/%s_%02d/%s_%02d.raw.vegas' % (rawdir,pid,seq,pid,seq)
     if maskstrategy == None:
-        calscans(dirname, start=start, stop=stop, refscans=refscans, OffType='PCA',nProc=4, opacity=True)
+        calscans(dirname, start=start, stop=stop, refscans=refscans, OffType='PCA',nProc=4, opacity=True, varfrac=0.1)
     else:
-        calscans(dirname, start=start, stop=stop, refscans=refscans, OffType='PCA',nProc=4, opacity=True, OffSelector=maskstrategy)
+        calscans(dirname, start=start, stop=stop, refscans=refscans, OffType='PCA',nProc=4, opacity=True, OffSelector=maskstrategy, varfrac=0.1)
 
 
 def main(args):    
@@ -256,10 +265,13 @@ def main(args):
                 maskfile = edgemask(gal, mask2)               # make mask file
                 print("Using mask from %s" % maskfile)
                 hdu = fits.open(maskfile)
-                maskstrategy=partial(SpatialSpectralMask, mask=hdu[0].data, wcs=wcs.WCS(hdu[0].header), offpct=50)
+                mask = hdu[0].data 
+                #maskstrategy=partial(SpatialSpectralMask, mask=hdu[0].data, wcs=wcs.WCS(hdu[0].header), offpct=50)
+                maskstrategy=partial(SpatialMask, mask=np.any(mask, axis=0), wcs=wcs.WCS(hdu[0].header).celestial)
             else:
                 maskstrategy = None
                 maskfile = None
+            print('maskfile',maskfile)
             if do_scan:
                 for scan in scans:
                     my_calscans(gal, scan, maskstrategy, maskfile)

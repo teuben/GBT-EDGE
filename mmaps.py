@@ -42,7 +42,10 @@ def quadplot(basename, extmask=None):
 
 
 if __name__ == "__main__":
-    ext = "_12CO_rebase3_smooth2_hanning2"     # -e option?
+    ext = "_12CO_rebase3_hanning0"             # nothing
+    ext = "_12CO_rebase3_hanning2"             # Alberto
+    ext = "_12CO_rebase3_smooth1.3_hanning1"   # Erik
+    ext = "_12CO_rebase3_smooth2_hanning2"     # Peter's QuickLook
     print("Using extension name %s" % ext)
     
     for gal in sys.argv[1:]:

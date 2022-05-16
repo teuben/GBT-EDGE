@@ -31,6 +31,8 @@ URL3  = https://github.com/astroumd/lmtoy
 URL4  = https://github.com/teuben/maskmoment
 URL5  = https://github.com/tonywong94/edge_pydb
 URL6  = https://github.com/richteague/bettermoments
+URL7  = https://github.com/GreenBankObservatory/gbtgridder
+URL7a = https://github.com/teuben/gbtgridder
 
 .PHONY:  help install build
 
@@ -68,6 +70,9 @@ maskmoment:
 
 edge_pydb:
 	git clone $(URL5)
+
+gbtgridder:
+	git clone -b python3 $(URL7a)
 
 edge_env:
 	python3 -m venv edge_env
@@ -195,3 +200,5 @@ all:
 
 stats:
 	./do_all_stats > do_all_stats.log
+	cp do_all_stats.log stats.log
+	@echo Results in  stats.log

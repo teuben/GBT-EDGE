@@ -30,14 +30,12 @@ from gbtpipe.ArgusCal import calscans, ZoneOfAvoidance,SpatialMask, SpatialSpect
 from gbtpipe import griddata
 from degas import postprocess
 from degas.masking import buildmasks
-#from astropy.wcs import wcs
-#from astropy.io import fits
 #from skimage import morphology as morph
-#from spectral_cube import SpectralCube
-#from radio_beam import Beam
+from spectral_cube import SpectralCube
+from radio_beam import Beam
 import argparse
 
-__version__ = "14-apr-2022"
+__version__ = "24-may-2022"
 
 def edgemask(galaxy, maskfile=None):
     """
@@ -81,35 +79,29 @@ def edgegrid(galaxy, badfeed=[], maskfile=None):
     outdir='.'
     plotTimeSeries=True
     scanblorder=7
-    posblorder=3
+    posblorder=5
     if maskfile == None:
         windowStrategy='simple'
     else:
         windowStrategy='cubemask'
-    # Erik's original
-    smooth_v = 1
-    smooth_xy = 1.3
+    # example way too smooth pipeline 
+    smooth_v = 3
+    smooth_xy = 3
     # do a bit
     smooth_v = 1
     smooth_xy = 1
-    # way too smooth pipeline 
-    smooth_v = 3
-    smooth_xy = 3
     # do nothing
     smooth_v = 0
     smooth_xy = 0
-    # default quicklook pipeline 
+    # Alberto's preference
+    smooth_v = 2
+    smooth_xy = 0
+    # Peter's quicklook pipeline 
     smooth_v = 2
     smooth_xy = 2
     # Erik's original
     smooth_v = 1
     smooth_xy = 1.3
-    # default quicklook pipeline 
-    smooth_v = 2
-    smooth_xy = 2
-    # Alberto's preference
-    smooth_v = 2
-    smooth_xy = 0
     
     griddata(filelist,
              startChannel=edgetrim,
@@ -123,7 +115,7 @@ def edgegrid(galaxy, badfeed=[], maskfile=None):
              robust=False,
              blorder=scanblorder,
              plotsubdir='timeseries/',
-             windowStrategy=windowStrategy,
+             windowStrategy=windowStrategy,   # 'cubemask' or 'simple'
              maskfile=maskfile,
              outname=filename)
 
@@ -137,9 +129,9 @@ def edgegrid(galaxy, badfeed=[], maskfile=None):
                            blorder=posblorder)
 
     # @todo
-    #    s = SpectralCube.read(galaxy+'_12CO_rebase{0}_smooth1.3_hanning1.fits'.format(posblorder))
-    #   s2 = s.convolve_to(Beam(12*u.arcsec))
-    #   s2.write(galaxy+'_12CO_12arcsec.fits', overwrite=True)
+    s = SpectralCube.read(galaxy+'_12CO_rebase{0}_smooth1.3_hanning1.fits'.format(posblorder))
+    s2 = s.convolve_to(Beam(12*u.arcsec))
+    s2.write(galaxy+'_12CO_12arcsec.fits', overwrite=True)
 
 def galcenter(galaxy):
     """

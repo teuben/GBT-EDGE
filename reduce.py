@@ -17,7 +17,8 @@
 #    -smooth 2
 
 
-import os, sys
+import os
+import sys
 import glob
 import numpy as np
 from functools import partial
@@ -39,8 +40,8 @@ __version__ = "24-may-2022"
 
 def edgemask(galaxy, maskfile=None):
     """
-    based on an input mask file (0,1) this will use
-    gal_12CO.fits
+    based on an input mask file (0,1) this will use gal_12CO.fits
+    or a handpicked one if maskfile given
     """
     if maskfile == None:
         maskname = '../masks/mask_{0}.fits'.format(galaxy)
@@ -93,15 +94,15 @@ def edgegrid(galaxy, badfeed=[], maskfile=None):
     # do nothing
     smooth_v = 0
     smooth_xy = 0
-    # Alberto's preference
-    smooth_v = 2
-    smooth_xy = 0
     # Peter's quicklook pipeline 
     smooth_v = 2
     smooth_xy = 2
     # Erik's original
     smooth_v = 1
     smooth_xy = 1.3
+    # Alberto's preference
+    smooth_v = 2
+    smooth_xy = 0
     
     griddata(filelist,
              startChannel=edgetrim,
@@ -186,16 +187,19 @@ def getscans(gal, parfile='gals.pars'):
 
 def my_calscans(gal, scan, maskstrategy, maskfile, pid='AGBT21B_024', rawdir='../rawdata'):
     """
+    @todo    badfeeds=[] 
+xs
     """
     seq      = scan[0]
     start    = scan[1]
     stop     = scan[2]
     refscans = scan[3]
     dirname  = '%s/%s_%02d/%s_%02d.raw.vegas' % (rawdir,pid,seq,pid,seq)
+    OffType  = 'PCA'   # 'linefit'  'median'   'median2d'
     if maskstrategy == None:
-        calscans(dirname, start=start, stop=stop, refscans=refscans, OffType='PCA',nProc=4, opacity=True, varfrac=0.1)
+        calscans(dirname, start=start, stop=stop, refscans=refscans, OffType=OffType, nProc=1, opacity=True, varfrac=0.1)
     else:
-        calscans(dirname, start=start, stop=stop, refscans=refscans, OffType='PCA',nProc=4, opacity=True, OffSelector=maskstrategy, varfrac=0.1)
+        calscans(dirname, start=start, stop=stop, refscans=refscans, OffType=OffType, nProc=1, opacity=True, OffSelector=maskstrategy, varfrac=0.1)
 
 
 def main(args):    

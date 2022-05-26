@@ -19,9 +19,9 @@ OMP = OMP_NUM_THREADS=1
 SDIR = /home/sdfits
 WDIR = /users/rmaddale/Weather/ArchiveCoeffs
 
-# git directories we should have here
+# git directories we should have here and keep updated
 
-GIT_DIRS = gbtpipe degas maskmoment edge_pydb
+GIT_DIRS = gbtpipe degas maskmoment edge_pydb gbtgridder
 
 # URLs that we'll need
 

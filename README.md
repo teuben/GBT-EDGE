@@ -96,6 +96,18 @@ instructions](https://github.com/GBTSpectroscopy/degas/blob/master/README.md#loc
 go in more detail, our **Makefile** has some useful targets to aid in
 the setup.
 
+## Example
+
+      wget https://www.astro.umd.edu/~teuben/edge/data/AGBT21B_024_01.tar
+      wget https://www.astro.umd.edu/~teuben/edge/data/GBTWeather.tar.gz
+      mkdir rawdata
+      tar -C rawdata -xvf AGBT21B_024_01.tar
+      tar zxf GBTWeather.tar.gz
+      export GBTWEATHER=`pwd`/GBTWeather
+      ./reduce.py NGC0001
+
+the mask file is not here yet.
+
 ## Nod_Galaxy
 
 Example how to look at Tsys and Nod_Galaxy on NGC5908
@@ -144,6 +156,7 @@ Otherwise just be aware of the listed ones here:
 3. A few notes on CPU times: the **-s** flags makes the code run about 2x faster, but always inspect if the galaxy directory
    has the feed files that you expect! Using the weather information make the code
    run maybe 5% slower, not a huge effect. On fourier NGC0001 took about 10 mins, on my i5-1135G7 laptop 4 mins.
+   On LMA bruteforce3 took 6:39
 
 4. nProc (see code) doesn't seem to work for me.   Setting OMP_NUM_THREADS=1 actually seems to make the code run a bit faster.
 

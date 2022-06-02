@@ -1,5 +1,7 @@
-#   Geometry of galaxies to make a (NEMO) mask.   See mk_mask.sh
-#   Note:     for alt=* we are not sure what the correct PA is
+#   Geometry of galaxies to make a (NEMO) mask.   See mk_mask.sh for usage.
+#   Data are gathered from HyperLeda/NED/<google search>
+#
+#   Note:     for alt=* we are not sure what the correct PA is yet
 #
 # gal     VSYS     INC   PA_kin    r0    r1    v1    sig  alt
 #         km/s     deg    deg      asec  asec  km/s  km/s  ?

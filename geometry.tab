@@ -1,4 +1,5 @@
 #   Geometry of galaxies to make a (NEMO) mask.   See mk_mask.sh
+#   Note:     for alt=* we are not sure what the correct PA is
 #
 # gal     VSYS     INC   PA_kin    r0    r1    v1    sig  alt
 #         km/s     deg    deg      asec  asec  km/s  km/s  ?

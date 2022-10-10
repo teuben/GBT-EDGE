@@ -97,12 +97,15 @@ def edgegrid(galaxy, badfeed=[], maskfile=None):
     # Peter's quicklook pipeline 
     smooth_v = 2
     smooth_xy = 2
-    # Erik's original
-    smooth_v = 1
-    smooth_xy = 1.3
     # Alberto's preference
     smooth_v = 2
     smooth_xy = 0
+    # Erik's original
+    smooth_v = 1
+    smooth_xy = 1.3
+    # new trial
+    smooth_v = 2
+    smooth_xy = 1.3
     
     griddata(filelist,
              startChannel=edgetrim,
@@ -129,10 +132,11 @@ def edgegrid(galaxy, badfeed=[], maskfile=None):
                            maskfile=maskfile,
                            blorder=posblorder)
 
-    # @todo
-    s = SpectralCube.read(galaxy+'_12CO_rebase{0}_smooth1.3_hanning1.fits'.format(posblorder))
-    s2 = s.convolve_to(Beam(12*u.arcsec))
-    s2.write(galaxy+'_12CO_12arcsec.fits', overwrite=True)
+    # @todo - match with setting
+    if False:
+        s = SpectralCube.read(galaxy+'_12CO_rebase{0}_smooth1.3_hanning1.fits'.format(posblorder))
+        s2 = s.convolve_to(Beam(12*u.arcsec))
+        s2.write(galaxy+'_12CO_12arcsec.fits', overwrite=True)
 
 def galcenter(galaxy):
     """

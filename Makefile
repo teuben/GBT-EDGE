@@ -173,6 +173,16 @@ rsync:
 	@echo weather
 	-rsync -ahv --bwlimit=8000 $(WDIR)/Coeffs* $(REM)/GBTWeather
 
+#  this lenghty IDL based procedure computes the mean/rms/min/max for tsys for a given SEQ
+tsys:
+	./tsys.py AGBT21B_024_$(SEQ)
+	cp pro/AGBT21B_024_$(SEQ).tsys tsyslogs
+	@echo git commit -m new tsyslogs/AGBT21B_024_$(SEQ).tsys
+
+astrid:
+	(cd astridlogs; getastridlog AGBT21B_024_$(SEQ))
+	@echo git commit -m new astridlogs/AGBT21B_024_$(SEQ)_log.txt
+
 #  produce a sample edge.sh
 edge.sh:
 	@echo '#  this is a sample edge.sh file, edit as need be'

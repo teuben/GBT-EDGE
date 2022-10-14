@@ -1,6 +1,6 @@
 #  AGBT21B_024_27
 #   SCAN       Tsys_mean       Tsys_rms        Tsys_min        Tsys_max
-No data found at IFNUM:0 FDNUM:7 PLNUM:0 
+# No data found at IFNUM:0 FDNUM:7 PLNUM:0 
       23       196.43884       15.188245       173.05359       241.66088
       60       197.22428       15.270213       173.28992       242.37716
       67       199.75633       15.394903       175.61628       245.31579

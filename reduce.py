@@ -36,7 +36,7 @@ from spectral_cube import SpectralCube
 from radio_beam import Beam
 import argparse
 
-__version__ = "24-may-2022"
+__version__ = "10-oct-2022"
 
 def edgemask(galaxy, maskfile=None):
     """
@@ -155,13 +155,14 @@ def galcenter(galaxy):
                                 unit=(u.hourangle, u.deg))
     return(galcoord)
 
-def getscans(gal, parfile='gals.pars'):
+def getscans(gal, select=[], parfile='gals.pars'):
     """
 
     allowed formats:
        GAL  SEQ  START  STOP  REF1,REF2
        GAL  SEQ  START  STOP               #  cheating: REF1=START-2  REF2=STOP+1
     """
+    print("getscans: ",gal,select)
     scans = []
     fp = open(parfile)
     lines = fp.readlines()
@@ -178,15 +179,21 @@ def getscans(gal, parfile='gals.pars'):
             seq = int(w[1])
             start = int(w[2])
             stop = int(w[3])
-            if len(w) ==4:
+            if len(w) == 4:
                 refscans = [start-2, stop+1]
-            else:
+            elif len(w) == 5:
                 ss = w[4].split(',')
                 refscans = [int(ss[0]),int(ss[1])]
-            scans.append( (seq,start,stop,refscans) )
-            print('%s: found %s' % (gal,scans[-1])) 
+            else:
+                print("Skipping long line",line.strip())
+                continue
+            if len(select)==0 or seq in select:
+                scans.append( (seq,start,stop,refscans) )
+                print('%s: found %s' % (gal,scans[-1]))
+            else:
+                print('%s: skipping %s' % (gal,line))
         except:
-            print('Skipping parsing bad line: ',line)
+            print('Skipping bad line: ',line.strip())
     return scans
 
 def my_calscans(gal, scan, maskstrategy, maskfile, pid='AGBT21B_024', rawdir='../rawdata'):
@@ -215,13 +222,15 @@ def main(args):
     badfeed = []
     grabwild = False
     grabmask = False
+    grabseq  = False
     do_seed = False
     mask2   = None
+    seq = []
     for gal in args:
         if grabwild:
+            grabwild = False
             print("Warning: removing feeds '%s'" % gal)
             badfeed =  [int(x) for x in gal.split(',')]
-            grabwild = False
             print("badfeeds",badfeed)
             continue
         if grabmask:
@@ -229,12 +238,21 @@ def main(args):
             print("Warning: using mask '%s'" % mask2)
             grabmask = False
             continue
+        if grabseq:
+            grabseq = False
+            print("Warning: only using seq %s" % gal)
+            seq = [int(x) for x in gal.split(',')]
+            print("seq", seq)
+            continue
         if gal == '-s':
             print("Warning: skipping accumulating scans, only doing gridding. Affects mask")
             do_scan = False
             continue
         if gal == '-f':
             grabwild = True
+            continue
+        if gal == '-g':
+            grabseq = True
             continue
         if gal == '-M':
             do_mask = True
@@ -249,7 +267,8 @@ def main(args):
             print("  -h        help")
             print("  -s        skip scan building (assumed you've done it before).")
             print("            if mask changed, do not use -s")
-            print("  -f        comma separated list of bad feeds (0-based numbers)")
+            print("  -f f1,... comma separated list of bad feeds (0-based numbers)")
+            print("  -g g1,... comma separated list of good sessions (1,2,...)  [PJT only]")
             print("  -M        add masking (needs special masks/mask_GAL.fits file)")
             print("  -m mfile  use masking file and deeper GAL/MASK/<results>")
             print("  galaxy  galaxy name(s), e.g. NGC0001, as they appear in gals.pars")
@@ -261,7 +280,7 @@ def main(args):
             np.random.seed(123)
 
         print("Trying galaxy %s" % gal)
-        scans = getscans(gal)
+        scans = getscans(gal, seq)
         if len(scans) > 0:
             os.makedirs(gal, exist_ok=True)
             os.chdir(gal)

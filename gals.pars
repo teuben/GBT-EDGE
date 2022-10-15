@@ -4,7 +4,8 @@
 #   [vane,sky,Map,vane,sky]
 # galaxy names must match the ones in GBTEDGE.cat exactly
 
-# galaxy seq start stop [refscans]     # refscans can be skipped if they are start-2,stop+1
+# galaxy seq start stop [ref1,ref2]    # refscans can be skipped if they are start-2,stop+1
+#                                      # if only one refscan available, just duplicate it
 
 #  21-59  65-103
 NGC0001   1    67   101  #  65,102 #  5 Msun/yr    clear double horn, SN ~ 10  rms=0.025292  0.023344
@@ -287,3 +288,50 @@ NGC5216    25   101 135                    # oops, again
 ###    NOTE !!!
 ###    any galaxies in this list, and not summarized in summary.txt will not get listed by do_all_stats
 
+## Winter 2022/23 season
+
+# session 26:  9/10-oct-2022
+# redo some well known detections with larger maps to check on flux
+
+# NGC0001  
+NGC0001   26    17   51     # dec-map a bit too slow/long ? 89s scans, 1.5x longer length
+NGC0001   26    61   95     # ra-map w/ 50s scans, 1.5x longer length
+
+# NGC0932
+NGC0932   26   105  139
+NGC0932   26   149  183
+
+# UGC02134 - tsys was starting to get high
+UGC02134  26   206   240
+UGC02134  26   250   284
+
+# UGC04136
+UGC04136  26  308  342
+UGC04136  26  352  386
+
+
+
+
+# session 27:  10/11-oct-2022   
+# better optimized larger maps (50" integrations)
+# tsys: 23,60,67,104,111
+# scans:  22-138 (138 bad?)
+
+NGC0001     27   25   59
+NGC0001     27   69  103
+
+NGC0776   27  113  137   111,111  # partial:  111 137 1 25    # nothing obvious here
+
+
+
+
+# session 28: 13/14 oct
+# tsys:  23,35,42,79,86,123,130
+# scans: 23-162 (162 bad?)
+ 
+NGC0776  28  25 34           # partial:  23 36 26 35
+NGC0776  28  44 78    
+
+UGC02134  28  88 122
+UGC02134  28 132 161   130,130    # partial 130 162 1 30   (i think 31)
+ 

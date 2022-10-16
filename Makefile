@@ -136,7 +136,7 @@ data0:
 # 1 processor    280.58user 6.48system 4:47.21elapsed 99%CPU
 bench0:
 	$(OMP) $(TIME) ./reduce.py NGC0001
-	fitsccd NGC0001/NGC0001_12CO_rebase3_smooth2_hanning2.fits -|ccdstat - bad=0 qac=t
+	fitsccd NGC0001/NGC0001_12CO_rebase3_smooth2_hanning2.fits - | ccdstat - bad=0 qac=t
 
 #  all procs:    556.80user   7.36system  3:17.45elapsed 285%CPU    (peter's laptop - i5-1135G7)
 #  1 processor   182.82user   3.72system  3:06.68elapsed  99%CPU    (peter's laptop)
@@ -154,6 +154,10 @@ bench2:
 	$(OMP) $(TIME) ./reduce.py -M NGC0001
 	fitsccd NGC0001/NGC0001_12CO_rebase3_smooth2_hanning2.fits -|ccdstat - bad=0 qac=t
 	fitsccd NGC0001/NGC0001_12CO_rebase3_smooth2_hanning2.fits -|ccdstat - bad=0 qac=t robust=t
+
+bench3:
+	./plot_spectrum.py "00:07:15.84"  "+27:42:29.7" 10 0 0 NGC0001/NGC0001_12CO_rebase5_smooth1.3_hanning2.fits
+
 
 NGC0001:
 	wget -q https://www.astro.umd.edu/~teuben/edge/data/NGC0001.tar -O - | tar xvf -

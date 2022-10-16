@@ -22,14 +22,37 @@ if len(sys.argv) < 7:
     print("Usage %s  ra(deg) dec(deg) size(asec) dra(asec) ddec(asec)   sdfitsfile(s) | fits-cube" % sys.argv[0])
     sys.exit(0)
 
-ra0    = float(sys.argv[1])
-dec0   = float(sys.argv[2])
+def sexa2deci(s, scale=1.0):
+    """ s is a hms/dms string   12.34 or 12:34
+        returns the float value
+        if it's already a float, returns "as is", no
+        factor 15 conversion 
+    """
+    if s.find(':') > 0:
+        dms = [float(x) for x in s.split(':')]
+        if len(dms) == 2:
+            dms.append(0)
+        if s[0] == '-':
+            sign = -1
+        else:
+            sign = +1
+        r = abs(dms[0]) + (dms[1] + dms[2]/60.0)/60.0
+        return r*scale
+    else:
+        return float(dms)
+    
+
+ra0    = sexa2deci(sys.argv[1], 15.0)
+dec0   = sexa2deci(sys.argv[2])
 size   = float(sys.argv[3])
 dra    = float(sys.argv[4])
 ddec   = float(sys.argv[5])
 
 ylim = None
 ylim = [-200, 600]
+
+print("PJT",ra0,dec0)
+
 
 def smooth(x,window_len=11,window='hanning'):
 
@@ -42,10 +65,6 @@ def smooth(x,window_len=11,window='hanning'):
 
     y=np.convolve(w/w.sum(),s,mode='same')
     return y
-
-
-
-
 
 
     

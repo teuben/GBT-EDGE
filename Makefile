@@ -143,7 +143,7 @@ bench0:
 #  all procs:   3068.26user 178.50system 10:22.19elapsed 521%CPU    (at GBO's fourier machine - Xeon E5620)
 #  1 processor   536.42user  10.68system 10:25.20elapsed  87%CPU    (at GBO's fourier machine)
 bench1:	NGC0001
-	$(OMP) $(TIME) ./reduce.py -s NGC0001
+	$(OMP) $(TIME) ./reduce.py -g 1 -s NGC0001
 	fitsccd NGC0001/NGC0001_12CO_rebase3_smooth2_hanning2.fits -|ccdstat - bad=0 qac=t
 	fitsccd NGC0001/NGC0001_12CO_rebase3_smooth2_hanning2.fits -|ccdstat - bad=0 qac=t robust=t
 
@@ -151,12 +151,17 @@ bench1:	NGC0001
 
 # 1 processor:   
 bench2:
-	$(OMP) $(TIME) ./reduce.py -M NGC0001
+	$(OMP) $(TIME) ./reduce.py -g 1 -M NGC0001
 	fitsccd NGC0001/NGC0001_12CO_rebase3_smooth2_hanning2.fits -|ccdstat - bad=0 qac=t
 	fitsccd NGC0001/NGC0001_12CO_rebase3_smooth2_hanning2.fits -|ccdstat - bad=0 qac=t robust=t
 
+# with the standard 'mask_NGC0001_Havfield_v1.fits'
+
 bench3:
-	./plot_spectrum.py "00:07:15.84"  "+27:42:29.7" 10 0 0 NGC0001/NGC0001_12CO_rebase5_smooth1.3_hanning2.fits
+	$(OMP) $(TIME) ./reduce.py -g 1 -m mask_NGC0001_Havfield_v1.fits NGC0001
+
+bench4:
+	./plot_spectrum.py "00:07:15.84" "+27:42:29.7" 8.4 0 0 NGC0001/NGC0001_12CO_rebase5_smooth1.3_hanning2.fits
 
 
 NGC0001:

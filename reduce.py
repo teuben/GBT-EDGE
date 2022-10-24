@@ -3,7 +3,7 @@
 #  reduce a EDGE galaxy from the GBT-EDGE survey
 #  all work occurs in a subdirectory of the "galaxy" name
 #
-#  e.g.       ./reduce.py NGC0001
+#  e.g.       ./reduce.py [options] NGC0001 [...]
 #
 #  options:
 #    -noweather
@@ -235,12 +235,12 @@ def main(args):
             continue
         if grabmask:
             mask2 = gal
-            print("Warning: using mask '%s'" % mask2)
+            print("Using mask '%s'" % mask2)
             grabmask = False
             continue
         if grabseq:
             grabseq = False
-            print("Warning: only using seq %s" % gal)
+            print("Using seq %s" % gal)
             seq = [int(x) for x in gal.split(',')]
             print("seq", seq)
             continue
@@ -262,16 +262,17 @@ def main(args):
             do_mask = True
             continue
         if gal == '-h':
-            print("Usage: %s [-h] [-s] [-M] [-m mfile] [-f f1,f2,...] galaxy [galaxy ...]" % sys.argv[0])
+            print("Usage: %s [-h] [-s] [-M] [-m mfile] [-f f1,f2,...] [-g g1,g2,...] galaxy" % sys.argv[0])
             print("Version: %s" % __version__)
             print("  -h        help")
             print("  -s        skip scan building (assumed you've done it before).")
             print("            if mask changed, do not use -s")
-            print("  -f f1,... comma separated list of bad feeds (0-based numbers)")
-            print("  -g g1,... comma separated list of good sessions (1,2,...)  [PJT only]")
             print("  -M        add masking (needs special masks/mask_GAL.fits file)")
             print("  -m mfile  use masking file and deeper GAL/MASK/<results>")
-            print("  galaxy  galaxy name(s), e.g. NGC0001, as they appear in gals.pars")
+            print("  -f f1,... comma separated list of bad feeds (0-based numbers)")
+            print("  -g g1,... comma separated list of good sessions (1,2,...)  [PJT only]")
+            print("  galaxy    galaxy name(s), e.g. NGC0001, as they appear in gals.pars")
+            print("            In theory multiple galaxies can be used, probably not with -m,-g,-f")
             continue
 
         if do_seed:

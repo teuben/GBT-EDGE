@@ -292,6 +292,7 @@ NGC5216    25   101 135                    # oops, again
 
 # session 26:  9/10-oct-2022
 # redo some well known detections with larger maps to check on flux
+# tsys increased a lot after NGC0001
 
 # NGC0001  
 NGC0001   26    17   51     # dec-map a bit too slow/long ? 89s scans, 1.5x longer length
@@ -335,3 +336,15 @@ NGC0776  28  44 78
 UGC02134  28  88 122
 UGC02134  28 132 161   130,130    # partial 130 162 1 30   (i think 31)
  
+
+# session 29: 14/15 oct
+# tsys:
+# scans:
+
+# NGC0001   29  24  58
+NGC0001    29  93  127      # after argus OOF 
+
+# NGC0776   29
+# NGC0776   29
+
+UGC02134  29  137  142   #  135-144 partial map to finish yesterday

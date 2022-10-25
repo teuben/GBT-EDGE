@@ -8,8 +8,8 @@
 #                                      # if only one refscan available, just duplicate it
 
 #  21-59  65-103
-NGC0001   1    67   101  #  65,102 #  5 Msun/yr    clear double horn, SN ~ 10  rms=0.025292  0.023344
 NGC0001   1    23    57  #  21,58  #  vlsr 4485.7     good for mk_mask.sh
+NGC0001   1    67   101  #  65,102 #  5 Msun/yr    clear double horn, SN ~ 10  rms=0.025292  0.023344
 
 UGC01659  1   117   151            #  3 Msun/yr    weak, SN ~ 4    slightly NE of center
 UGC01659  1   161   195            #  8195.4
@@ -63,8 +63,8 @@ NGC2691   5   122   156            # 10**0.3    weak, but present
 NGC2691   5   166   200            #            seems ok with mk_mask, but mmaps dies
 
 # crossmap : does not work here
-#IC1683    4   200   205
-#IC1683    4   210   215
+IC1683    4   200   205     # 198 207
+IC1683    4   210   215     # 208 217
 
 #
 NGC0495   6    19    53
@@ -86,6 +86,9 @@ NGC3106   7   258 292
 
 UGC04245  8   33   67        # clear rotcur in ra-vel
 UGC04245  8   87  121
+
+# crossmap
+NGC2623   8   70 79
 
 # redo, but
 
@@ -214,6 +217,13 @@ NGC5376   19    70  104
 NGC5267   19   114  148     # logSFR=0.2
 NGC5267   19   158 192
 
+# crossmap
+NGC6361   19  202 207  # 200 209
+NGC6361   19  218 223  # 216 225
+
+
+
+
 # session 20
 #   20-58  64-102
 NGC5954   20   22   56      # logSFR=0.2   whopping
@@ -318,7 +328,7 @@ UGC04136  26  352  386
 # tsys: 23,60,67,104,111
 # scans:  22-138 (138 bad?)
 
-NGC0001     27   25   59
+#NGC0001     27   25   59
 NGC0001     27   69  103
 
 NGC0776   27  113  137   111,111  # partial:  111 137 1 25    # nothing obvious here
@@ -341,10 +351,16 @@ UGC02134  28 132 161   130,130    # partial 130 162 1 30   (i think 31)
 # tsys:
 # scans:
 
-# NGC0001   29  24  58
+NGC0001    29  24   58
 NGC0001    29  93  127      # after argus OOF 
 
-# NGC0776   29
-# NGC0776   29
 
 UGC02134  29  137  142   #  135-144 partial map to finish yesterday
+
+
+# session 30: 23/24 oct - after the boom was fixed up
+
+NGC0169  30   24  58
+NGC0169  30   68 102
+
+NGC0776   30 112 146

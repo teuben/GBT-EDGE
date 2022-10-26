@@ -5,7 +5,7 @@
 #  Either a single FITS cube can be given, or one or more calibrated SDFITS files
 #
 #  Peter Teuben - 17-mar-2022 - Created
-#
+#                 17-oct-2022 - various updates
 
 
 import os
@@ -50,7 +50,7 @@ def sexa2deci(s, scale=1.0):
         else:
             sign = +1
         r = abs(dms[0]) + (dms[1] + dms[2]/60.0)/60.0
-        return r*scale
+        return r*scale*sign
     else:
         return float(dms)
     

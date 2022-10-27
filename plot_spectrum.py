@@ -6,6 +6,7 @@
 #
 #  Peter Teuben - 17-mar-2022 - Created
 #                 17-oct-2022 - various updates
+#                 26-oct-2022 - write out spectrum for plotsp3.py 
 
 
 import os
@@ -54,7 +55,7 @@ def sexa2deci(s, scale=1.0):
     else:
         return float(dms)
     
-
+# required arguments
 ra0    = sexa2deci(sys.argv[1], 15.0)
 dec0   = sexa2deci(sys.argv[2])
 size   = float(sys.argv[3])
@@ -65,6 +66,7 @@ ylim = None
 ylim = [-50, 150]
 
 print("PJT",ra0,dec0)
+
 
 
 def smooth(x,window_len=11,window='hanning'):
@@ -208,6 +210,12 @@ if True:
     plt.title('%s @ %f %f size %g"' % (gal,ra0,dec0,size))
     plt.legend()
     plt.show()
+    #
 
+if True:
+    sp_out = 'plot_spectrum.txt'
+    sp_data = np.squeeze(np.dstack((vrad1,spec1.value)))
+    np.savetxt(sp_out,sp_data,fmt='%.4f')
+    print("Written ",sp_out)
 
 # @todo:   weight by Tsys

@@ -86,6 +86,15 @@ to see what the effect on the final outcome is with just feed 11 removed.
 Note we are currently looking into if/why/when feeds 8 and 11 (in the 0-based system), but be aware some users
 may use a 1-based system in their language. Internally in the SDFITS files the feeds are numbered 0..15
 
+# Working with selected sessions
+
+GBT data is organized in sessions, usually starting with 1. In case you have many sessions and want to
+revisit one particular session, use the -g flag. But remove the galaxy directory, in case other sessions
+had calibrated scans lying around:
+
+      rm -rf  NGC0776
+      ./reduce -g 26,27 NGC0776
+
 
 # Working Offline
 

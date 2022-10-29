@@ -6,7 +6,8 @@
 #
 #  Peter Teuben - 17-mar-2022 - Created
 #                 17-oct-2022 - various updates
-#                 26-oct-2022 - write out spectrum for plotsp3.py 
+#                 26-oct-2022 - write out spectrum for plotsp3.py
+#                 28-oct-2022 - using new nemopy.getparam
 
 
 import os
@@ -17,11 +18,22 @@ from astropy.io import fits
 from astropy.utils import data
 from spectral_cube import SpectralCube
 import astropy.units as u
+from nemopy import getparam
 
 
-if len(sys.argv) < 7:
-    print("Usage %s  ra(deg) dec(deg) size(asec) dra(asec) ddec(asec)   sdfitsfile(s) | fits-cube" % sys.argv[0])
-    sys.exit(0)
+keyval = [
+    "in=\n          input fits cube",
+    "ra=0:0\n       RA   hh:mm:ss.s (or decimal degrees))",
+    "dec=0:0\n      DEC  dd:mm:ss.s (or decimal degrees)",
+    "size=20\n      Size of area in arcsec",
+    "dra=0\n        RA offset in arcsec",
+    "ddec=0\n       DEC offset in arcsec",
+    "sdfits=\n      optional sdfits file(s)",
+]
+
+usage = "plot a spectrum from a cube and/or set of sdfits files"
+
+p = getparam.Param(keyval,usage)
 
 def stats3(x):
     n = len(x)
@@ -40,7 +52,7 @@ def sexa2deci(s, scale=1.0):
     """ s is a hms/dms string   12.34 or 12:34
         returns the float value
         if it's already a float, returns "as is", no
-        factor 15 conversion 
+        factor 15 conversion  (this is the FITS convention)
     """
     if s.find(':') > 0:
         dms = [float(x) for x in s.split(':')]
@@ -56,11 +68,11 @@ def sexa2deci(s, scale=1.0):
         return float(dms)
     
 # required arguments
-ra0    = sexa2deci(sys.argv[1], 15.0)
-dec0   = sexa2deci(sys.argv[2])
-size   = float(sys.argv[3])
-dra    = float(sys.argv[4])
-ddec   = float(sys.argv[5])
+ra0    = sexa2deci(p.get("ra"), 15.0)
+dec0   = sexa2deci(p.get("dec"))
+size   = float(p.get("size"))
+dra    = float(p.get("dra"))
+ddec   = float(p.get("ddec"))
 
 ylim = None
 ylim = [-50, 150]
@@ -92,7 +104,7 @@ edge = 50
 c = 299792.458
 
 #  test if a cube
-ff = sys.argv[6]
+ff = p.get("in")
 hdu = fits.open(ff)
 if hdu[0].header['NAXIS'] > 2:      
     cube = SpectralCube.read(ff).with_spectral_unit(u.km/u.s)
@@ -114,10 +126,10 @@ if hdu[0].header['NAXIS'] > 2:
     vrad1 = (chan-crpix3) * cdelt3 + crval3
     gal   = ff.split('_')[0]    
     gal1  = ff
-    sdfits = sys.argv[7:]
+    sdfits = p.get('sdfits')
 else:
     spec1 = None
-    sdfits = sys.argv[6:]
+    sdfits = p.get('sdfits')
 
 # Spectra, units are mK
 # spec1 :   spectrum from a FITS cube (w/ nchan and chan)

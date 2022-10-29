@@ -22,16 +22,26 @@ from nemopy import getparam
 
 
 keyval = [
-    "in=\n          input fits cube",
-    "ra=0:0\n       RA   hh:mm:ss.s (or decimal degrees))",
-    "dec=0:0\n      DEC  dd:mm:ss.s (or decimal degrees)",
+    "in=???\n       input fits cube",
+    "ra=\n          RA   hh:mm:ss.s (or decimal degrees) [ref pixel]",
+    "dec=\n         DEC  dd:mm:ss.s (or decimal degrees) [ref pixel]",
     "size=20\n      Size of area in arcsec",
     "dra=0\n        RA offset in arcsec",
     "ddec=0\n       DEC offset in arcsec",
-    "sdfits=\n      optional sdfits file(s)",
+    "sdfits=\n      optional sdfits file(s) (not re-implemented yet)",
+    "tab=\n         If given, write out spectrum here",
+    "vrange=\n      Plotting range in velocity",
+    "irange=\n      Plotting range in intensity",
+    "blorder=-1\n   Order of baseline fits (if >= 0)   ***",
+    "blregion=\n    Pairs of sections along velocity axis for baseline fit",
+    "VERSION=0.2\n  29-oct-2022 PJT",
 ]
 
-usage = "plot a spectrum from a cube and/or set of sdfits files"
+usage = """
+plot a spectrum from a cube and/or set of sdfits files
+
+this script...
+"""
 
 p = getparam.Param(keyval,usage)
 
@@ -67,18 +77,17 @@ def sexa2deci(s, scale=1.0):
     else:
         return float(dms)
     
-# required arguments
-ra0    = sexa2deci(p.get("ra"), 15.0)
-dec0   = sexa2deci(p.get("dec"))
+if p.has("ra") and p.has("dec"):
+    needr  = False
+    ra0    = sexa2deci(p.get("ra"), 15.0)
+    dec0   = sexa2deci(p.get("dec"))
+else:
+    needr  = True
+    print("Using reference pixel as ra=,dec=")
+
 size   = float(p.get("size"))
 dra    = float(p.get("dra"))
 ddec   = float(p.get("ddec"))
-
-ylim = None
-ylim = [-50, 150]
-
-print("PJT",ra0,dec0)
-
 
 
 def smooth(x,window_len=11,window='hanning'):
@@ -96,9 +105,6 @@ def smooth(x,window_len=11,window='hanning'):
 
     
 # don't change these
-cosd0 = np.cos(dec0*np.pi/180)
-dec0  = dec0 + ddec/3600.0
-ra0   = ra0 + dra/3600.0/cosd0
 radmax = size / 2 /  3600.0
 edge = 50
 c = 299792.458
@@ -108,6 +114,10 @@ ff = p.get("in")
 hdu = fits.open(ff)
 if hdu[0].header['NAXIS'] > 2:      
     cube = SpectralCube.read(ff).with_spectral_unit(u.km/u.s)
+    if needr:
+        ra0 = hdu[0].header['CRVAL1']
+        dec0 = hdu[0].header['CRVAL2']
+        needr = False
     
     ds9 = 'fk5; circle(%.10f, %.10f, %g")'  % (ra0,dec0,size/2)
     print('DS9',ds9)
@@ -130,6 +140,13 @@ if hdu[0].header['NAXIS'] > 2:
 else:
     spec1 = None
     sdfits = p.get('sdfits')
+
+print("PJT",ra0,dec0)
+
+cosd0 = np.cos(dec0*np.pi/180)
+dec0  = dec0 + ddec/3600.0
+ra0   = ra0 + dra/3600.0/cosd0
+    
 
 # Spectra, units are mK
 # spec1 :   spectrum from a FITS cube (w/ nchan and chan)
@@ -182,7 +199,6 @@ if nspec > 0:
     fp.close()
     print("Wrote %s average of %d spectra from SDFITS file(s)" % (tab,nspec))
 
-
 if True:
     plt.figure()
     xlim = []
@@ -190,7 +206,10 @@ if True:
     # spectrum from FITS cube
     if spec1 != None:
         plt.plot(vrad1,spec1,label=gal1)
-        xlim = [vrad1[0],vrad1[-1]]
+        if p.has("vrange"):
+            xlim = p.listf("vrange")
+        else:
+            xlim = [vrad1[0],vrad1[-1]]
         plt.plot(xlim,[0,0],c='black')
         stats3(spec1)
 
@@ -217,15 +236,16 @@ if True:
         plt.xlim(xlim)
     else:
         plt.xlim([xlim[-1],xlim[0]])
-    if ylim != None:
+    if p.has("irange"):
+        ylim = p.listf("irange")
         plt.ylim(ylim)
     plt.title('%s @ %f %f size %g"' % (gal,ra0,dec0,size))
     plt.legend()
     plt.show()
     #
 
-if True:
-    sp_out = 'plot_spectrum.txt'
+if p.has('tab'):
+    sp_out = p.get('tab')
     sp_data = np.squeeze(np.dstack((vrad1,spec1.value)))
     np.savetxt(sp_out,sp_data,fmt='%.4f')
     print("Written ",sp_out)

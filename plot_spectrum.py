@@ -8,21 +8,22 @@
 #                 17-oct-2022 - various updates
 #                 26-oct-2022 - write out spectrum for plotsp3.py
 #                 28-oct-2022 - using new nemopy.getparam
-
+#
+# Make a comma separated list of files in unix:
+#     ls NGC0001/NGC0001_scan_* | sed -z 's/\n/,/g;s/,$/\n/'
 
 import os
 import sys
 import numpy as np
 import matplotlib.pyplot as plt
 from astropy.io import fits
-from astropy.utils import data
 from spectral_cube import SpectralCube
 import astropy.units as u
 from nemopy import getparam
 
 
 keyval = [
-    "in=???\n       input fits cube",
+    "in=\n          input fits cube",
     "ra=\n          RA   hh:mm:ss.s (or decimal degrees) [ref pixel]",
     "dec=\n         DEC  dd:mm:ss.s (or decimal degrees) [ref pixel]",
     "size=20\n      Size of area in arcsec",
@@ -32,15 +33,21 @@ keyval = [
     "tab=\n         If given, write out spectrum here",
     "vrange=\n      Plotting range in velocity",
     "irange=\n      Plotting range in intensity",
-    "blorder=-1\n   Order of baseline fits (if >= 0)   ***",
+    "iscale=1\n     Intensity scaling factor",
+    "blorder=0\n    Order of baseline fits (if >= 0)",
     "blregion=\n    Pairs of sections along velocity axis for baseline fit",
-    "VERSION=0.2\n  29-oct-2022 PJT",
+    "vshift=0\n     Apply velocity shift to the SDFITS data",
+    "win=11\n       Window smoothing applied to SDFITS data",
+    "VERSION=0.3\n  29-oct-2022 PJT",
 ]
 
 usage = """
 plot a spectrum from a cube and/or set of sdfits files
 
-this script...
+this script can take a FITS cube and plot a spectrum in a region defined
+by an offset from an (RA,DEC) position and a  size.
+
+It will also do SDFITS files once this is enabled again
 """
 
 p = getparam.Param(keyval,usage)
@@ -102,12 +109,75 @@ def smooth(x,window_len=11,window='hanning'):
     y=np.convolve(w/w.sum(),s,mode='same')
     return y
 
+def fit_poly(x, y, p_order=1, bl = []):
+    """ from array X between Xmin and Xmax fit a polynomial
+    """
 
+    if len(bl) == 0:
+        p = np.poly1d(np.polyfit(x,y,p_order))
+        t = x
+        r = y - p(x)
+    else:
+        first = True
+        for b in bl:
+            # print('B',b)
+            if first:
+                m = ((x>b[0]) & (x<b[1]))
+                first = False
+            else:
+                m = m | ((x>b[0]) & (x<b[1]))
+                
+        p = np.poly1d(np.polyfit(x[m],y[m],p_order))
+        t = x[m]
+        r = y[m] - p(x[m])
+    return (p,t,r)
+
+def diff_rms(y):
+    """ take the differences between neighboring signals
+    and compute their rms. this should be sqrt(2)*sigma
+    if there is no  trend in the input signal, and if
+    the input signal is not correlated (e.g. hanning)
+    """
+    #y1 = y[1:]
+    #y2 = y[:-1]
+    return (y[1:]-y[:-1]).std() / 1.414
+
+def my_smooth(y, box_pts):
+    box = np.ones(box_pts)/box_pts
+    y_smooth = np.convolve(y, box, mode='same')
+    return y_smooth
+
+def add_spectrum(filename):
+    (v,t) = np.loadtxt(filename).T
+    plt.plot(v,t,label=filename)
+
+
+blorder = int(p.get("blorder"))
+if p.has("blregion"):
+    blregion = p.listf("blregion")
+    nbl = len(blregion)
+    if nbl%2 != 0:
+        print("Need even number of baseline sections")
+        sys.exit(0)
+    bl = []
+    nbl = nbl // 2
+    for i in range(nbl):
+        vmin = blregion[2*i]
+        vmax = blregion[2*i+1]
+        bl.append((vmin,vmax))
+    print("PJT-3",bl)
+else:
+    nbl = 0
+print("PJT-2",nbl)
+
+iscale = float(p.get('iscale'))
+win = int(p.get("win"))
     
 # don't change these
 radmax = size / 2 /  3600.0
 edge = 50
 c = 299792.458
+restfr = -1
 
 #  test if a cube
 ff = p.get("in")
@@ -122,7 +192,7 @@ if hdu[0].header['NAXIS'] > 2:
     ds9 = 'fk5; circle(%.10f, %.10f, %g")'  % (ra0,dec0,size/2)
     print('DS9',ds9)
     spectrum = cube.subcube_from_ds9region(ds9).mean(axis=(1, 2))
-    spec1 = 1000 * spectrum
+    spec1 = iscale * 1000 * spectrum 
 
     crpix3 = hdu[0].header['CRPIX3']
     crval3 = hdu[0].header['CRVAL3']
@@ -136,12 +206,12 @@ if hdu[0].header['NAXIS'] > 2:
     vrad1 = (chan-crpix3) * cdelt3 + crval3
     gal   = ff.split('_')[0]    
     gal1  = ff
-    sdfits = p.get('sdfits')
+    print("Found FITS",nchan," channels ",vrad1[1]-vrad1[0], " vel ", vrad1[0],vrad1[nchan-1])    
 else:
     spec1 = None
-    sdfits = p.get('sdfits')
+sdfits = p.list('sdfits')
 
-print("PJT",ra0,dec0)
+print("PJT",ra0,dec0,restfr)
 
 cosd0 = np.cos(dec0*np.pi/180)
 dec0  = dec0 + ddec/3600.0
@@ -155,6 +225,7 @@ ra0   = ra0 + dra/3600.0/cosd0
 spec2 = None
 nspec = 0
 nchan = 0
+vshift = float(p.get("vshift"))
 
 # if no cube, assume they are SDFITS file(s)
 
@@ -173,11 +244,11 @@ for ff in sdfits:
         chan  = np.arange(0,nchan) + 1
         spec2 = np.zeros(nchan)
         freq  = (chan - crpix1)  * cdelt1 + crval1
-        vrad2 = (1-freq/restfr)*c
+        vrad2 = (1-freq/restfr)*c - vshift
         nspec = 0
         gal   = ff.split('_')[0]
         gal2  = ff
-        print("Found nchan",nchan," channels ",vrad2[1]-vrad2[0])
+        print("Found SDFITS",nchan," channels ",vrad2[1]-vrad2[0], " vel ", vrad2[0],vrad2[nchan-1])
     ra = d2['CRVAL2']
     dec = d2['CRVAL3']
     idx2 = ra[ra==0]
@@ -193,15 +264,18 @@ if nspec > 0:
     spec2 = 1000 * spec2 / nspec
     tab = "plot_spectrum.txt"
     fp = open(tab,"w")
-    fp.write("# generated by ",sys.argv)
+    # fp.write("# generated by ",sys.argv)
     for (v,s) in zip(vrad2[edge:-edge], spec2[edge:-edge]):
         fp.write("%g %g\n" % (v,s))
     fp.close()
     print("Wrote %s average of %d spectra from SDFITS file(s)" % (tab,nspec))
 
+
 if True:
     plt.figure()
     xlim = []
+
+    #  spec1 = None
 
     # spectrum from FITS cube
     if spec1 != None:
@@ -212,15 +286,22 @@ if True:
             xlim = [vrad1[0],vrad1[-1]]
         plt.plot(xlim,[0,0],c='black')
         stats3(spec1)
-
+        # subtract baseline?
+        if nbl>0 and blorder>=0:
+            (p2,t2,r2) = fit_poly(vrad1, spec1.value, blorder, bl)
+            rms2 = r2.std()
+            rms3 = diff_rms(r2)
+            plt.plot(vrad1,p2(vrad1),'-',label='POLY %d SMTH %d' % (blorder,-1))
+            plt.plot(t2, r2, '-', label='RMS %.3g %.3g' % (rms2, rms3))
+            # plt.plot([v2[0],v2[-1]], [0.0, 0.0], c='black', linewidth=2, label='baseline BAND %d' % do_band)
+        
     # spectra from SDFITS
     if nspec > 0:
-        win = 11
-        spec2[3*edge] = 1500
+        # spec2[3*edge] = 1500
         if win > 0:
             spec2s = smooth(spec2,win)
             y = spec2s[edge:-edge]
-            x=vrad2[:len(y)]
+            x = vrad2[:len(y)]
             plt.plot(x,y,label=gal2+'s')
         else:
             plt.plot(vrad2[edge:-edge], spec2[edge:-edge],label=gal2)
@@ -229,6 +310,17 @@ if True:
         plt.plot([vrad2[0],vrad2[-1]], [0,0], c='black')
         if len(xlim) == 0:
             xlim = [vrad2[0],vrad2[-1]]
+
+        stats3(spec2)
+
+        # subtract baseline?
+        if nbl>0 and blorder>=0 and win > 0:
+            (p3,t3,r3) = fit_poly(vrad2, spec2, blorder, bl)
+            rms2 = r3.std()
+            rms3 = diff_rms(r3)
+            plt.plot(vrad2,p3(vrad2),'-',label='POLY %d SMTH %d SDFITS' % (blorder,-1))
+            plt.plot(t3, r3, '-', label='RMS %.3g %.3g SDFITS' % (rms2, rms3))
+            # plt.plot([v2[0],v2[-1]], [0.0, 0.0], c='black', linewidth=2, label='baseline BAND %d' % do_band)
         
     plt.xlabel('Vrad (km/s)')
     plt.ylabel('T (mK)')

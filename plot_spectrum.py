@@ -148,9 +148,10 @@ def flux_spectrum(x,y,xstart,xend):
     """
     dx = x[1]-x[0]
     if dx<0:
-        print("flux_spectrum < 0 should not happen",dx)
+        print("flux_spectrum channel width < 0 should not happen",dx)
     m = ma.masked_outside(x,xstart,xend)
-    flux = dx * (m*y).sum()
+    sm = ma.MaskedArray(y,m.mask)
+    flux = dx * sm.sum()
     return flux
     # print("Flux between %g %g = %g\n" % (xstart,xend,flux))
 
@@ -391,9 +392,9 @@ if Qplot:
             # plt.plot([v2[0],v2[-1]], [0.0, 0.0], c='black', linewidth=2, label='baseline BAND %d' % do_band)
 
     if f1 > 0:
-        print("Flux   FITS = %g K.km/s\n" % f1)
+        print("Flux   FITS = %g K.km/s in %g arcsec beam\n" % (f1,size))
     if f2 > 0:
-        print("Flux SDFITS = %g K.km/s\n" % f2)
+        print("Flux SDFITS = %g K.km/s in %g arcsec beam\n" % (f2,size))
         
     plt.xlabel('Vrad (km/s)')
     plt.ylabel('T (mK)')

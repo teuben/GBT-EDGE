@@ -44,6 +44,8 @@ installation that was needed for **gbtpipe**
 
 The Makefile contains a few other targets that may guide you in getting a clean install.
 
+On U22 cfitsio library is now causing a build failure with **gbtpipe**
+
 # Sample Data
 
 Running the calibration off-line is not impossible, but involved, since it needs on-line weather
@@ -86,6 +88,34 @@ to see what the effect on the final outcome is with just feed 11 removed.
 Note we are currently looking into if/why/when feeds 8 and 11 (in the 0-based system), but be aware some users
 may use a 1-based system in their language. Internally in the SDFITS files the feeds are numbered 0..15
 
+
+# Observing
+
+During observing you can edit the gals.pars file and add a new galaxy and scan numbers, then
+reduce their data and view the resulting fits cube using ds9 for example.
+
+An addition thing which is nice to do is preserving the tsys run of the night, and the astridlogs.
+For example for session 26 this would be:
+
+1. tsys:
+
+      ./tsys.py AGBT21B_024_26
+      cp pro/AGBT21B_024_26.tsys tsyslogs
+      git add tsyslogs/AGBT21B_024_26.tsys
+      git commit -m new tsyslogs/AGBT21B_024_26.tsys
+      git push
+
+2. astridlogs:
+
+      cd astridlogs
+      getastridlog AGBT21B_024_26
+      git add AGBT21B_024_26_log.txt
+      git commit -m new AGBT21B_024_26_log.txt
+      git push
+
+
+      
+
 # Working with selected sessions
 
 GBT data is organized in sessions, usually starting with 1. In case you have many sessions and want to
@@ -94,6 +124,7 @@ had calibrated scans lying around:
 
       rm -rf  NGC0776
       ./reduce -g 26,27 NGC0776
+
 
 
 # Working Offline
@@ -115,7 +146,7 @@ the setup.
       export GBTWEATHER=`pwd`/GBTWeather
       ./reduce.py NGC0001
 
-the mask file is not here yet.
+the mask file is not here yet.  
 
 ## Nod_Galaxy
 
@@ -198,7 +229,12 @@ Otherwise just be aware of the listed ones here:
    TBD:    bad beams cannot be edited out without removing the offending feed fits file!
    
 
+10. The first 25 sessions were taken with 1.5 x 1.5 arcmin maps and ~33sec integration time per scan.
 
+    Then came session 26, where we experimented with a 1.5x bigger map (in the scan direction only), and
+    ~89s integration, which is really too long.
+
+    In session 27 we then changed to 51s (???, or is that the plan)
 
 # Important Files and Directories
 

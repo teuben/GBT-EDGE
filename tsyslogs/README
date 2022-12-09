@@ -7,3 +7,12 @@ which should be copied here and saved in git in this tsyslogs directory
 Missing sessions are:
  09  - equipment failure
  16  - skipped for some reason
+
+The columns in the tables are:
+
+1   scan number
+2   mean Tsys over all (16) beams
+3   rms Tsys
+4   min Tsys
+5   max Tsys
+

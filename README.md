@@ -4,9 +4,11 @@ This toolkit helps you reducing the GBT EDGE data.
 Still very preliminary, expect updates, here
 as well as in 3rd party code mentioned here.
 
-Example of use (in this directory):
+Example of use: (pick a directory):
 
-      cd /home/astro-util/projects/gbt-edge/GBT-EDGE-pipeline        # at GBO
+      cd /lma1/teuben/GBT-EDGE                                       # at UMD on lma
+      cd /home/astro-util/projects/gbt-edge/GBT-EDGE-pipeline        # at GBO on e.g. fourier
+      
       source edge.sh
       ./reduce.py NGC0001
       ./mmaps.py NGC0001
@@ -17,6 +19,9 @@ installed in *your* python (see Installation below). However, at GBO it is requi
 
 You can push your luck by trying the example maskmoment based **mmaps.py** script which tries a number
 of methods to make moment maps.
+
+There are some -h flags to the **reduce.py** script. The gals.pars script controls which sessions contain
+which galaxy
 
 
 
@@ -62,7 +67,8 @@ and skipping the calibration.
 
 For baseline fitting it is useful to know where the signal is expected. Using the -M flag you can
 place a mask file in **masks/mask_GAL.fits**, which should contain 0's and 1's where we expect signal.
-A mask can also be made using the **mk_mask.sh** script, documentation is embedded, but here is an
+A mask can also be made using the **mk_mask.sh** script (you will need NEMO for this),
+documentation is embedded, but here is an
 example of use
 
       ./mk_mask.sh refmap=NGC0776/NGC0776_12CO_rebase3_smooth2_hanning2.fits  \
@@ -71,6 +77,10 @@ example of use
       ./reduce.py -M NGC0776
       ./mmaps.py NGC0776
 
+or if you have placed a specific mask file, e.g. masks/mask_NGC0001_Havfield_v1.fits, this would be
+
+      ./reduce.py -m mask_NGC0001_Havfield_v1.fits NGC0776
+
 # Bad Feeds
 
 If there is some indication that some feeds add negatively to the maps, they can be removed at the gridding 
@@ -78,7 +88,7 @@ stage, viz.
 
       ./reduce.py -f 8,11 -M NGC0776
 
-where feeds 8 and 11 (where feed 0 is the first feed) would be removed from gridding. They are still added to
+where feeds 8 and 11 (with feed 0 being the first feed) would be removed from gridding. They are still added to
 the calibration stage, so one can continue experimenting with pure gridding:
 
       ./reduce.py -f 11 -s NGC0776
@@ -91,27 +101,29 @@ may use a 1-based system in their language. Internally in the SDFITS files the f
 
 # Observing
 
-During observing you can edit the gals.pars file and add a new galaxy and scan numbers, then
-reduce their data and view the resulting fits cube using ds9 for example.
+During observing you can edit the **gals.pars** file and add a new galaxy and scan numbers, then
+reduce their data and view the resulting fits cube using **ds9** or **carta** for example.
 
-An addition thing which is nice to do is preserving the tsys run of the night, and the astridlogs.
-For example for session 26 this would be:
+An addition thing which is nice to do is preserving the *tsys* run of the night, as well as
+the *astridlogs*.  For example for session 26 this would be:
 
-1. tsys:
+1. **tsys**:
 
-      ./tsys.py AGBT21B_024_26
-      cp pro/AGBT21B_024_26.tsys tsyslogs
-      git add tsyslogs/AGBT21B_024_26.tsys
-      git commit -m new tsyslogs/AGBT21B_024_26.tsys
-      git push
+        ./tsys.py AGBT21B_024_26
+        cp pro/AGBT21B_024_26.tsys tsyslogs
+        git add tsyslogs/AGBT21B_024_26.tsys
+        git commit -m new tsyslogs/AGBT21B_024_26.tsys
+        git push
 
-2. astridlogs:
+this **tsys.py** script will run IDL scripts,and take a while.
 
-      cd astridlogs
-      getastridlog AGBT21B_024_26
-      git add AGBT21B_024_26_log.txt
-      git commit -m new AGBT21B_024_26_log.txt
-      git push
+2. **astridlogs**:
+
+        cd astridlogs
+        getastridlog AGBT21B_024_26
+        git add AGBT21B_024_26_log.txt
+        git commit -m new AGBT21B_024_26_log.txt
+        git push
 
 
       
@@ -120,7 +132,7 @@ For example for session 26 this would be:
 
 GBT data is organized in sessions, usually starting with 1. In case you have many sessions and want to
 revisit one particular session, use the -g flag. But remove the galaxy directory, in case other sessions
-had calibrated scans lying around:
+had calibrated scans lying around (or rename the directory):
 
       rm -rf  NGC0776
       ./reduce -g 26,27 NGC0776
@@ -131,8 +143,8 @@ had calibrated scans lying around:
 
 To fully work offline, you will need to create symlinks from
 **rawdata** and **weather** to copies of the GBT (sdfits) rawdata and
-weather information. The [degas
-instructions](https://github.com/GBTSpectroscopy/degas/blob/master/README.md#local-installation-of-the-degas-pipeline)
+weather information. The
+[degas instructions](https://github.com/GBTSpectroscopy/degas/blob/master/README.md#local-installation-of-the-degas-pipeline)
 go in more detail, our **Makefile** has some useful targets to aid in
 the setup.
 

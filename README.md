@@ -264,3 +264,8 @@ and specific to being at GBT:
 
        /home/sdfits/AGBT21B_024_01/ - night1 VEGAS raw data directory @ GBO  (1.3GB)
                                       this should be rawdata/AGBT21B_024_01 for a local install
+
+and at lma@UMD:
+
+        /lma1/teuben/GBTRawdata/  - a few cherry picked project (AGBT21B_024, ...)
+        /lma1/teuben/GBTWeather/  - usually all the GBO weather database, going back to 2004.

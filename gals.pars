@@ -4,6 +4,11 @@
 #   [vane,sky,Map,vane,sky]
 # galaxy names must match the ones in GBTEDGE.cat exactly
 
+
+# winter 2021/22  :  sessions 1-25
+# winter 2022/23  :  sessions 26-31 are suspect (low gain), starting from 32 looks much better
+#                    sessions 31-
+
 # galaxy seq start stop [ref1,ref2]    # refscans can be skipped if they are start-2,stop+1
 #                                      # if only one refscan available, just duplicate it
 
@@ -299,6 +304,7 @@ NGC5216    25   101 135                    # oops, again
 ###    any galaxies in this list, and not summarized in summary.txt will not get listed by do_all_stats
 
 ## Winter 2022/23 season
+## Session 26-31 are suspect and should probably not be used for combinations; their gain is low
 
 # session 26:  9/10-oct-2022
 # redo some well known detections with larger maps to check on flux
@@ -366,14 +372,15 @@ NGC0169  30   68 102
 NGC0776   30 112 146
 
 
-# session 31: 27/28 oct
+# session 31: 27/28 oct 
 
 NGC0776   31  32 66
 NGC0776   31  76 110
 
 NGC0001    31  120 145     # not a full map
 
-# session 32: 4/5 dec
+# session 32: 4/5 dec - this looks like the GBT has been re-aligned
+
 UGC04245   32  24  58
 UGC04245   32  68 102  
 

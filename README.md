@@ -4,21 +4,26 @@ This toolkit helps you reducing the GBT EDGE data.
 Still very preliminary, expect updates, here
 as well as in 3rd party code mentioned here.
 
-Example of use (in this directory):
+A very simple example of use: (pick a directory):
 
-      cd /home/astro-util/projects/gbt-edge/GBT-EDGE-pipeline        # at GBO
+      cd /lma1/teuben/GBT-EDGE                                       # at UMD on lma
+      cd /home/astro-util/projects/gbt-edge/GBT-EDGE-pipeline        # at GBO on e.g. fourier
+      
       source edge.sh
-      ./reduce.py NGC0001
+      ./reduce.py -g 1 NGC0001
       ./mmaps.py NGC0001
 	  
 each galaxy takes about 20 mins to reduce, where the observing time was about 60 mins.
 The use of the **edge.sh** script is optional in your installation, as long as the needed packages are
-installed in *your* python (see Installation below). However, at GBO it is required.
+installed in *your* python (see Installation below). However, at GBO and UMD it is required.
 
 You can push your luck by trying the example maskmoment based **mmaps.py** script which tries a number
 of methods to make moment maps.
 
+There are some -h flags to the **reduce.py** script. The gals.pars script controls which sessions contain
+which galaxy
 
+![NGC0001](figures/NGC0001-dilsmomsk.png)
 
 # Installation
 
@@ -29,15 +34,17 @@ install the following python packages in your python3 environment:
 
 * **gbtpipe**: https://github.com/GBTSpectroscopy/gbtpipe
 * **degas**:   https://github.com/GBTSpectroscopy/degas
+* **maskmoment**:   https://github.com/tonywong94/maskmoment
 
 Probably better to use the source based "install -e", so you can "git pull" while code updates are being made:
 
       make git
-      (cd gbtpipe; pip install -e .)
-      (cd degas;   pip install -e .)
+      (cd gbtpipe;    pip install -e .)
+      (cd degas;      pip install -e .)
+      (cd maskmoment; pip install -e .)
       pip install pyspeckit
 	  
-It was noted that python > 3.7 was needed, where GBO runs 3.6.8. I've use the lmtoy method to
+It was noted that python > 3.7 was needed, where GBO runs 3.6.8. I've used the lmtoy method to
 install a container with anaconda3's python. Also the installation of gbtpipe might need the
 bz2 library. On my ubuntu system I needed to install **libbz2-dev** for this to pass the cfitsio
 installation that was needed for **gbtpipe**
@@ -61,8 +68,9 @@ and skipping the calibration.
 # Masking
 
 For baseline fitting it is useful to know where the signal is expected. Using the -M flag you can
-place a mask file in **masks/mask_GAL.fits**, which should contain 0's and 1's where we expect signal.
-A mask can also be made using the **mk_mask.sh** script, documentation is embedded, but here is an
+place a mask file in **masks/mask_GAL.fits**, which should contain 0's, and 1's where we expect signal.
+A mask can also be made using the **mk_mask.sh** script (you will need NEMO for this),
+documentation is embedded, but here is an
 example of use
 
       ./mk_mask.sh refmap=NGC0776/NGC0776_12CO_rebase3_smooth2_hanning2.fits  \
@@ -71,6 +79,10 @@ example of use
       ./reduce.py -M NGC0776
       ./mmaps.py NGC0776
 
+or if you have placed a specific mask file, e.g. masks/mask_NGC0001_Havfield_v1.fits, this would be
+
+      ./reduce.py -m mask_NGC0001_Havfield_v1.fits NGC0776
+
 # Bad Feeds
 
 If there is some indication that some feeds add negatively to the maps, they can be removed at the gridding 
@@ -78,7 +90,7 @@ stage, viz.
 
       ./reduce.py -f 8,11 -M NGC0776
 
-where feeds 8 and 11 (where feed 0 is the first feed) would be removed from gridding. They are still added to
+where feeds 8 and 11 (with feed 0 being the first feed) would be removed from gridding. They are still added to
 the calibration stage, so one can continue experimenting with pure gridding:
 
       ./reduce.py -f 11 -s NGC0776
@@ -91,36 +103,36 @@ may use a 1-based system in their language. Internally in the SDFITS files the f
 
 # Observing
 
-During observing you can edit the gals.pars file and add a new galaxy and scan numbers, then
-reduce their data and view the resulting fits cube using ds9 for example.
+After an observing session you need to edit the **gals.pars** file and add a new galaxy and scan ranges, then
+reduce their data and view the resulting fits cube using **ds9** or **carta** for example.
 
-An addition thing which is nice to do is preserving the tsys run of the night, and the astridlogs.
-For example for session 26 this would be:
+In addition we preserving the *tsys* run of the night, as well as
+the *astridlogs*.  For example for session 26 this would be:
 
-1. tsys:
+1. **tsys**:
 
-      ./tsys.py AGBT21B_024_26
-      cp pro/AGBT21B_024_26.tsys tsyslogs
-      git add tsyslogs/AGBT21B_024_26.tsys
-      git commit -m new tsyslogs/AGBT21B_024_26.tsys
-      git push
+        ./tsys.py AGBT21B_024_26
+        cp pro/AGBT21B_024_26.tsys tsyslogs
+        git add tsyslogs/AGBT21B_024_26.tsys
+        git commit -m new tsyslogs/AGBT21B_024_26.tsys
+        git push
 
-2. astridlogs:
+this **tsys.py** script will run IDL scripts,and take a while.
 
-      cd astridlogs
-      getastridlog AGBT21B_024_26
-      git add AGBT21B_024_26_log.txt
-      git commit -m new AGBT21B_024_26_log.txt
-      git push
+2. **astridlogs**:
 
+        cd astridlogs
+        getastridlog AGBT21B_024_26
+        git add AGBT21B_024_26_log.txt
+        git commit -m new AGBT21B_024_26_log.txt
+        git push
 
-      
 
 # Working with selected sessions
 
 GBT data is organized in sessions, usually starting with 1. In case you have many sessions and want to
-revisit one particular session, use the -g flag. But remove the galaxy directory, in case other sessions
-had calibrated scans lying around:
+reduce one particular session, use the -g flag. But remove the galaxy directory, in case other sessions
+had calibrated scans lying around (or rename the directory):
 
       rm -rf  NGC0776
       ./reduce -g 26,27 NGC0776
@@ -131,8 +143,8 @@ had calibrated scans lying around:
 
 To fully work offline, you will need to create symlinks from
 **rawdata** and **weather** to copies of the GBT (sdfits) rawdata and
-weather information. The [degas
-instructions](https://github.com/GBTSpectroscopy/degas/blob/master/README.md#local-installation-of-the-degas-pipeline)
+weather information. The
+[degas instructions](https://github.com/GBTSpectroscopy/degas/blob/master/README.md#local-installation-of-the-degas-pipeline)
 go in more detail, our **Makefile** has some useful targets to aid in
 the setup.
 
@@ -144,9 +156,9 @@ the setup.
       tar -C rawdata -xvf AGBT21B_024_01.tar
       tar zxf GBTWeather.tar.gz
       export GBTWEATHER=`pwd`/GBTWeather
-      ./reduce.py NGC0001
+      ./reduce.py -g 1 NGC0001
 
-the mask file is not here yet.  
+the mask file is not here yet.  Note we only use the first session (there are more).
 
 ## Nod_Galaxy
 
@@ -189,7 +201,7 @@ Otherwise just be aware of the listed ones here:
 		 
 2. Because of the randomized sampler in the PCA methods (i.e., the svd_solver option
    here https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html) the results are not reproducable
-   on a few mK level.  The solver is high efficiency but can lead to different outcomes.
+   on a few mK level.  The solver is highly efficiency but can lead to different outcomes.
    
    np.random.seed(123)  doesn't seem to work.
 
@@ -198,9 +210,10 @@ Otherwise just be aware of the listed ones here:
    run maybe 5% slower, not a huge effect. On fourier NGC0001 took about 10 mins, on my i5-1135G7 laptop 4 mins.
    On LMA bruteforce3 took 6:39
 
-4. nProc (see code) doesn't seem to work for me.   Setting OMP_NUM_THREADS=1 actually seems to make the code run a bit faster.
+4. nProc (see code) doesn't seem to work for me.
+   Setting OMP_NUM_THREADS=1 actually seems to make the code run a bit faster.
 
-5. For NGC0001 here are some RMS values:
+5. For NGC0001 here are some RMS values, for different (beam,hanning) settings
 
          (2,2)   nomask: 12.6      mask:  8.9mK  ratio 1.4
          (1.3,1) nomask: 33.5      mask: 27.4mK  ratio 1.2
@@ -228,13 +241,16 @@ Otherwise just be aware of the listed ones here:
    so the "-s" flag can be optimally used.
    TBD:    bad beams cannot be edited out without removing the offending feed fits file!
    
-
+    TODO:   we need a "final" script to do everything
+    
 10. The first 25 sessions were taken with 1.5 x 1.5 arcmin maps and ~33sec integration time per scan.
 
     Then came session 26, where we experimented with a 1.5x bigger map (in the scan direction only), and
     ~89s integration, which is really too long.
 
     In session 27 we then changed to 51s (???, or is that the plan)
+
+    Sessions 26-31 are likely all bogus.
 
 # Important Files and Directories
 
@@ -243,8 +259,8 @@ Otherwise just be aware of the listed ones here:
        reduce.py     - reduce one (or more) galaxies, based on parameters in gals.pars
        gals.pars     - galaxy parameter file for reduce.py containing the seq/scans 
        masks/        - here you need to place the mask_GAL.fits file (or symlink) for the -M flag
-       rawdata/      - (symlink to) where the rawdata are stored
-       weather/      - (symlink to) where the GBT Weather data are stored (with Coeff*.txt files)
+       rawdata/      - (symlink to) where the GBT rawdata (SDFITS) are stored
+       weather/      - (symlink to) where the GBT Weather data (ASCII) are stored (with Coeff*.txt files)
        astridlogs/   - keeps the astrid logs created with "getastridlog"
        tsyslogs/     - keeps the tsys logs created with ./tsys.py
 
@@ -252,3 +268,9 @@ and specific to being at GBT:
 
        /home/sdfits/AGBT21B_024_01/ - night1 VEGAS raw data directory @ GBO  (1.3GB)
                                       this should be rawdata/AGBT21B_024_01 for a local install
+
+
+and at lma@UMD:
+
+        /lma1/teuben/GBTRawdata/  - a few cherry picked project (AGBT21B_024, ...)
+        /lma1/teuben/GBTWeather/  - usually all the GBO weather database, going back to 2004.

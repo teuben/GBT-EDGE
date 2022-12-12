@@ -38,7 +38,9 @@ keyval = [
     "blorder=0\n    Order of baseline fits (if >= 0)",
     "blregion=\n    Pairs of sections along velocity axis for baseline fit",
     "vshift=0\n     Apply velocity shift to the SDFITS data",
-    "win=11\n       Window smoothing applied to SDFITS data",
+    "winc=0\n       Window smoothing applied to FITS data cube",
+    "wins=11\n      Window smoothing applied to SDFITS spectral data",
+    "edge=5\n       Number of edge channels to exclude",
     "plot=raw\n     Plot 'r(aw)' or 's(ubtracted)' spectrum",
     "VERSION=0.4\n  1-nov-2022 PJT",
 ]
@@ -189,10 +191,11 @@ else:
 print("PJT-2",nbl)
 
 iscale = float(p.get('iscale'))
-win = int(p.get("win"))
+winc = int(p.get("winc"))
+wins = int(p.get("wins"))
     
 radmax = size / 2 /  3600.0
-edge = 50
+edge = int(p.get("edge"))
 c = 299792.458
 restfr = -1
 
@@ -309,6 +312,8 @@ if nspec > 0:
 
 f1 = -1
 f2 = -1
+smooth = nr_smooth
+
 
 if Qplot:
     plt.figure()
@@ -320,6 +325,17 @@ if Qplot:
 
     # spectrum from FITS cube
     if spec1 != None:
+        if winc > 0:
+            spec1s = smooth(spec1,winc)
+            vrad1s = smooth(vrad1,winc)
+            print('SMOOTH: %d %d' % (len(spec1),len(spec1s)))
+            nchan1 = len(vrad1)
+            vcen1 = vrad1[nchan1//2]
+            icen1  = np.where(vrad1s==vcen1)[0][0]
+            print("PJT-10",nchan1//2,icen1)
+            spec1  = spec1s[icen1-nchan1//2+edge:icen1+nchan1//2-edge]
+            vrad1  = vrad1s[icen1-nchan1//2+edge:icen1+nchan1//2-edge]
+            
         if Qraw:
             plt.plot(vrad1,spec1,label=gal1)
         if p.has("vrange"):
@@ -344,10 +360,9 @@ if Qplot:
         
     # spectra from SDFITS
     if nspec > 0:
-        if win > 0:
-            smooth = nr_smooth
-            spec2s = smooth(spec2,win)
-            vrad2s = smooth(vrad2,win)
+        if wins > 0:
+            spec2s = smooth(spec2,wins)
+            vrad2s = smooth(vrad2,wins)
             print('SMOOTH: %d %d' % (len(spec2),len(spec2s)))
             if False:
                 y = spec2s[edge:-edge]
@@ -374,7 +389,7 @@ if Qplot:
         stats3(spec2)
 
         # subtract baseline?
-        if nbl>0 and blorder>=0 and win > 0:
+        if nbl>0 and blorder>=0 and wins > 0:
             (p3,t3,r3) = fit_poly(vrad2, spec2, blorder, bl)
             rms2 = r3.std()
             rms3 = diff_rms(r3)
@@ -387,14 +402,15 @@ if Qplot:
                 f2 = flux_spectrum(vrad2,resid2,bl[0][1],bl[1][0])/1000
                 plt.plot(vrad2,resid2,'-',label='RESID sdfits; flux=%g' % f2)
                 plt.plot(vrad2,p3(vrad2),'-',label='POLY %d SMTH %d SDFITS' % (blorder,-1))
-                plt.plot([bl[0][1],bl[1][0]],[-4.0*rms2,-4.0*rms2], c='black')
-                plt.plot([bl[0][1],bl[1][0]],[-4.5*rms2,-4.5*rms2], c='black')                
             # plt.plot([v2[0],v2[-1]], [0.0, 0.0], c='black', linewidth=2, label='baseline BAND %d' % do_band)
 
+    plt.plot([bl[0][1],bl[1][0]],[-4.0*rms2,-4.0*rms2], c='black')
+    plt.plot([bl[0][1],bl[1][0]],[-4.5*rms2,-4.5*rms2], c='black')
+    
     if f1 > 0:
-        print("Flux   FITS = %g K.km/s in %g arcsec beam\n" % (f1,size))
+        print("Flux   FITS = %g K.km/s in %g arcsec beam" % (f1,size))
     if f2 > 0:
-        print("Flux SDFITS = %g K.km/s in %g arcsec beam\n" % (f2,size))
+        print("Flux SDFITS = %g K.km/s in %g arcsec beam" % (f2,size))
         
     plt.xlabel('Vrad (km/s)')
     plt.ylabel('T (mK)')

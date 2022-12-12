@@ -50,7 +50,7 @@
 # 
 
 
-
+#--HELP
 #  - the defaults here are meant for NGC0001, the first galaxy we observed, and also a pretty good detection
 #  - stacking two galaxies on the field doesn't work yet, since this script forces vsys to be at the reference pixel
 
@@ -72,9 +72,18 @@ chan=10          # channel in km/s
 mask=mask.fits   # output file
 debug=0          # oh horror
 
+#--HELP
+
+#       give help?
+if [ "$1" == "--help" ] || [ "$1" == "-h" ];then
+    set +x
+    awk 'BEGIN{s=0} {if ($1=="#--HELP") s=1-s;  else if(s) print $0; }' $0
+    exit 0
+fi
+
 #  simple keyword=value command line parser for bash 
-for arg in $*; do
-  export $arg
+for arg in "$@"; do
+  export "$arg"
 done
 
 if [ $debug != 0 ]; then

@@ -42,7 +42,7 @@ keyval = [
     "wins=11\n      Window smoothing applied to SDFITS spectral data",
     "edge=5\n       Number of edge channels to exclude",
     "plot=raw\n     Plot 'r(aw)' or 's(ubtracted)' spectrum",
-    "VERSION=0.4\n  1-nov-2022 PJT",
+    "VERSION=0.4\n  12-dec-2022 PJT",
 ]
 
 usage = """
@@ -65,10 +65,10 @@ def stats3(x):
     x1 = x[:n1]
     x2 = x[n1:n2]
     x3 = x[n2:]
-    print("stats  : Showing mean/std/max in 3 sections of spectrum")
-    print("stats-1: ",x1.mean(), x1.std(), x1.max())
-    print("stats-2: ",x2.mean(), x2.std(), x2.max())
-    print("stats-3: ",x3.mean(), x3.std(), x3.max())
+    print("stats  : Showing mean/std/min/max in 3 sections of spectrum")
+    print("stats-1: ",x1.mean(), x1.std(), x1.min(), x1.max())
+    print("stats-2: ",x2.mean(), x2.std(), x2.min(), x2.max())
+    print("stats-3: ",x3.mean(), x3.std(), x3.min(), x3.max())
     print("stats  : Warning; units are mK really")
 
 def sexa2deci(s, scale=1.0):
@@ -208,6 +208,8 @@ else:
     Qraw = True
     print("Warning: invalid plot=, assuming raw mode")
 
+
+
 #  test if a cube
 ff = p.get("in")
 hdu = fits.open(ff)
@@ -216,6 +218,13 @@ if hdu[0].header['NAXIS'] > 2:
     if needr:
         ra0 = hdu[0].header['CRVAL1']
         dec0 = hdu[0].header['CRVAL2']
+
+        cosd0 = np.cos(dec0*np.pi/180)
+        dec0  = dec0 + ddec/3600.0
+        ra0   = ra0 + dra/3600.0/cosd0
+
+        print("PJT",ra0,dec0,restfr)
+        
         needr = False
     
     ds9 = 'fk5; circle(%.10f, %.10f, %g")'  % (ra0,dec0,size/2)
@@ -244,12 +253,6 @@ else:
     spec1 = None
 sdfits = p.list('sdfits')
 
-print("PJT",ra0,dec0,restfr)
-
-cosd0 = np.cos(dec0*np.pi/180)
-dec0  = dec0 + ddec/3600.0
-ra0   = ra0 + dra/3600.0/cosd0
-    
 
 # Spectra, units are mK
 # spec1 :   spectrum from a FITS cube (w/ nchan and chan)
@@ -404,8 +407,9 @@ if Qplot:
                 plt.plot(vrad2,p3(vrad2),'-',label='POLY %d SMTH %d SDFITS' % (blorder,-1))
             # plt.plot([v2[0],v2[-1]], [0.0, 0.0], c='black', linewidth=2, label='baseline BAND %d' % do_band)
 
-    plt.plot([bl[0][1],bl[1][0]],[-4.0*rms2,-4.0*rms2], c='black')
-    plt.plot([bl[0][1],bl[1][0]],[-4.5*rms2,-4.5*rms2], c='black')
+    if False:
+        plt.plot([bl[0][1],bl[1][0]],[-4.0*rms2,-4.0*rms2], c='black')
+        plt.plot([bl[0][1],bl[1][0]],[-4.5*rms2,-4.5*rms2], c='black')
     
     if f1 > 0:
         print("Flux   FITS = %g K.km/s in %g arcsec beam" % (f1,size))

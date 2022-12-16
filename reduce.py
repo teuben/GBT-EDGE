@@ -121,6 +121,7 @@ def edgegrid(galaxy, badfeed=[], maskfile=None):
              plotsubdir='timeseries/',
              windowStrategy=windowStrategy,   # 'cubemask' or 'simple'
              maskfile=maskfile,
+             dtype=np.float32,
              outname=filename)
 
     postprocess.cleansplit(filename + '.fits',

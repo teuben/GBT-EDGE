@@ -27,9 +27,10 @@ keyval = [
     "in=\n          input fits cube",
     "ra=\n          RA   hh:mm:ss.s (or decimal degrees) [ref pixel]",
     "dec=\n         DEC  dd:mm:ss.s (or decimal degrees) [ref pixel]",
-    "size=20\n      Size of area in arcsec",
+    "size=20\n      Size of area in arcsec (FWHM)",
     "dra=0\n        RA offset in arcsec",
     "ddec=0\n       DEC offset in arcsec",
+    "reg=\n         Alternate 'ds9' region file",
     "sdfits=\n      optional sdfits file(s) (not re-implemented yet)",
     "tab=\n         If given, write out spectrum here",
     "vrange=\n      Plotting range in velocity",
@@ -42,7 +43,7 @@ keyval = [
     "wins=11\n      Window smoothing applied to SDFITS spectral data",
     "edge=5\n       Number of edge channels to exclude",
     "plot=raw\n     Plot 'r(aw)' or 's(ubtracted)' spectrum",
-    "VERSION=0.4\n  1-nov-2022 PJT",
+    "VERSION=0.5\n  16-dec-2022 PJT",
 ]
 
 usage = """
@@ -66,9 +67,9 @@ def stats3(x):
     x2 = x[n1:n2]
     x3 = x[n2:]
     print("stats  : Showing mean/std/max in 3 sections of spectrum")
-    print("stats-1: ",x1.mean(), x1.std(), x1.max())
-    print("stats-2: ",x2.mean(), x2.std(), x2.max())
-    print("stats-3: ",x3.mean(), x3.std(), x3.max())
+    print("stats-1: ",x1.mean(), x1.std(), x1.min(), x1.max())
+    print("stats-2: ",x2.mean(), x2.std(), x2.min(), x2.max())
+    print("stats-3: ",x3.mean(), x3.std(), x3.min(), x3.max())
     print("stats  : Warning; units are mK really")
 
 def sexa2deci(s, scale=1.0):
@@ -89,6 +90,22 @@ def sexa2deci(s, scale=1.0):
         return r*scale*sign
     else:
         return float(dms)
+
+def read_ds9_region(reg):
+    """ read a region file
+    """
+    lines = open(reg,"r").readlines()
+    ds9_region = ""
+    for line in lines:
+        print("REGION: ",line)
+        if line[0] == '#': continue
+        if line.find('global') == 0: continue
+        if len(ds9_region) == 0:
+            ds9_region = line.strip()
+        else:
+            ds9_region = ds9_region + '; ' +  line.strip()
+    print("PJT",ds9_region)
+    return ds9_region
 
 def nr_smooth(x,window_len=11,window='hanning'):
 
@@ -217,8 +234,11 @@ if hdu[0].header['NAXIS'] > 2:
         ra0 = hdu[0].header['CRVAL1']
         dec0 = hdu[0].header['CRVAL2']
         needr = False
-    
-    ds9 = 'fk5; circle(%.10f, %.10f, %g")'  % (ra0,dec0,size/2)
+
+    if len(p.get("reg")) > 0:
+        ds9 = read_ds9_region(p.get("reg"))
+    else:
+        ds9 = 'fk5; circle(%.10f, %.10f, %g")'  % (ra0,dec0,size/2)
     print('DS9',ds9)
     spectrum = cube.subcube_from_ds9region(ds9).mean(axis=(1, 2))
     spec1 = iscale * 1000 * spectrum 
@@ -404,8 +424,8 @@ if Qplot:
                 plt.plot(vrad2,p3(vrad2),'-',label='POLY %d SMTH %d SDFITS' % (blorder,-1))
             # plt.plot([v2[0],v2[-1]], [0.0, 0.0], c='black', linewidth=2, label='baseline BAND %d' % do_band)
 
-    plt.plot([bl[0][1],bl[1][0]],[-4.0*rms2,-4.0*rms2], c='black')
-    plt.plot([bl[0][1],bl[1][0]],[-4.5*rms2,-4.5*rms2], c='black')
+    #plt.plot([bl[0][1],bl[1][0]],[-4.0*rms2,-4.0*rms2], c='black')
+    #plt.plot([bl[0][1],bl[1][0]],[-4.5*rms2,-4.5*rms2], c='black')
     
     if f1 > 0:
         print("Flux   FITS = %g K.km/s in %g arcsec beam" % (f1,size))

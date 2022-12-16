@@ -28,7 +28,8 @@ GIT_DIRS = gbtpipe degas maskmoment edge_pydb gbtgridder
 URL1  = https://github.com/GBTSpectroscopy/gbtpipe
 URL2  = https://github.com/GBTSpectroscopy/degas
 URL3  = https://github.com/astroumd/lmtoy
-URL4  = https://github.com/teuben/maskmoment
+URL4a = https://github.com/teuben/maskmoment
+URL4  = https://github.com/tonywong94/maskmoment
 URL5  = https://github.com/tonywong94/edge_pydb
 URL6  = https://github.com/richteague/bettermoments
 URL7  = https://github.com/GreenBankObservatory/gbtgridder
@@ -66,7 +67,7 @@ lmtoy:
 	git clone $(URL3)
 
 maskmoment:
-	git clone $(URL4)
+	git clone $(URL4a)
 
 edge_pydb:
 	git clone $(URL5)

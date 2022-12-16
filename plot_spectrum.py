@@ -52,7 +52,6 @@ plot a spectrum from a cube and/or set of sdfits files
 this script can take a FITS cube and plot a spectrum in a region defined
 by an offset from an (RA,DEC) position and a  size.  Optionally it can
 do a baseline fit in a blregion= and plot the residuals
-@todo r
 
 It will also do SDFITS files once this is fully enabled again
 """
@@ -66,7 +65,7 @@ def stats3(x):
     x1 = x[:n1]
     x2 = x[n1:n2]
     x3 = x[n2:]
-    print("stats  : Showing mean/std/max in 3 sections of spectrum")
+    print("stats  : Showing mean/std/min/max in 3 sections of spectrum")
     print("stats-1: ",x1.mean(), x1.std(), x1.min(), x1.max())
     print("stats-2: ",x2.mean(), x2.std(), x2.min(), x2.max())
     print("stats-3: ",x3.mean(), x3.std(), x3.min(), x3.max())
@@ -97,14 +96,12 @@ def read_ds9_region(reg):
     lines = open(reg,"r").readlines()
     ds9_region = ""
     for line in lines:
-        print("REGION: ",line)
         if line[0] == '#': continue
         if line.find('global') == 0: continue
         if len(ds9_region) == 0:
             ds9_region = line.strip()
         else:
             ds9_region = ds9_region + '; ' +  line.strip()
-    print("PJT",ds9_region)
     return ds9_region
 
 def nr_smooth(x,window_len=11,window='hanning'):
@@ -202,10 +199,10 @@ if p.has("blregion"):
         vmin = blregion[2*i]
         vmax = blregion[2*i+1]
         bl.append((vmin,vmax))
-    print("PJT-3",bl)
+    print("bl=",bl)
 else:
     nbl = 0
-print("PJT-2",nbl)
+print("nbl=",nbl)
 
 iscale = float(p.get('iscale'))
 winc = int(p.get("winc"))
@@ -225,15 +222,27 @@ else:
     Qraw = True
     print("Warning: invalid plot=, assuming raw mode")
 
+
+
 #  test if a cube
 ff = p.get("in")
 hdu = fits.open(ff)
 if hdu[0].header['NAXIS'] > 2:      
     cube = SpectralCube.read(ff).with_spectral_unit(u.km/u.s)
     if needr:
+        needr = False
+        
         ra0 = hdu[0].header['CRVAL1']
         dec0 = hdu[0].header['CRVAL2']
-        needr = False
+        cosd0 = np.cos(dec0*np.pi/180)
+        dec0  = dec0 + ddec/3600.0
+        ra0   = ra0 + dra/3600.0/cosd0
+        print("PJT",ra0,dec0,restfr)
+
+        bmaj = hdu[0].header['BMAJ']*3600
+        bmin = hdu[0].header['BMIN']*3600
+        print("BEAM: %g x %g arcsec" % (bmaj,bmin))
+            
 
     if len(p.get("reg")) > 0:
         ds9 = read_ds9_region(p.get("reg"))
@@ -264,12 +273,6 @@ else:
     spec1 = None
 sdfits = p.list('sdfits')
 
-print("PJT",ra0,dec0,restfr)
-
-cosd0 = np.cos(dec0*np.pi/180)
-dec0  = dec0 + ddec/3600.0
-ra0   = ra0 + dra/3600.0/cosd0
-    
 
 # Spectra, units are mK
 # spec1 :   spectrum from a FITS cube (w/ nchan and chan)

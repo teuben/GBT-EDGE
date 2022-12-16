@@ -39,11 +39,12 @@ keyval = [
     "blorder=0\n    Order of baseline fits (if >= 0)",
     "blregion=\n    Pairs of sections along velocity axis for baseline fit",
     "vshift=0\n     Apply velocity shift to the SDFITS data",
+    "vlsr=\n        Place VLSR marker if this is set",
     "winc=0\n       Window smoothing applied to FITS data cube",
     "wins=11\n      Window smoothing applied to SDFITS spectral data",
     "edge=5\n       Number of edge channels to exclude",
-    "plot=raw\n     Plot 'r(aw)' or 's(ubtracted)' spectrum",
-    "VERSION=0.5\n  16-dec-2022 PJT",
+    "plot=raw\n     Plot 'r(aw)' or 's(ubtracted)' spectrum - 's' will show flux",
+    "VERSION=0.6\n  16-dec-2022 PJT",
 ]
 
 usage = """
@@ -444,8 +445,19 @@ if Qplot:
     if p.has("irange"):
         ylim = p.listf("irange")
         plt.ylim(ylim)
-    plt.title('%s @ %f %f size %g"' % (gal,ra0,dec0,size))
-    plt.legend()
+    if p.has("vlsr"):
+        vlsr = float(p.get("vlsr"))
+        ax = plt.gca()
+        fmax = ax.get_ylim()[1]
+        plt.arrow(vlsr,fmax,0.0,-0.5*fmax,
+                  head_width=20, head_length=0.1*fmax,
+                  length_includes_head=True, facecolor='red')
+        plt.annotate('VLSR=%g' % vlsr, xy=(vlsr, fmax), multialignment='center')
+    if p.has("reg"):
+        plt.title('%s @ %f %f region %s"' % (gal,ra0,dec0,p.get("reg")))
+    else:
+        plt.title('%s @ %f %f size %g"' % (gal,ra0,dec0,size))
+    plt.legend(loc='best')
     plt.show()
     #
 

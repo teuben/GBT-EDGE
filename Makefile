@@ -37,20 +37,22 @@ URL7a = https://github.com/teuben/gbtgridder
 
 .PHONY:  help install build
 
+## help:     This Help
+help : Makefile
+	@sed -n 's/^##//p' $<
 
-help install:
-	@echo "The installation has a few manual steps:"
-	@echo ""
-
+## git:      make the needed git repos (GIT_DIRS)
 git:  $(GIT_DIRS)
 	@echo Last git: `date` >> git.log
 
+## pull:     update (git pull) the used git repos
 pull:
 	@echo -n "lmtoy: "; git pull
 	-@for dir in $(GIT_DIRS); do\
 	(echo -n "$$dir: " ;cd $$dir; git pull); done
 	@echo Last pull: `date` >> git.log
 
+## status:   query status of the used git repos
 status:
 	@echo -n "lmtoy: "; git status -uno
 	-@for dir in $(GIT_DIRS); do\
@@ -105,7 +107,10 @@ install_edge:  edge_pydb edge_env
 
 #  running at GBO, rawdata just points to /home/sdfits
 #  offsite you will need to supply your own, YMMV
+#  usually using the rsync target here, and running it from GBO
+#  this also updates the weather database
 
+## rawdata:  symlink to the SDFITS data
 rawdata:
 	@if [ -d $(SDIR) ]; then \
 	  ln -s $(SDIR) rawdata; \
@@ -115,9 +120,10 @@ rawdata:
 	  echo "SDIR=$(SDIR)"; \
 	fi
 
+## weather:  symlink to the GBO weather database directory
 weather:
 	@if [ -d $(WDIR) ]; then \
-	  ln -s $(WDIR) weatherd; \
+	  ln -s $(WDIR) weather; \
 	else \
 	  echo "Not at GBO; Provide your own symlink/directory named 'weather'"; \
 	  echo "WDIR=$(WDIR)"; \
@@ -175,6 +181,7 @@ other:
 #  if you want to fully reduce the data off-line
 SEQ = 01
 REM = teuben@lma.astro.umd.edu:/n/lma1/teuben/
+## rsync:    rsync to REM=$REM and SEQ=$SEQ
 rsync:
 	@echo rsync to REM=$(REM) and SEQ=$(SEQ)
 	du -sh $(SDIR)/AGBT21B_024_$(SEQ)
@@ -184,13 +191,20 @@ rsync:
 	-rsync -ahv --bwlimit=8000 $(WDIR)/Coeffs* $(REM)/GBTWeather
 
 #  this lenghty IDL based procedure computes the mean/rms/min/max for tsys for a given SEQ
+## tsys:     make tsys and summary files for SEQ=$SEQ
 tsys:
 	./tsys.py AGBT21B_024_$(SEQ)
 	cp pro/AGBT21B_024_$(SEQ).tsys tsyslogs
+	@echo git add           tsyslogs/AGBT21B_024_$(SEQ).tsys
 	@echo git commit -m new tsyslogs/AGBT21B_024_$(SEQ).tsys
+	cp pro/AGBT21B_024_$(SEQ).summary summarylogs
+	@echo git add           tsyslogs/AGBT21B_024_$(SEQ).summary
+	@echo git commit -m new tsyslogs/AGBT21B_024_$(SEQ).summary
 
+## astrid:   make astridlogs for SEQ=$SEQ
 astrid:
 	(cd astridlogs; getastridlog AGBT21B_024_$(SEQ))
+	@echo git add           astridlogs/AGBT21B_024_$(SEQ)_log.txt
 	@echo git commit -m new astridlogs/AGBT21B_024_$(SEQ)_log.txt
 
 #  produce a sample edge.sh
@@ -217,7 +231,7 @@ all:
 
 # getastridlog AGBT21B_024_10
  
-
+## stats:    make a new stats.log
 stats:
 	./do_all_stats > do_all_stats.log
 	cp do_all_stats.log stats.log

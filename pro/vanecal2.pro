@@ -21,6 +21,9 @@ if (n_elements(ifnum) eq 0) then ifnum = 0
 if (n_elements(maint) eq 0) then maint=0
 if (n_elements(nfd) eq 0) then nfd = 16
 
+;; anything about "bad" is not used in the mean
+bad=1000
+
 ;;get center beam scan for ATM parameters
 gettp,scan1,ifnum=ifnum,fdnum=9
 ;;Compute Tcal
@@ -52,10 +55,12 @@ for i=0,nfd-1 do begin
   divide,0,1
   ; print,'fdnum, beam, Tsys*[K]: ',i,!g.s[0].feed,tcal/median(getdata(0))
   tsys  = tcal/median(getdata(0))
-  tsys1 = tsys1 + tsys
-  tsys2 = tsys2 + tsys*tsys
-  if (tsys lt tsys_min) then tsys_min = tsys
-  if (tsys gt tsys_max) then tsys_max = tsys  
+  if (tsys lt bad) then begin
+    tsys1 = tsys1 + tsys
+    tsys2 = tsys2 + tsys*tsys
+    if (tsys lt tsys_min) then tsys_min = tsys
+    if (tsys gt tsys_max) then tsys_max = tsys
+  endif
 endfor
 ;print,'Tcal, Twarm, tatm:',tcal,twarm,tatm
 tsys_m = tsys1/nfd

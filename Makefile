@@ -110,7 +110,7 @@ install_edge:  edge_pydb edge_env
 #  usually using the rsync target here, and running it from GBO
 #  this also updates the weather database
 
-## rawdata:  symlink to the SDFITS data
+## rawdata:  symlink to the SDFITS data (SDIR=)
 rawdata:
 	@if [ -d $(SDIR) ]; then \
 	  ln -s $(SDIR) rawdata; \
@@ -120,7 +120,7 @@ rawdata:
 	  echo "SDIR=$(SDIR)"; \
 	fi
 
-## weather:  symlink to the GBO weather database directory
+## weather:  symlink to the GBO weather database directory (WDIR=)
 weather:
 	@if [ -d $(WDIR) ]; then \
 	  ln -s $(WDIR) weather; \

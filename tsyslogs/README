@@ -4,6 +4,9 @@ makes the file
      pro/AGBT21B_024_10.tsys
 which should be copied here and saved in git in this tsyslogs directory
 
+The command "make tsys SEQ=32" does this, and gives a remidner to the git
+commands needed to add them to git. 
+
 Missing sessions are:
  09  - equipment failure
  16  - skipped for some reason

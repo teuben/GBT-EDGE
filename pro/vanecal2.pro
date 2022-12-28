@@ -42,6 +42,7 @@ am=1./sin(el*!pi/180.)
 ;;
 tbg=2.725
 tcal=(tatm -tbg) + (twarm-tatm)*exp(tau*am)
+nf=0
 tsys1=0
 tsys2=0
 tsys_min=99999
@@ -56,6 +57,7 @@ for i=0,nfd-1 do begin
   ; print,'fdnum, beam, Tsys*[K]: ',i,!g.s[0].feed,tcal/median(getdata(0))
   tsys  = tcal/median(getdata(0))
   if (tsys lt bad) then begin
+    nf = nf + 1
     tsys1 = tsys1 + tsys
     tsys2 = tsys2 + tsys*tsys
     if (tsys lt tsys_min) then tsys_min = tsys
@@ -63,8 +65,8 @@ for i=0,nfd-1 do begin
   endif
 endfor
 ;print,'Tcal, Twarm, tatm:',tcal,twarm,tatm
-tsys_m = tsys1/nfd
-tsys_s = sqrt(tsys2/nfd - tsys_m*tsys_m)
+tsys_m = tsys1/nf
+tsys_s = sqrt(tsys2/nf - tsys_m*tsys_m)
 print,scan1,tsys_m,tsys_s,tsys_min,tsys_max
 return
 end

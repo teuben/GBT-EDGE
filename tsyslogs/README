@@ -16,3 +16,9 @@ The columns in the tables are:
 4   min Tsys
 5   max Tsys
 
+Somwtimes it happens that the az,el are listed as 0, in which case
+Tsys will be reported as infinity and all related calibration will
+be bad.
+In the vanecal procesure, use the maint=1 option, where it will use
+some nominal elevation, so some reasonable Tsys comes out.
+

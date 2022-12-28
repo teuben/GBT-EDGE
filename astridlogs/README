@@ -1,3 +1,4 @@
 The (GBO) command
      getastridlog AGBT21B_024_10
-will make such log files. After this we check them into the git repo.
+will make such log files. After this we check them into the git repo. 
+This is done via a "make astrid SEQ=32" call at GBO

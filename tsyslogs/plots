@@ -1,0 +1,3 @@
+#  use nemoplot for these, e.g. the command "nemoplots plots" will show default plot
+#
+#PLOT cat *tsys  | tabplot - 1 2 dycol=3 point=2,0.1 ymin=0 ymax=800 xmin=0 xmax=800

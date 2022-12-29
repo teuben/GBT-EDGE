@@ -33,4 +33,4 @@ except:
 
 # f.show_contour(fitsfile, levels=10)
 f.add_grid()
-f.save(fitsfile + ".pdf")
+f.save(fitsfile + ".png")

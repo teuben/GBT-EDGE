@@ -42,9 +42,11 @@ export DEBUG=-1
 rm -f $log
 for gal in $gals; do
     if [ -e ${gal}/${gal}_${ext} ]; then
-	tsys=$(txtpar $sum  p0=$gal,1,2)
-        comment=$(txtpar $sum  p0=$gal,1,3)
-	if [ -z $comment ]; then
+	#tsys=$(txtpar $sum  p0=$gal,1,2)
+	tsys=0
+        #comment=$(txtpar $sum  p0=$gal,1,2)
+	comment="$(grep -w ^$gal $sum | cut -d \  -f 2- )"
+	if [ -z "$comment" ]; then
 	    comment="???"
 	fi
 	if [ $tsys != 0 ]; then
@@ -54,20 +56,37 @@ for gal in $gals; do
 	else
 	    tsum=0
 	fi
+	nf=$(ls ${gal}/*feed*.fits|wc -l)
 	
-	echo -n "$gal ${tsys} ${tsum} ${comment} " >> $log
-	fitsccd ${gal}/${gal}_${ext} - |  ccdsub - - centerbox=$cbf,$cbf,$cbf | ccdstat - bad=0 qac=t >> $log
+	png=${gal}/${gal}.dilsmomsk.mom0.png
+	if [ -e $png ]; then
+	    png=1
+	else
+	    png=0
+	fi
+	
+	qac=$(fitsccd ${gal}/${gal}_${ext} - |  ccdsub - - centerbox=$cbf,$cbf,$cbf | ccdstat - bad=0 qac=t)
+	echo "$gal $qac $nf $png $comment" >> $log
+
     fi
 done
+
 
 # cat $log
 
 # print out galaxy name and RMS in mK
 echo "# Status summary of RMS stats of GBT EDGE QuickLook - produced via:   'make stats' on $(date)"
 echo "#   Galaxy_$ext is basis for the statistics"
-echo "#                                                                       technicaly <Tsys> = SUM(Tsys)/(N*sqrt(N))"
-echo "#   Galaxy      RMS [mK]  sratio($cbf)   pratio       S/N  Tsys                     <Tsys> <Tsys>/RMS   detection?"
-awk '{printf("%3d %-12s  %5.1f     %6.3f      %6.3f    %6.3f  %-35s  %5.1f %4.1f %s\n",NR,$1, 1000*$8, $12, ($10+$9)/($10-$9), $10/$8, $2, $3, $3/(1000*$8), $4  )}' $log
+#echo "#                                                                       technicaly <Tsys> = SUM(Tsys)/(N*sqrt(N))"
+#echo "#   Galaxy      RMS [mK]  sratio($cbf)   pratio       S/N  Tsys                     <Tsys> <Tsys>/RMS   detection?"
+#awk '{printf("%3d %-12s  %5.1f     %6.3f      %6.3f    %6.3f  %-35s  %5.1f %4.1f %s\n",NR,$1, 1000*$8, $12, ($10+$9)/($10-$9), $10/$8, $2, $3, $3/(1000*$8), $4  )}' $log
+
+echo "#   Galaxy      RMS [mK]  sratio($cbf)   pratio       S/N   NF detection?"
+awk '{printf("%3d %-12s  %5.1f     %6.3f      %6.3f    %6.3f  %3d %d %s\n", NR,  $1, 1000*$5,   $9,    ($7+$6)/($7-$6), $7/$5, $11, $12, $13)}' $log 
 
 
-echo "#  last updated on $(date)" 
+echo "#  last updated on $(date)"
+echo "#  sratio = (psum+nsum)/(psum-nsum)      0 (noise) to 1 (pure signal)"
+echo "#  pratio = (max+min)/(max-min)          0 (noise)"
+
+

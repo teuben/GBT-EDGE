@@ -119,4 +119,9 @@ if __name__ == "__main__":
         plt.savefig("%s.flux.png" % mout)
         #plt.show()
 
+        # add fancier plot just for mom0 of what should be the best "detection" map
+        cmd = "../fitsplot2.py %s.dilsmomsk.mom0.fits.gz --hist" % gal
+        print("CMD:",cmd)
+        os.system(cmd)
+
         os.chdir("..")

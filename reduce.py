@@ -36,7 +36,7 @@ from spectral_cube import SpectralCube
 from radio_beam import Beam
 import argparse
 
-__version__ = "10-oct-2022"
+__version__ = "29-dec-2022"
 
 def edgemask(galaxy, maskfile=None):
     """
@@ -286,6 +286,11 @@ def main(args):
         if len(scans) > 0:
             os.makedirs(gal, exist_ok=True)
             os.chdir(gal)
+            # keep track of sessions
+            fp = open("sessions.log","a")
+            for scan in scans:
+                fp.write("%d\n" % scan[0])
+            fp.close()
             if do_mask:
                 maskfile = edgemask(gal, mask2)               # make mask file
                 print("Using mask from %s" % maskfile)

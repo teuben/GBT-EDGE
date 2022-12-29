@@ -9,7 +9,7 @@ import sys
 # stats log file
 slf = "stats.log"
 
-# changing these probably means the same change is needed in other scripts as well
+# changing these probably means a similar change is needed in other scripts as well
 mmv = "dilsmomsk.mom0"
 fcv = "_12CO_rebase5_smooth1.3_hanning2"
 
@@ -29,7 +29,7 @@ print("<LI> RMS is determined from the inner (spatial) 40% of the cube")
 print("<LI> sratio, pratio, SNR are indications how much signal there is")
 print("<LI> Sessions are which of the sessions used to make this summary")
 print("<LI> NF is the total number of feeds used. Usually a multiple of 32 if both DEC and RA map used.")
-print("<LI> mom0 image is from MaskMoment's <B>%s.fits.gz</B> version (units K.km/s)" % mmv)
+print("<LI> mom0 image is from MaskMoment's <B>%s.fits.gz</B> version (units: K.km/s)" % mmv)
 print("     <br>still taken from the flux flat cube, we don't have a noise flat cube yet. Hence the noisy edge.")
 print("<LI> comments are Peter's silly comments, usually based on initial ds9 browsing")
 print("     <br>- means that nothing obvious was seen")

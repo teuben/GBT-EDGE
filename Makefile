@@ -236,3 +236,5 @@ stats:
 	./do_all_stats > do_all_stats.log
 	cp do_all_stats.log stats.log
 	@echo Results in  stats.log
+	./mk_summary1.py > README.html 
+

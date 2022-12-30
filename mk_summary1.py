@@ -5,6 +5,7 @@
 
 import os
 import sys
+from datetime import datetime
 
 # stats log file
 slf = "stats.log"
@@ -17,27 +18,36 @@ fcv = "_12CO_rebase5_smooth1.3_hanning2"
 print("<html>")
 
 print('<script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>')
-print("Summary of all sources (click on column name to sort by that column)")
+print("<H1> Summary of GBT-EDGE pipeline runs </H1>")
 print("<A HREF=%s>(see also %s)</A>" % (slf,slf))
 
 print("<P>")
-print("NOTE: these results are live from the pipeline and are not science ready.")
+print("NOTE: these results are live from the <A HREF=https://github.com/teuben/GBT-EDGE>pipeline</A> and are probably not science ready.")
 print("<UL>")
 print("<LI> Galaxy FITS cube links are to the  <B>%s.fits</B> version from the pipeline" % fcv)
 print("     <br> this should have an 8 arcsec beam and 15 km/s channels")
 print("<LI> RMS is determined from the inner (spatial) 40% of the cube")
 print("<LI> sratio, pratio, SNR are indications how much signal there is")
 print("<LI> Sessions are which of the sessions used to make this summary")
+print("     <br> all sessions 26-31 should not be used")
 print("<LI> NF is the total number of feeds used. Usually a multiple of 32 if both DEC and RA map used.")
 print("<LI> mom0 image is from MaskMoment's <B>%s.fits.gz</B> version (units: K.km/s)" % mmv)
 print("     <br>still taken from the flux flat cube, we don't have a noise flat cube yet. Hence the noisy edge.")
+print("<LI> pipeline run is the last time the pipeline was on this galaxy")
 print("<LI> comments are Peter's silly comments, usually based on initial ds9 browsing")
 print("     <br>- means that nothing obvious was seen")
 print("<LI> if the table below is empty.... work must be in progress")
 print("</UL>")
 
+print("(click on a column name to toggle the sorting by that column)")
+
 print('<table border=1 class="sortable">')
 print('  <tr class="item">')
+
+
+print("    <th>")
+print("      #")
+print("    </th>")
 
 print("    <th>")
 print("      Galaxy")
@@ -72,18 +82,26 @@ print("      mom0")
 print("    </th>")
 
 print("    <th>")
+print("      pipeline run")
+print("    </th>")
+
+
+print("    <th>")
 print("      comments")
 print("    </th>")
 
 print("  </tr>")
 
 lines = open(slf).readlines()
+ngal = 0
 
 for line in lines:
     line = line.strip()
     if line[0] == '#':
         # print("%s<br>" % line[1:])
         continue
+
+    ngal = ngal + 1
 
     words = line.split()
     gal = words[1]
@@ -111,10 +129,26 @@ for line in lines:
         png = "%s/%s.%s.png" % (gal,gal,mmv)
     else:
         png = 0
+
+    lrt = "%s/runs.log" % (gal)
+    if os.path.exists(lrt):
+        fp = open(lrt)
+        lines = fp.readlines()
+        fp.close()
+        lrt = lines[-1].strip()
+    else:
+        lrt = "some time ago"
+
+            
     comm= words[8]
         
   
     print('  <tr class="item">')
+
+    print("    <td>")
+    print("     %d" % ngal)
+    print("    </td>")
+    
     
     print("    <td>")
     fits = "%s/%s%s.fits" % (gal,gal,fcv)
@@ -152,6 +186,9 @@ for line in lines:
         print("       <A HREF=%s> <IMG SRC=%s height=100></A>" % (png,png))
     print("    </td>")
 
+    print("    <td>")
+    print("     %s" % lrt)
+    print("    </td>")
     
     print("    <td>")
     print("     %s" % comm)    
@@ -161,6 +198,8 @@ for line in lines:
 
 print("</table>")
 
-print("Last written on: <br>")
+now = datetime.now()
+print("Last written on: %s" % now.strftime("%Y-%m-%dT%H:%M:%S"))
+
 
 

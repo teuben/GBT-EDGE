@@ -23,7 +23,7 @@ NGC5631   -
 NGC5720   -
 NGC5888   weak
 NGC5216   0
-NGC5954   whopping/double
+NGC5954   whopping/double=Arp91
 NGC5987   -
 NGC6132   weak
 UGC01659  -

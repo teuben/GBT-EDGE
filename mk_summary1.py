@@ -5,7 +5,9 @@
 
 import os
 import sys
+import numpy as np
 from datetime import datetime
+from astropy.io import fits
 
 # stats log file
 slf = "stats.log"
@@ -13,6 +15,7 @@ slf = "stats.log"
 # changing these probably means a similar change is needed in other scripts as well
 mmv = "dilsmomsk.mom0"
 fcv = "_12CO_rebase5_smooth1.3_hanning2"
+
 
 
 print("<html>")
@@ -33,6 +36,7 @@ print("     <br> all sessions 26-31 should not be used")
 print("<LI> NF is the total number of feeds used. Usually a multiple of 32 if both DEC and RA map used.")
 print("<LI> mom0 image is from MaskMoment's <B>%s.fits.gz</B> version (units: K.km/s)" % mmv)
 print("     <br>still taken from the flux flat cube, we don't have a noise flat cube yet. Hence the noisy edge.")
+print("<LI> mom0peak is the peak in the mom0 from the inner 40% of the map ")
 print("<LI> pipeline run is the last time the pipeline was on this galaxy")
 print("<LI> comments are Peter's silly comments, usually based on initial ds9 browsing")
 print("     <br>- means that nothing obvious was seen")
@@ -79,6 +83,10 @@ print("    </th>")
 
 print("    <th>")
 print("      mom0")
+print("    </th>")
+
+print("    <th>")
+print("      mom0peak")
 print("    </th>")
 
 print("    <th>")
@@ -130,6 +138,16 @@ for line in lines:
     else:
         png = 0
 
+    # find peak in the center part of mom0 fits file
+    m0f =  "%s/%s.%s.fits.gz" % (gal,gal,mmv)
+    if os.path.exists(m0f):
+        d1 = fits.open(m0f)[0].data
+        (nx,ny) = d1.shape
+        d2 = d1[nx//2-nx//5:nx//2+nx//5, ny//2-ny//5:ny//2+ny//5]
+        m0p = np.nanmax(d2)
+    else:
+        m0p = -999
+
     lrt = "%s/runs.log" % (gal)
     if os.path.exists(lrt):
         fp = open(lrt)
@@ -151,8 +169,8 @@ for line in lines:
     
     
     print("    <td>")
-    fits = "%s/%s%s.fits" % (gal,gal,fcv)
-    print("    <A HREF=%s>%s</A>" % (fits,gal))
+    ff = "%s/%s%s.fits" % (gal,gal,fcv)
+    print("    <A HREF=%s>%s</A>" % (ff,gal))
     print("    </td>")
 
     print("    <td>")
@@ -186,6 +204,10 @@ for line in lines:
         print("       <A HREF=%s> <IMG SRC=%s height=100></A>" % (png,png))
     print("    </td>")
 
+    print("    <td>")
+    print("     %.2f" % m0p)
+    print("    </td>")
+    
     print("    <td>")
     print("     %s" % lrt)
     print("    </td>")

@@ -223,9 +223,6 @@ show:
 
 #  galaxies with masks
 MGCAL = NGC0001 NGC0169 NGC0495 NGC0776 NGC0932 NGC2691  UGC01659 UGC02134 UGC02239 UGC04245
-all:
-	@echo not yet
-	@echo export OMP_NUM_THREADS=1
 
 # mask_CGCG536-030_Havfield_v1.fits
 
@@ -238,3 +235,13 @@ stats:
 	@echo Results in  stats.log
 	./mk_summary1.py > README.html 
 
+## sessions: report which galaxy in which session (not yet used)
+sessions:
+	grep -v ^\# gals.pars | awk '{if (NF>2) print $$1,$$2}'  | sort | uniq > sessions.log
+
+## all:      create a runs.sh file to re-run the whole pipeline, ideally with slurm or gnu parallel
+all:
+	./mk_runs.py
+	ls ./run_*.sh | awk '{printf("bash %s > %s.log 2>&1\n",$$1,$$1)}' > runs.sh
+	@echo 'Now run:'
+	@echo 'OMP_NUM_THREADS=1  parallel --jobs 16 < runs.sh'

@@ -298,6 +298,10 @@ def main(args):
             for scan in scans:
                 fp.write("%d\n" % scan[0])
             fp.close()
+            # log this last pipeline run
+            cmd = 'date +%Y-%m-%dT%H:%M:%S >> runs.log'
+            os.system(cmd)
+
             if do_mask:
                 maskfile = edgemask(gal, mask2)               # make mask file
                 print("Using mask from %s" % maskfile)

@@ -446,3 +446,24 @@ NGC5376     34  475  509
 
 
 UGC08004   34   519   553             # see 15
+
+
+# --------------------------------------------------------------------------------
+# session 35:    3  nov 2023
+#     beam 3 is dead; 
+#     beam 7 is very noisy (known for a while -- beam 3 won't be back until the summer; beam 7 might get fixed during this season). 
+
+
+NGC2596    35   21    55
+NGC2596    35   65    99
+
+UGC04245   35   109  143
+UGC04245   35   148  158  146,146    # partial RAmap
+
+# session 36:
+
+NGC0001    36   24    58      # SCANS 22-47 BAD
+NGC0001    36   66    96     #  2nd partial decmap, fix scans missed in previous
+NGC0001    36    104   138
+
+NGC0169    36    143   156  141,141  partial decmap (end of session)

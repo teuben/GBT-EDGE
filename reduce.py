@@ -36,7 +36,7 @@ from spectral_cube import SpectralCube
 from radio_beam import Beam
 import argparse
 
-__version__ = "10-oct-2022"
+__version__ = "29-dec-2022"
 
 def edgemask(galaxy, maskfile=None):
     """
@@ -226,6 +226,7 @@ def main(args):
     grabseq  = False
     do_seed = False
     mask2   = None
+    dryrun  = False
     seq = []
     for gal in args:
         if grabwild:
@@ -248,6 +249,9 @@ def main(args):
         if gal == '-s':
             print("Warning: skipping accumulating scans, only doing gridding. Affects mask")
             do_scan = False
+            continue
+        if gal == '-n':
+            dryrun = True
             continue
         if gal == '-f':
             grabwild = True
@@ -272,6 +276,7 @@ def main(args):
             print("  -m mfile  use masking file and deeper GAL/MASK/<results>")
             print("  -f f1,... comma separated list of bad feeds (0-based numbers)")
             print("  -g g1,... comma separated list of good sessions (1,2,...)  [PJT only]")
+            print("  -n        dryrun - report sessions/scans found and exit")
             print("  galaxy    galaxy name(s), e.g. NGC0001, as they appear in gals.pars")
             print("            In theory multiple galaxies can be used, probably not with -m,-g,-f")
             continue
@@ -283,9 +288,20 @@ def main(args):
 
         print("Trying galaxy %s" % gal)
         scans = getscans(gal, seq)
+        if dryrun:
+            return
         if len(scans) > 0:
             os.makedirs(gal, exist_ok=True)
             os.chdir(gal)
+            # keep track of sessions
+            fp = open("sessions.log","a")
+            for scan in scans:
+                fp.write("%d\n" % scan[0])
+            fp.close()
+            # log this last pipeline run
+            cmd = 'date +%Y-%m-%dT%H:%M:%S >> runs.log'
+            os.system(cmd)
+
             if do_mask:
                 maskfile = edgemask(gal, mask2)               # make mask file
                 print("Using mask from %s" % maskfile)

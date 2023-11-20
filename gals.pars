@@ -450,7 +450,7 @@ UGC08004   34   519   553             # see 15
 
 # --------------------------------------------------------------------------------
 # session 35:    3  nov 2023
-#     beam 3 is dead; 
+#     beam 3/16 is still dead; 
 #     beam 7 is very noisy (known for a while -- beam 3 won't be back until the summer; beam 7 might get fixed during this season). 
 
 
@@ -461,6 +461,8 @@ NGC2596    35   65    99
 #                              #   also in 8, 32
 UGC04245   35   109  143
 UGC04245   35   148  158  146,146    # partial RAmap
+
+
 
 # session 36:
 
@@ -490,5 +492,16 @@ NGC2596   37    337  371
 UGC04245   37   381  415
 UGC04245   37   425  459
 
-#NGC2691    37    469  488    467,467      # partial map, only 19 rows
-NGC2691    37    469  487    467,467      # partial map, only 19 rows
+NGC2691    37    469  487    467,467      # partial map, only 18 good rows
+
+
+# session 38:   19/20 nov
+
+NGC0001    38    30   64
+NGC0001    38    74  108
+
+NGC0001    38    118  152
+NGC0001    38    162  196
+
+# NGC0001    38    206 208   204,204   # partial map, super short scans
+

@@ -454,16 +454,41 @@ UGC08004   34   519   553             # see 15
 #     beam 7 is very noisy (known for a while -- beam 3 won't be back until the summer; beam 7 might get fixed during this season). 
 
 
-NGC2596    35   21    55
+#                              #   also in 22,32
+NGC2596    35   21    55       #   south part of map very noisy
 NGC2596    35   65    99
 
+#                              #   also in 8, 32
 UGC04245   35   109  143
 UGC04245   35   148  158  146,146    # partial RAmap
 
 # session 36:
 
-NGC0001    36   24    58      # SCANS 22-47 BAD
-NGC0001    36   66    96     #  2nd partial decmap, fix scans missed in previous
-NGC0001    36    104   138
+#NGC0001    36   24    58      # SCANS 22-47 BAD
+#NGC0001    36   66    96     #  2nd partial decmap, fix scans missed in previous
+NGC0001    36    104   138     # RAmap
 
 NGC0169    36    143   156  141,141  partial decmap (end of session)
+
+
+# session 37:   18/19 nov
+
+NGC0776   37   29   63          # SW is noisy
+NGC0776   37   73  107
+
+
+UGC04262   37  117  151         # NE is noisy
+UGC04262   37  161  195
+
+
+UGC04054   37   205  239        #  SE is noisy
+UGC04054   37   249  283
+
+NGC2596   37    293  327        #  SE is noisy
+NGC2596   37    337  371
+
+UGC04245   37   381  415
+UGC04245   37   425  459
+
+#NGC2691    37    469  488    467,467      # partial map, only 19 rows
+NGC2691    37    469  487    467,467      # partial map, only 19 rows

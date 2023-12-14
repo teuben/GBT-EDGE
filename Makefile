@@ -198,8 +198,8 @@ tsys:
 	@echo git add           tsyslogs/AGBT21B_024_$(SEQ).tsys
 	@echo git commit -m new tsyslogs/AGBT21B_024_$(SEQ).tsys
 	cp pro/AGBT21B_024_$(SEQ).summary summarylogs
-	@echo git add           tsyslogs/AGBT21B_024_$(SEQ).summary
-	@echo git commit -m new tsyslogs/AGBT21B_024_$(SEQ).summary
+	@echo git add           summarylogs/AGBT21B_024_$(SEQ).summary
+	@echo git commit -m new summarylogs/AGBT21B_024_$(SEQ).summary
 
 ## astrid:   make astridlogs for SEQ=$SEQ
 astrid:

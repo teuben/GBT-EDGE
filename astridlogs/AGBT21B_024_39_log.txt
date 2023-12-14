@@ -1,0 +1,1900 @@
+ 
+ 
+#######################################################
+ SCRIPT NUMBER 1, project:AGBT21B_024_39 
+ 289435 1083 Vicente Villanueva 14 Brandon Moore 2023-12-12 03:38:39 obs_completed 
+#######################################################
+source = oofSrc
+
+#Break("Ask the operator to switch the receiver to Ka (Rcvr26_40).  Click yes when Ka-band is in place.")
+
+#SetValues("ScanCoordinator", {"receiver": "Rcvr26_40"})
+
+print "autoOOF source:", source
+
+Catalog(wband_pointing)
+Catalog(projectDir+"/alma_fluxcal_grid.cat")
+Slew(source)
+
+AutoOOF(source)
+
+#Break ("Ask the operator to switch back to Argus. Click yes when Argus is in place.")
+
+#SetValues("ScanCoordinator", {"receiver": "RcvrArray75_115"})
+
+## put in reset config after Ka+CCB OOF since mulitple sessions had issues
+## post OOF and config failed for Argus. The resetconfig clears out 
+## leftover parameters.
+#ResetConfig()
+
+#configure Argus
+Configure(argus_config)
+print "Setting up the YIG filter and LO for Argus during the operator switch from Ka-band to Argus."
+
+#######################################################
+ LOG SESSION NUMBER 1 
+[03:38:39] ******** Begin Scheduling Block
+[03:38:39] ******** observer = Vicente Villanueva, SB name = 03_autoOOF_Q, project ID = AGBT21B_024, date = 12 Dec 2023
+
+[03:38:39] autoOOF source: 0319+4130
+[03:38:39] source : 0319+4130
+               S0.3 : 10.036
+               location : J2000 @ (03:19:48.16, 41:30:42.10)
+               Gold : P
+               OFFSET : 61.2
+[03:38:39] Slewing to source.
+[03:38:40] In state Ready, waiting for state Activating
+[03:38:40]     Setting State: Activating
+[03:38:40] Detected state Activating
+[03:38:40] In state Activating, waiting for state Ready
+[03:47:22]     Setting State: Ready
+[03:47:22] Detected state Ready
+[03:47:22] Configuring telescope.
+[03:47:22]     Setting State: Activating
+[03:47:24]     Setting State: Ready
+[03:47:26]     Setting State: Activating
+[03:47:26]     Setting State: Ready
+[03:47:26]     Setting State: Activating
+[03:47:26]     Setting State: Ready
+[03:47:27] Default values are
+[03:47:27] if3freq  =  [0]
+[03:47:27] chopper  =  off
+[03:47:27] Configuring for backend DCR...
+[03:47:27] The bad devices are: 
+[03:47:27] ConverterFilter14
+[03:47:27] ConverterFilter2
+[03:47:27] ConverterFilter16
+[03:47:27] ConverterFilter10
+[03:47:27] ConverterFilter12
+[03:47:27] Waiting for  IFRack to finish activating
+[03:47:27] . .
+[03:47:27] Checking telescope
+[03:47:27] Configuration Complete
+[03:47:27] source : 0319+4130
+[03:47:27] Slewing to source.
+[03:47:27] In state Ready, waiting for state Activating
+[03:47:27]     Setting State: Activating
+[03:47:27] Detected state Activating
+[03:47:28] In state Activating, waiting for state Ready
+[03:47:30]     Setting State: Ready
+[03:47:30] Detected state Ready
+[03:47:30] Balancing IF system.
+[03:47:30] Balancing IFRack
+[03:47:32]     Setting State: Activating
+[03:47:32]     Setting State: Ready
+[03:47:32] the sampler values are:
+[03:47:32] RF_power 1 : 0.1611328
+[03:47:32] RF_power 2 : 0.07324219
+[03:47:32] RF_power 3 : 0.1904297
+[03:47:32] RF_power 4 : 0.1171875
+[03:47:32] RF_power 5 : 0.02929688
+[03:47:32] RF_power 6 : 0.2441406
+[03:47:32] RF_power 7 : 0
+[03:47:32] RF_power 8 : 0.2783203
+[03:47:32]  Running AutoOOF 
+[03:47:33] Starting OOF map number, 1 at focus: 0.0
+[03:47:33] Beginning execution of scan trajectory in file /home/gbt/etc/config//q-oof-raster-v1.fits
+[03:47:33] Scan duration is  299  
+ Moving to source
+[03:47:33] J2000 @ (03:19:48.16, 41:30:42.10)   Starting trajectory
+[03:47:38] In state Ready, waiting for state Running
+[03:47:39]     Setting State: Activating
+[03:47:57]     Setting State: Committed
+[03:48:00]     Setting State: Running
+[03:48:00] Detected state Running
+[03:48:00] *** Notice: This subscan will be numbered as scan #1 in your data reduction package.
+[03:48:00] In state Running, waiting for state Ready
+[03:52:58]     Setting State: Stopping
+[03:53:02]     Setting State: Ready
+[03:53:02] Detected state Ready
+[03:53:02] Ygor Telescope: WaitForStopping
+[03:53:02] Ending trajectory
+[03:53:02] Starting OOF map number, 2 at focus: 35.0
+[03:53:02] Beginning execution of scan trajectory in file /home/gbt/etc/config//q-oof-raster-v1.fits
+[03:53:02] Scan duration is  299  
+ Moving to source
+[03:53:02] J2000 @ (03:19:48.16, 41:30:42.10)   Starting trajectory
+[03:53:08] In state Ready, waiting for state Running
+[03:53:08]     Setting State: Activating
+[03:53:14]     Setting State: Committed
+[03:53:16]     Setting State: Running
+[03:53:16] Detected state Running
+[03:53:17] *** Notice: This subscan will be numbered as scan #2 in your data reduction package.
+[03:53:17] In state Running, waiting for state Ready
+[03:58:15]     Setting State: Stopping
+[03:58:18]     Setting State: Ready
+[03:58:18] Detected state Ready
+[03:58:18] Ygor Telescope: WaitForStopping
+[03:58:18] Ending trajectory
+[03:58:18] Starting OOF map number, 3 at focus: -35.0
+[03:58:18] Beginning execution of scan trajectory in file /home/gbt/etc/config//q-oof-raster-v1.fits
+[03:58:18] Scan duration is  299  
+ Moving to source
+[03:58:19] J2000 @ (03:19:48.16, 41:30:42.10)   Starting trajectory
+[03:58:24] In state Ready, waiting for state Running
+[03:58:25]     Setting State: Activating
+[03:58:33]     Setting State: Committed
+[03:58:35]     Setting State: Running
+[03:58:35] Detected state Running
+[03:58:35] *** Notice: This subscan will be numbered as scan #3 in your data reduction package.
+[03:58:36] In state Running, waiting for state Ready
+[04:03:34]     Setting State: Stopping
+[04:03:37]     Setting State: Ready
+[04:03:37] Detected state Ready
+[04:03:37] Ygor Telescope: WaitForStopping
+[04:03:37] Ending trajectory
+[04:03:37] Starting OOF data analysis.  This will take a few minutes.
+[04:03:37] The surface will be displayed when the analysis is complete in the gfm OOF plugin.
+[04:03:37] After the surface is displayed, you may transfer a zernike solution using the 'Send Selected Solution' button in the gfm OOF plugin.
+[04:03:37] Running OOF command:
+[04:03:37] /home/oof/poof64/main/oofssh mandc9.gbt.nrao.edu /home/gbtdata/AGBT21B_024_39 1 --channel=-1 --zmax=5 --nseq=3 --online --config=/home/gbt/etc/config --beamfind=None --mbacalseq=1
+[04:03:38] Configuring telescope.
+[04:03:41] Default values are
+[04:03:41] if3freq  =  [0]
+[04:03:41] Configuring for backend VEGAS...
+[04:03:41] The bad devices are: 
+[04:03:41] ConverterFilter14
+[04:03:41] ConverterFilter2
+[04:03:41] ConverterFilter16
+[04:03:41] ConverterFilter10
+[04:03:41] ConverterFilter12
+[04:03:41] The bad devices are: 
+[04:03:41] ConverterFilter14
+[04:03:41] ConverterFilter2
+[04:03:41] ConverterFilter16
+[04:03:41] ConverterFilter10
+[04:03:41] ConverterFilter12
+
+[04:03:41]  Finalizing VEGAS config...
+[04:03:41] Checking telescope
+[04:03:41] Configuration Complete
+[04:03:41] Setting up the YIG filter and LO for Argus during the operator switch from Ka-band to Argus.
+runSuccessful: True
+[04:03:41] ******** End Scheduling Block
+[04:03:41] ******** observer = Vicente Villanueva, SB name = 03_autoOOF_Q, project ID = AGBT21B_024
+
+how much log? 5963 id: 289435self.history: <gbt.turtle.database.History.History instance at 0x784d0e0>self.history.connection: <gbt.turtle.database.TurtleConnection.TurtleConnection instance at 0x7845ef0>how much converted log? 6169 
+#######################################################
+ 
+ 
+#######################################################
+ SCRIPT NUMBER 2, project:AGBT21B_024_39 
+ 289436 1083 Vicente Villanueva 14 Brandon Moore 2023-12-12 04:08:07 obs_aborted 
+#######################################################
+#load catalogs
+#Catalog(qband_pointing)
+#Catalog(wband_pointing)
+Catalog(xband_pointing)
+#Catalog(fluxcal)
+Catalog(projectDir+"/alma_fluxcal_grid.cat")
+
+# choose appropriate source
+source = fluxSrc
+
+# set the receiver in the scan coordinator to avoid errors
+SetValues("ScanCoordinator", {"receiver": "RcvrArray75_115"})
+
+# configuring manually to avoid re-tuning
+Configure(point_config) # configure the pointing at the frequency of the source.
+execfile(projectDir+"/addwx.py")
+
+Slew(source)
+
+Balance()
+
+# pointing
+AutoPeak(source,configure=False) # This peaks at the frequency of the source.
+
+Break("enter pointing offsets")
+
+# focusing
+Focus(source) 
+
+Break("enter focus values if necessary")
+
+#######################################################
+ LOG SESSION NUMBER 2 
+[04:08:07] ******** Begin Scheduling Block
+[04:08:07] ******** observer = Vicente Villanueva, SB name = 05_PointFocus_Flux, project ID = AGBT21B_024, date = 12 Dec 2023
+
+[04:08:07] Configuring telescope.
+[04:08:08]     Setting State: Activating
+[04:08:25]     Setting State: Ready
+[04:08:26]     Setting State: Activating
+[04:08:27]     Setting State: Ready
+[04:08:27] Default values are
+[04:08:27] if3freq  =  [0]
+[04:08:27] Configuring for backend DCR...
+[04:08:27] The bad devices are: 
+[04:08:27] ConverterFilter14
+[04:08:27] ConverterFilter2
+[04:08:27] ConverterFilter16
+[04:08:27] ConverterFilter10
+[04:08:27] ConverterFilter12
+[04:08:27] Warning: The doppler tracking frequency was not one of the specified rest frequencies. The telescope is being configured as specified but if this was not intentional, please fix and re-submit
+[04:08:27] Waiting for  ActiveSurface to finish activating
+[04:08:27] . . Waiting for  ScanCoordinator to finish activating
+[04:08:27] . . . . . . . . . . . . . . .
+[04:08:27] Checking telescope
+[04:08:27] Configuration Complete
+[04:08:28] source : 0319+4130
+               S0.3 : 10.036
+               location : J2000 @ (03:19:48.16, 41:30:42.10)
+               Gold : P
+               OFFSET : 61.2
+[04:08:28] Slewing to source.
+[04:08:28] In state Ready, waiting for state Activating
+[04:08:28]     Setting State: Activating
+[04:08:28] Detected state Activating
+[04:08:28] In state Activating, waiting for state Ready
+[04:08:31]     Setting State: Ready
+[04:08:31] Detected state Ready
+[04:08:31] Balancing IF system.
+[04:08:31] Balancing IFRack
+[04:08:33] the sampler values are:
+[04:08:33] RF_power 1 : 0.009765625
+[04:08:33] RF_power 2 : 0.02929688
+[04:08:33] RF_power 3 : 0.004882812
+[04:08:33] RF_power 4 : 0.01464844
+[04:08:33] RF_power 5 : 0.06347656
+[04:08:33] RF_power 6 : 0.08789062
+[04:08:33] RF_power 7 : 0.004882812
+[04:08:33] RF_power 8 : 0.1074219
+[04:08:34]     Setting State: Activating
+[04:08:34]     Setting State: Ready
+[04:08:34] source : 0319+4130
+[04:08:34] Slewing to source.
+[04:08:35] In state Ready, waiting for state Activating
+[04:08:35]     Setting State: Activating
+[04:08:35] Detected state Activating
+[04:08:35] In state Activating, waiting for state Ready
+[04:08:39]     Setting State: Ready
+[04:08:39] Detected state Ready
+[04:08:39] Balancing IF system.
+[04:08:39] Balancing IFRack
+[04:08:41] the sampler values are:
+[04:08:41] RF_power 1 : 0.009765625
+[04:08:41] RF_power 2 : 0.02441406
+[04:08:41] RF_power 3 : 0.05371094
+[04:08:41] RF_power 4 : 0.01464844
+[04:08:41] RF_power 5 : 0.06347656
+[04:08:41] RF_power 6 : 0.08789062
+[04:08:41] RF_power 7 : 0.004882812
+[04:08:41] RF_power 8 : 0.1074219
+[04:08:41] Track submotion is None - setting default
+[04:08:41] Executing Track with submotion:  <gbt.turtle.ygor.SubHome.SubHome instance at 0x77d51b8>
+[04:08:41] Set submotion at antenna by now
+[04:08:41] VaneCal Track: Subscan 1 of 2
+[04:08:42] In state Ready, waiting for state Running
+[04:08:43]     Setting State: Activating
+[04:08:59]     Setting State: Committed
+[04:09:02]     Setting State: Running
+[04:09:02] Detected state Running
+[04:09:02] *** Notice: This subscan will be numbered as scan #4 in your data reduction package.
+[04:09:02] In state Running, waiting for state Ready
+[04:09:11]     Setting State: Stopping
+[04:09:13]     Setting State: Ready
+[04:09:13] Detected state Ready
+[04:09:13] Ygor Telescope: WaitForStopping
+[04:09:13] Track submotion is None - setting default
+[04:09:13] Executing Track with submotion:  <gbt.turtle.ygor.SubHome.SubHome instance at 0x7f9c9a75a098>
+[04:09:13] Set submotion at antenna by now
+[04:09:13] VaneCal Track: Subscan 2 of 2
+[04:09:13] In state Ready, waiting for state Running
+[04:09:15]     Setting State: Activating
+[04:09:26]     Setting State: Committed
+[04:09:28]     Setting State: Running
+[04:09:28] Detected state Running
+[04:09:29] *** Notice: This subscan will be numbered as scan #5 in your data reduction package.
+[04:09:29] In state Running, waiting for state Ready
+[04:09:38]     Setting State: Stopping
+[04:09:40]     Setting State: Ready
+[04:09:40] Detected state Ready
+[04:09:40] Ygor Telescope: WaitForStopping
+[04:09:40] Peak: Subscan 1 of 4
+[04:09:40] In state Ready, waiting for state Running
+[04:09:41]     Setting State: Activating
+[04:09:53]     Setting State: Committed
+[04:09:56]     Setting State: Running
+[04:09:56] Detected state Running
+[04:09:56] *** Notice: This subscan will be numbered as scan #6 in your data reduction package.
+[04:09:56] In state Running, waiting for state Ready
+[04:10:16]     Setting State: Aborting
+[04:10:16] ygor.Telescope: RuntimeError msg: Abort detected!
+[04:10:16] ygor.Telescope: WaitForRunning: Asking abort confirmation.
+[04:10:16] 
+[04:10:16] User queried: "Abort detected! Terminate block?" waiting for reply...
+[04:10:17]     Setting State: Ready
+[04:10:20] User replied: "Yes".
+[04:10:20] Exiting scheduling block.
+runSuccessful: False
+[04:10:20] ******** End Scheduling Block
+[04:10:20] ******** observer = Vicente Villanueva, SB name = 05_PointFocus_Flux, project ID = AGBT21B_024
+
+how much log? 5089 id: 289436self.history: <gbt.turtle.database.History.History instance at 0x784d0e0>self.history.connection: <gbt.turtle.database.TurtleConnection.TurtleConnection instance at 0x7845ef0>how much converted log? 5293 
+#######################################################
+ 
+ 
+#######################################################
+ SCRIPT NUMBER 3, project:AGBT21B_024_39 
+ 289437 1083 Vicente Villanueva 14 Brandon Moore 2023-12-12 04:10:36 obs_completed 
+#######################################################
+# Argus Startup
+# dfrayer 2017.08.01  17B Semester
+
+##General Fix to 18.2 M&C system
+##Resets all configuration values to defaults
+##important after KFPA projects using frequency dictionary
+ResetConfig()
+
+# Startup the insrument by calling the 'presets' command
+# This will turn on LNA/CIF if necessary
+SetValues("RcvrArray75_115",{"presets":"on"})
+
+print "CIF Power:", GetValue("RcvrArray75_115","cif_power")
+print "LNA Power:", GetValue("RcvrArray75_115","lna_power")
+
+
+#######################################################
+ LOG SESSION NUMBER 3 
+[04:10:36] ******** Begin Scheduling Block
+[04:10:36] ******** observer = Vicente Villanueva, SB name = 02_argus_startup, project ID = AGBT21B_024, date = 12 Dec 2023
+
+[04:10:36] *** Notice:Resetting the configuration. You must run another configuration before running a scan
+[04:10:36] CIF Power: on
+[04:10:36] LNA Power: on
+runSuccessful: True
+[04:10:36] ******** End Scheduling Block
+[04:10:36] ******** observer = Vicente Villanueva, SB name = 02_argus_startup, project ID = AGBT21B_024
+
+how much log? 492 id: 289437self.history: <gbt.turtle.database.History.History instance at 0x784d0e0>self.history.connection: <gbt.turtle.database.TurtleConnection.TurtleConnection instance at 0x7845ef0>how much converted log? 695 
+#######################################################
+ 
+ 
+#######################################################
+ SCRIPT NUMBER 4, project:AGBT21B_024_39 
+ 289438 1083 Vicente Villanueva 14 Brandon Moore 2023-12-12 04:11:29 obs_aborted 
+#######################################################
+#load catalogs
+#Catalog(qband_pointing)
+#Catalog(wband_pointing)
+Catalog(xband_pointing)
+#Catalog(fluxcal)
+Catalog(projectDir+"/alma_fluxcal_grid.cat")
+
+# choose appropriate source
+source = fluxSrc
+
+# set the receiver in the scan coordinator to avoid errors
+SetValues("ScanCoordinator", {"receiver": "RcvrArray75_115"})
+
+# configuring manually to avoid re-tuning
+Configure(point_config) # configure the pointing at the frequency of the source.
+execfile(projectDir+"/addwx.py")
+
+Slew(source)
+
+Balance()
+
+# pointing
+AutoPeak(source,configure=False) # This peaks at the frequency of the source.
+
+Break("enter pointing offsets")
+
+# focusing
+Focus(source) 
+
+Break("enter focus values if necessary")
+
+#######################################################
+ LOG SESSION NUMBER 4 
+[04:11:29] ******** Begin Scheduling Block
+[04:11:29] ******** observer = Vicente Villanueva, SB name = 05_PointFocus_Flux, project ID = AGBT21B_024, date = 12 Dec 2023
+
+[04:11:29] Configuring telescope.
+[04:11:30]     Setting State: Activating
+[04:11:50]     Setting State: Ready
+[04:11:51]     Setting State: Activating
+[04:11:52]     Setting State: Ready
+[04:11:52] Default values are
+[04:11:52] if3freq  =  [0]
+[04:11:52] noisecal  =  lo-ext
+[04:11:52] Configuring for backend DCR...
+[04:11:52] The bad devices are: 
+[04:11:52] ConverterFilter14
+[04:11:52] ConverterFilter2
+[04:11:52] ConverterFilter16
+[04:11:52] ConverterFilter10
+[04:11:52] ConverterFilter12
+[04:11:52] Warning: The doppler tracking frequency was not one of the specified rest frequencies. The telescope is being configured as specified but if this was not intentional, please fix and re-submit
+[04:11:52] Waiting for  ActiveSurface to finish activating
+[04:11:52] . . Waiting for  ScanCoordinator to finish activating
+[04:11:52] . . . . . . . . . . . . . . . . . .
+[04:11:52] Checking telescope
+[04:11:52] Configuration Complete
+[04:11:52] source : 0319+4130
+               S0.3 : 10.036
+               location : J2000 @ (03:19:48.16, 41:30:42.10)
+               Gold : P
+               OFFSET : 61.2
+[04:11:53] Slewing to source.
+[04:11:53] In state Ready, waiting for state Activating
+[04:11:53]     Setting State: Activating
+[04:11:53] Detected state Activating
+[04:11:53] In state Activating, waiting for state Ready
+[04:12:03]     Setting State: Ready
+[04:12:03] Detected state Ready
+[04:12:03] Balancing IF system.
+[04:12:03] Balancing IFRack
+[04:12:04]     Setting State: Activating
+[04:12:04]     Setting State: Ready
+[04:12:05] the sampler values are:
+[04:12:05] RF_power 1 : 0.6835938
+[04:12:05] RF_power 2 : 1.567383
+[04:12:05] RF_power 3 : 1.425781
+[04:12:05] RF_power 4 : 1.176758
+[04:12:05] RF_power 5 : 8.925781
+[04:12:05] RF_power 6 : 9.995117
+[04:12:05] RF_power 7 : 1.010742
+[04:12:05] RF_power 8 : 9.995117
+[04:12:06] source : 0319+4130
+[04:12:06] Slewing to source.
+[04:12:07] In state Ready, waiting for state Activating
+[04:12:07]     Setting State: Activating
+[04:12:07] Detected state Activating
+[04:12:07] In state Activating, waiting for state Ready
+[04:12:11]     Setting State: Ready
+[04:12:11] Detected state Ready
+[04:12:11] Balancing IF system.
+[04:12:11] Balancing IFRack
+[04:12:11]     Setting State: Activating
+[04:12:11]     Setting State: Ready
+[04:12:13] the sampler values are:
+[04:12:13] RF_power 1 : 0.6835938
+[04:12:13] RF_power 2 : 1.572266
+[04:12:13] RF_power 3 : 1.425781
+[04:12:13] RF_power 4 : 1.181641
+[04:12:13] RF_power 5 : 8.930664
+[04:12:13] RF_power 6 : 9.995117
+[04:12:13] RF_power 7 : 1.015625
+[04:12:13] RF_power 8 : 9.995117
+[04:12:13] Track submotion is None - setting default
+[04:12:13] Executing Track with submotion:  <gbt.turtle.ygor.SubHome.SubHome instance at 0x7f9c99a66440>
+[04:12:13] Set submotion at antenna by now
+[04:12:13] VaneCal Track: Subscan 1 of 2
+[04:12:14] In state Ready, waiting for state Running
+[04:12:15]     Setting State: Activating
+[04:12:26]     Setting State: Committed
+[04:12:29]     Setting State: Running
+[04:12:29] Detected state Running
+[04:12:30] *** Notice: This subscan will be numbered as scan #7 in your data reduction package.
+[04:12:30] In state Running, waiting for state Ready
+[04:12:38]     Setting State: Stopping
+[04:12:40]     Setting State: Ready
+[04:12:40] Detected state Ready
+[04:12:40] Ygor Telescope: WaitForStopping
+[04:12:40] Track submotion is None - setting default
+[04:12:40] Executing Track with submotion:  <gbt.turtle.ygor.SubHome.SubHome instance at 0x7f9c994a5bd8>
+[04:12:40] Set submotion at antenna by now
+[04:12:40] VaneCal Track: Subscan 2 of 2
+[04:12:41] In state Ready, waiting for state Running
+[04:12:42]     Setting State: Activating
+[04:12:53]     Setting State: Committed
+[04:12:56]     Setting State: Running
+[04:12:56] Detected state Running
+[04:12:56] *** Notice: This subscan will be numbered as scan #8 in your data reduction package.
+[04:12:56] In state Running, waiting for state Ready
+[04:13:05]     Setting State: Stopping
+[04:13:07]     Setting State: Ready
+[04:13:07] Detected state Ready
+[04:13:07] Ygor Telescope: WaitForStopping
+[04:13:07] Peak: Subscan 1 of 4
+[04:13:08] In state Ready, waiting for state Running
+[04:13:09]     Setting State: Activating
+[04:13:20]     Setting State: Committed
+[04:13:22]     Setting State: Running
+[04:13:22] Detected state Running
+[04:13:23] *** Notice: This subscan will be numbered as scan #9 in your data reduction package.
+[04:13:23] In state Running, waiting for state Ready
+[04:13:52]     Setting State: Stopping
+[04:13:54]     Setting State: Ready
+[04:13:54] Detected state Ready
+[04:13:54] Ygor Telescope: WaitForStopping
+[04:13:54] Peak: Subscan 2 of 4
+[04:13:55] In state Ready, waiting for state Running
+[04:13:56]     Setting State: Activating
+[04:14:00]     Setting State: Committed
+[04:14:02]     Setting State: Running
+[04:14:02] Detected state Running
+[04:14:03] *** Notice: This subscan will be numbered as scan #10 in your data reduction package.
+[04:14:03] In state Running, waiting for state Ready
+[04:14:32]     Setting State: Stopping
+[04:14:34]     Setting State: Ready
+[04:14:34] Detected state Ready
+[04:14:34] Ygor Telescope: WaitForStopping
+[04:14:35] *** Poor fit, not updating antenna's corrections.
+
+[04:14:35] Peak: Subscan 3 of 4
+[04:14:36] In state Ready, waiting for state Running
+[04:14:37]     Setting State: Activating
+[04:14:42]     Setting State: Committed
+[04:14:45]     Setting State: Running
+[04:14:45] Detected state Running
+[04:14:45] *** Notice: This subscan will be numbered as scan #11 in your data reduction package.
+[04:14:45] In state Running, waiting for state Ready
+[04:15:14]     Setting State: Stopping
+[04:15:16]     Setting State: Ready
+[04:15:16] Detected state Ready
+[04:15:16] Ygor Telescope: WaitForStopping
+[04:15:16] Peak: Subscan 4 of 4
+[04:15:16] In state Ready, waiting for state Running
+[04:15:18]     Setting State: Activating
+[04:15:21]     Setting State: Committed
+[04:15:24]     Setting State: Running
+[04:15:24] Detected state Running
+[04:15:24] *** Notice: This subscan will be numbered as scan #12 in your data reduction package.
+[04:15:24] In state Running, waiting for state Ready
+[04:15:53]     Setting State: Stopping
+[04:15:55]     Setting State: Ready
+[04:15:55] Detected state Ready
+[04:15:55] Ygor Telescope: WaitForStopping
+[04:15:56] . *** Poor fit, not updating antenna's corrections.
+
+[04:15:57] 
+[04:15:57] User queried: "enter pointing offsets - Continue scheduling block?" waiting for reply...
+[04:16:05] User replied: "No".
+[04:16:05] Exiting scheduling block.
+runSuccessful: False
+[04:16:05] ******** End Scheduling Block
+[04:16:05] ******** observer = Vicente Villanueva, SB name = 05_PointFocus_Flux, project ID = AGBT21B_024
+
+how much log? 6877 id: 289438self.history: <gbt.turtle.database.History.History instance at 0x784d0e0>self.history.connection: <gbt.turtle.database.TurtleConnection.TurtleConnection instance at 0x7845ef0>how much converted log? 7083 
+#######################################################
+ 
+ 
+#######################################################
+ SCRIPT NUMBER 5, project:AGBT21B_024_39 
+ 289439 1083 Vicente Villanueva 14 Brandon Moore 2023-12-12 04:17:57 obs_aborted 
+#######################################################
+#load catalogs
+#Catalog(qband_pointing)
+#Catalog(wband_pointing)
+Catalog(xband_pointing)
+#Catalog(fluxcal)
+Catalog(projectDir+"/alma_fluxcal_grid.cat")
+
+# choose appropriate source
+source = fluxSrc
+
+# set the receiver in the scan coordinator to avoid errors
+SetValues("ScanCoordinator", {"receiver": "RcvrArray75_115"})
+
+# configuring manually to avoid re-tuning
+Configure(point_config) # configure the pointing at the frequency of the source.
+execfile(projectDir+"/addwx.py")
+
+Slew(source)
+
+Balance()
+
+# pointing
+AutoPeak(source,configure=False) # This peaks at the frequency of the source.
+
+Break("enter pointing offsets")
+
+# focusing
+Focus(source) 
+
+Break("enter focus values if necessary")
+
+#######################################################
+ LOG SESSION NUMBER 5 
+[04:17:57] ******** Begin Scheduling Block
+[04:17:57] ******** observer = Vicente Villanueva, SB name = 05_PointFocus_Flux, project ID = AGBT21B_024, date = 12 Dec 2023
+
+[04:17:58] Configuring telescope.
+[04:17:58]     Setting State: Activating
+[04:18:18]     Setting State: Ready
+[04:18:19]     Setting State: Activating
+[04:18:20]     Setting State: Ready
+[04:18:20] Default values are
+[04:18:20] if3freq  =  [0]
+[04:18:20] noisecal  =  lo-ext
+[04:18:20] Configuring for backend DCR...
+[04:18:20] The bad devices are: 
+[04:18:20] ConverterFilter14
+[04:18:20] ConverterFilter2
+[04:18:20] ConverterFilter16
+[04:18:20] ConverterFilter10
+[04:18:20] ConverterFilter12
+[04:18:20] Warning: The doppler tracking frequency was not one of the specified rest frequencies. The telescope is being configured as specified but if this was not intentional, please fix and re-submit
+[04:18:20] Waiting for  IFRack to finish activating
+[04:18:20] . . Waiting for  ScanCoordinator to finish activating
+[04:18:20] . . . . . . . . . . . . . . . . . .
+[04:18:20] Checking telescope
+[04:18:20] Configuration Complete
+[04:18:21] source : 0319+4130
+               S0.3 : 10.036
+               location : J2000 @ (03:19:48.16, 41:30:42.10)
+               Gold : P
+               OFFSET : 61.2
+[04:18:21] Slewing to source.
+[04:18:21] In state Ready, waiting for state Activating
+[04:18:21]     Setting State: Activating
+[04:18:21] Detected state Activating
+[04:18:21] In state Activating, waiting for state Ready
+[04:18:25]     Setting State: Ready
+[04:18:25] Detected state Ready
+[04:18:25] Balancing IF system.
+[04:18:25] Balancing IFRack
+[04:18:25]     Setting State: Activating
+[04:18:25]     Setting State: Ready
+[04:18:27] the sampler values are:
+[04:18:27] RF_power 1 : 0.6933594
+[04:18:27] RF_power 2 : 1.591797
+[04:18:27] RF_power 3 : 1.435547
+[04:18:27] RF_power 4 : 1.186523
+[04:18:27] RF_power 5 : 9.091797
+[04:18:27] RF_power 6 : 9.995117
+[04:18:27] RF_power 7 : 1.030273
+[04:18:27] RF_power 8 : 9.995117
+[04:18:28] source : 0319+4130
+[04:18:28] Slewing to source.
+[04:18:29] In state Ready, waiting for state Activating
+[04:18:29]     Setting State: Activating
+[04:18:29] Detected state Activating
+[04:18:29] In state Activating, waiting for state Ready
+[04:18:33]     Setting State: Ready
+[04:18:33] Detected state Ready
+[04:18:33] Balancing IF system.
+[04:18:33] Balancing IFRack
+[04:18:33]     Setting State: Activating
+[04:18:33]     Setting State: Ready
+[04:18:35] the sampler values are:
+[04:18:35] RF_power 1 : 0.6982422
+[04:18:35] RF_power 2 : 1.601562
+[04:18:35] RF_power 3 : 1.435547
+[04:18:35] RF_power 4 : 1.186523
+[04:18:35] RF_power 5 : 9.09668
+[04:18:35] RF_power 6 : 9.995117
+[04:18:35] RF_power 7 : 1.035156
+[04:18:35] RF_power 8 : 9.995117
+[04:18:35] Track submotion is None - setting default
+[04:18:35] Executing Track with submotion:  <gbt.turtle.ygor.SubHome.SubHome instance at 0x7f9c99645e18>
+[04:18:35] Set submotion at antenna by now
+[04:18:35] VaneCal Track: Subscan 1 of 2
+[04:18:36] In state Ready, waiting for state Running
+[04:18:37]     Setting State: Activating
+[04:18:51]     Setting State: Committed
+[04:18:54]     Setting State: Running
+[04:18:54] Detected state Running
+[04:18:54] *** Notice: This subscan will be numbered as scan #13 in your data reduction package.
+[04:18:54] In state Running, waiting for state Ready
+[04:19:03]     Setting State: Stopping
+[04:19:05]     Setting State: Ready
+[04:19:05] Detected state Ready
+[04:19:05] Ygor Telescope: WaitForStopping
+[04:19:05] Track submotion is None - setting default
+[04:19:05] Executing Track with submotion:  <gbt.turtle.ygor.SubHome.SubHome instance at 0x7f9c9a1a6128>
+[04:19:05] Set submotion at antenna by now
+[04:19:05] VaneCal Track: Subscan 2 of 2
+[04:19:06] In state Ready, waiting for state Running
+[04:19:07]     Setting State: Activating
+[04:19:18]     Setting State: Committed
+[04:19:21]     Setting State: Running
+[04:19:21] Detected state Running
+[04:19:21] *** Notice: This subscan will be numbered as scan #14 in your data reduction package.
+[04:19:21] In state Running, waiting for state Ready
+[04:19:30]     Setting State: Stopping
+[04:19:32]     Setting State: Ready
+[04:19:32] Detected state Ready
+[04:19:32] Ygor Telescope: WaitForStopping
+[04:19:32] Peak: Subscan 1 of 4
+[04:19:32] In state Ready, waiting for state Running
+[04:19:33]     Setting State: Activating
+[04:19:44]     Setting State: Committed
+[04:19:46]     Setting State: Running
+[04:19:46] Detected state Running
+[04:19:47] *** Notice: This subscan will be numbered as scan #15 in your data reduction package.
+[04:19:47] In state Running, waiting for state Ready
+[04:20:16]     Setting State: Stopping
+[04:20:18]     Setting State: Ready
+[04:20:18] Detected state Ready
+[04:20:18] Ygor Telescope: WaitForStopping
+[04:20:18] Peak: Subscan 2 of 4
+[04:20:19] In state Ready, waiting for state Running
+[04:20:20]     Setting State: Activating
+[04:20:24]     Setting State: Committed
+[04:20:27]     Setting State: Running
+[04:20:27] Detected state Running
+[04:20:27] *** Notice: This subscan will be numbered as scan #16 in your data reduction package.
+[04:20:27] In state Running, waiting for state Ready
+[04:20:56]     Setting State: Stopping
+[04:20:58]     Setting State: Ready
+[04:20:58] Detected state Ready
+[04:20:58] Ygor Telescope: WaitForStopping
+[04:20:59] *** Poor fit, not updating antenna's corrections.
+
+[04:20:59] Peak: Subscan 3 of 4
+[04:21:00] In state Ready, waiting for state Running
+[04:21:01]     Setting State: Activating
+[04:21:06]     Setting State: Committed
+[04:21:09]     Setting State: Running
+[04:21:09] Detected state Running
+[04:21:09] *** Notice: This subscan will be numbered as scan #17 in your data reduction package.
+[04:21:09] In state Running, waiting for state Ready
+[04:21:38]     Setting State: Stopping
+[04:21:40]     Setting State: Ready
+[04:21:40] Detected state Ready
+[04:21:40] Ygor Telescope: WaitForStopping
+[04:21:40] Peak: Subscan 4 of 4
+[04:21:40] In state Ready, waiting for state Running
+[04:21:41]     Setting State: Activating
+[04:21:45]     Setting State: Committed
+[04:21:48]     Setting State: Running
+[04:21:48] Detected state Running[04:21:48]     Setting State: Aborting
+
+[04:21:48] *** Notice: This subscan will be numbered as scan #18 in your data reduction package.
+[04:21:48] In state Aborting, waiting for state Ready
+[04:21:49]     Setting State: Ready
+[04:21:49] Detected state Ready
+[04:21:49] 
+[04:21:49] User queried: "Abort detected! Terminate block?" waiting for reply...
+[04:21:53] User replied: "Yes".
+[04:21:53] Exiting scheduling block.
+runSuccessful: False
+[04:21:53] ******** End Scheduling Block
+[04:21:53] ******** observer = Vicente Villanueva, SB name = 05_PointFocus_Flux, project ID = AGBT21B_024
+
+how much log? 6748 id: 289439self.history: <gbt.turtle.database.History.History instance at 0x784d0e0>self.history.connection: <gbt.turtle.database.TurtleConnection.TurtleConnection instance at 0x7845ef0>how much converted log? 6953 
+#######################################################
+ 
+ 
+#######################################################
+ SCRIPT NUMBER 6, project:AGBT21B_024_39 
+ 289440 1083 Vicente Villanueva 14 Brandon Moore 2023-12-12 04:23:21 obs_aborted 
+#######################################################
+#load catalogs
+#Catalog(qband_pointing)
+#Catalog(wband_pointing)
+Catalog(xband_pointing)
+#Catalog(fluxcal)
+Catalog(projectDir+"/alma_fluxcal_grid.cat")
+
+# choose appropriate source
+source = fluxSrc
+
+# set the receiver in the scan coordinator to avoid errors
+SetValues("ScanCoordinator", {"receiver": "RcvrArray75_115"})
+
+# configuring manually to avoid re-tuning
+Configure(point_config) # configure the pointing at the frequency of the source.
+execfile(projectDir+"/addwx.py")
+
+Slew(source)
+
+Balance()
+
+# pointing
+AutoPeak(source,configure=False) # This peaks at the frequency of the source.
+
+Break("enter pointing offsets")
+
+# focusing
+Focus(source) 
+
+Break("enter focus values if necessary")
+
+#######################################################
+ LOG SESSION NUMBER 6 
+[04:23:21] ******** Begin Scheduling Block
+[04:23:21] ******** observer = Vicente Villanueva, SB name = 05_PointFocus_Flux, project ID = AGBT21B_024, date = 12 Dec 2023
+
+[04:23:21] Configuring telescope.
+[04:23:21]     Setting State: Activating
+[04:23:42]     Setting State: Ready
+[04:23:43]     Setting State: Activating
+[04:23:44]     Setting State: Ready
+[04:23:44] Default values are
+[04:23:44] if3freq  =  [0]
+[04:23:44] noisecal  =  lo-ext
+[04:23:44] Configuring for backend DCR...
+[04:23:44] The bad devices are: 
+[04:23:44] ConverterFilter14
+[04:23:44] ConverterFilter2
+[04:23:44] ConverterFilter16
+[04:23:44] ConverterFilter10
+[04:23:44] ConverterFilter12
+[04:23:44] Warning: The doppler tracking frequency was not one of the specified rest frequencies. The telescope is being configured as specified but if this was not intentional, please fix and re-submit
+[04:23:44] Waiting for  IFRack to finish activating
+[04:23:44] . . Waiting for  ScanCoordinator to finish activating
+[04:23:44] . . . . . . . . . . . . . . . . . .
+[04:23:44] Checking telescope
+[04:23:44] Configuration Complete
+[04:23:44] source : 0319+4130
+               S0.3 : 10.036
+               location : J2000 @ (03:19:48.16, 41:30:42.10)
+               Gold : P
+               OFFSET : 61.2
+[04:23:44] Slewing to source.
+[04:23:44] In state Ready, waiting for state Activating
+[04:23:44]     Setting State: Activating
+[04:23:44] Detected state Activating
+[04:23:44] In state Activating, waiting for state Ready
+[04:23:53]     Setting State: Ready
+[04:23:53] Detected state Ready
+[04:23:53] Balancing IF system.
+[04:23:53] Balancing IFRack
+[04:23:53]     Setting State: Activating
+[04:23:53]     Setting State: Ready
+[04:23:55] the sampler values are:
+[04:23:55] RF_power 1 : 0.6982422
+[04:23:55] RF_power 2 : 1.59668
+[04:23:55] RF_power 3 : 1.435547
+[04:23:55] RF_power 4 : 1.191406
+[04:23:55] RF_power 5 : 9.160156
+[04:23:55] RF_power 6 : 9.995117
+[04:23:55] RF_power 7 : 1.040039
+[04:23:55] RF_power 8 : 9.995117
+[04:23:56] source : 0319+4130
+[04:23:56] Slewing to source.
+[04:23:57] In state Ready, waiting for state Activating
+[04:23:57]     Setting State: Activating
+[04:23:57] Detected state Activating
+[04:23:57] In state Activating, waiting for state Ready
+[04:24:01]     Setting State: Ready
+[04:24:01] Detected state Ready
+[04:24:01] Balancing IF system.
+[04:24:01] Balancing IFRack
+[04:24:01]     Setting State: Activating
+[04:24:01]     Setting State: Ready
+[04:24:03] the sampler values are:
+[04:24:03] RF_power 1 : 0.703125
+[04:24:03] RF_power 2 : 1.59668
+[04:24:03] RF_power 3 : 1.435547
+[04:24:03] RF_power 4 : 1.191406
+[04:24:03] RF_power 5 : 9.174805
+[04:24:03] RF_power 6 : 9.995117
+[04:24:03] RF_power 7 : 1.040039
+[04:24:03] RF_power 8 : 9.990234
+[04:24:03] Track submotion is None - setting default
+[04:24:03] Executing Track with submotion:  <gbt.turtle.ygor.SubHome.SubHome instance at 0x7f9c98536320>
+[04:24:03] Set submotion at antenna by now
+[04:24:03] VaneCal Track: Subscan 1 of 2
+[04:24:04] In state Ready, waiting for state Running
+[04:24:05]     Setting State: Activating
+[04:24:16]     Setting State: Committed
+[04:24:19]     Setting State: Running
+[04:24:19] Detected state Running
+[04:24:19] *** Notice: This subscan will be numbered as scan #19 in your data reduction package.
+[04:24:19] In state Running, waiting for state Ready
+[04:24:28]     Setting State: Stopping
+[04:24:30]     Setting State: Ready
+[04:24:30] Detected state Ready
+[04:24:30] Ygor Telescope: WaitForStopping
+[04:24:30] Track submotion is None - setting default
+[04:24:30] Executing Track with submotion:  <gbt.turtle.ygor.SubHome.SubHome instance at 0x7f9c9aff1998>
+[04:24:30] Set submotion at antenna by now
+[04:24:30] VaneCal Track: Subscan 2 of 2
+[04:24:31] In state Ready, waiting for state Running
+[04:24:32]     Setting State: Activating
+[04:24:43]     Setting State: Committed
+[04:24:46]     Setting State: Running
+[04:24:46] Detected state Running
+[04:24:46] *** Notice: This subscan will be numbered as scan #20 in your data reduction package.
+[04:24:46] In state Running, waiting for state Ready
+[04:24:55]     Setting State: Stopping
+[04:24:57]     Setting State: Ready
+[04:24:57] Detected state Ready
+[04:24:57] Ygor Telescope: WaitForStopping
+[04:24:57] Peak: Subscan 1 of 4
+[04:24:58] In state Ready, waiting for state Running
+[04:24:59]     Setting State: Activating
+[04:25:09]     Setting State: Committed
+[04:25:11]     Setting State: Running
+[04:25:11] Detected state Running
+[04:25:12] *** Notice: This subscan will be numbered as scan #21 in your data reduction package.
+[04:25:12] In state Running, waiting for state Ready
+[04:25:41]     Setting State: Stopping
+[04:25:43]     Setting State: Ready
+[04:25:43] Detected state Ready
+[04:25:43] Ygor Telescope: WaitForStopping
+[04:25:43] Peak: Subscan 2 of 4
+[04:25:44] In state Ready, waiting for state Running
+[04:25:45]     Setting State: Activating
+[04:25:48]     Setting State: Committed
+[04:25:51]     Setting State: Running
+[04:25:51] Detected state Running
+[04:25:51] *** Notice: This subscan will be numbered as scan #22 in your data reduction package.
+[04:25:51] In state Running, waiting for state Ready
+[04:26:20]     Setting State: Stopping
+[04:26:22]     Setting State: Ready
+[04:26:22] Detected state Ready
+[04:26:22] Ygor Telescope: WaitForStopping
+[04:26:23] *** Poor fit, not updating antenna's corrections.
+
+[04:26:23] Peak: Subscan 3 of 4
+[04:26:24] In state Ready, waiting for state Running
+[04:26:25]     Setting State: Activating
+[04:26:30]     Setting State: Committed
+[04:26:33]     Setting State: Running
+[04:26:33] Detected state Running
+[04:26:33] *** Notice: This subscan will be numbered as scan #23 in your data reduction package.
+[04:26:33] In state Running, waiting for state Ready
+[04:27:02]     Setting State: Stopping
+[04:27:04]     Setting State: Ready
+[04:27:04] Detected state Ready
+[04:27:04] Ygor Telescope: WaitForStopping
+[04:27:04] Peak: Subscan 4 of 4
+[04:27:04] In state Ready, waiting for state Running
+[04:27:05]     Setting State: Activating
+[04:27:09]     Setting State: Committed
+[04:27:12]     Setting State: Running
+[04:27:12] Detected state Running
+[04:27:12] *** Notice: This subscan will be numbered as scan #24 in your data reduction package.
+[04:27:12] In state Running, waiting for state Ready
+[04:27:41]     Setting State: Stopping
+[04:27:43]     Setting State: Ready
+[04:27:43] Detected state Ready
+[04:27:43] Ygor Telescope: WaitForStopping
+[04:27:44] . *** Poor fit, not updating antenna's corrections.
+
+[04:27:44] 
+[04:27:44] User queried: "enter pointing offsets - Continue scheduling block?" waiting for reply...
+[04:27:52] User replied: "No".
+[04:27:52] Exiting scheduling block.
+runSuccessful: False
+[04:27:52] ******** End Scheduling Block
+[04:27:52] ******** observer = Vicente Villanueva, SB name = 05_PointFocus_Flux, project ID = AGBT21B_024
+
+how much log? 6870 id: 289440self.history: <gbt.turtle.database.History.History instance at 0x784d0e0>self.history.connection: <gbt.turtle.database.TurtleConnection.TurtleConnection instance at 0x7845ef0>how much converted log? 7076 
+#######################################################
+ 
+ 
+#######################################################
+ SCRIPT NUMBER 7, project:AGBT21B_024_39 
+ 289441 1083 Vicente Villanueva 14 Brandon Moore 2023-12-12 04:29:46 obs_completed 
+#######################################################
+# Run point/focus on flux source after Argus on another receiver 
+# to measure focus offset
+#catalogs
+#Catalog(qband_pointing)
+#Catalog(wband_pointing)
+Catalog(xband_pointing)
+#Catalog(fluxcal)
+Catalog(projectDir+"/alma_fluxcal_grid.cat")
+
+source = fluxSrc
+
+
+AutoPeakFocus(source) 
+#
+#focus offset is current Argus value - derive YFC
+#Enter focus offset in 07_PointinFocus_XXX_yfc
+#----------------------------------------------------------------------
+
+#
+#######################################################
+ LOG SESSION NUMBER 7 
+[04:29:46] ******** Begin Scheduling Block
+[04:29:46] ******** observer = Vicente Villanueva, SB name = 06b_AutoPeakFocus_Flux, project ID = AGBT21B_024, date = 12 Dec 2023
+
+[04:29:46] Configuring telescope.
+[04:29:47]     Setting State: Activating
+[04:29:47]     Setting State: Aborting
+[04:29:48]     Setting State: Ready
+[04:29:50]     Setting State: Activating
+[04:29:51] Default values are
+[04:29:51] if3freq  =  [0]
+[04:29:51] Configuring for backend DCR_AF...
+[04:29:51] The bad devices are: 
+[04:29:51] ConverterFilter14
+[04:29:51] ConverterFilter2
+[04:29:51] ConverterFilter16
+[04:29:51] ConverterFilter10
+[04:29:51] ConverterFilter12
+[04:29:51] Waiting for  IFRack to finish activating
+[04:29:51] . .
+[04:29:51] Checking telescope
+[04:29:51] Configuration Complete
+[04:29:51] source : 0319+4130
+[04:29:51] Slewing to source.
+[04:29:51] In state Activating, waiting for state Activating
+[04:29:51] Detected state Activating
+[04:29:51] In state Activating, waiting for state Ready
+[04:29:56]     Setting State: Ready
+[04:29:56] Detected state Ready
+[04:29:56] Balancing IF system.
+[04:29:56] Balancing IFRack
+[04:29:58]     Setting State: Activating
+[04:29:58]     Setting State: Ready
+[04:29:58] the sampler values are:
+[04:29:58] RF_power 1 : 5.170898
+[04:29:58] RF_power 2 : 5.3125
+[04:29:58] RF_power 3 : 9.013672
+[04:29:58] RF_power 4 : 9.995117
+[04:29:58] RF_power 5 : 0.8984375
+[04:29:58] RF_power 6 : 5.185547
+[04:29:58] RF_power 7 : 0.0390625
+[04:29:58] RF_power 8 : 0.9960938
+[04:29:58] Balancing Dcr
+[04:29:58]     Setting State: Activating
+[04:29:58]     Setting State: Ready
+[04:29:58]     Setting State: Activating
+[04:29:58]     Setting State: Ready
+[04:29:58]     Setting State: Activating
+[04:29:58]     Setting State: Ready
+[04:29:59]     Setting State: Activating
+[04:29:59]     Setting State: Ready
+[04:30:00]     Setting State: Activating
+[04:30:00]     Setting State: Ready
+[04:30:02]     Setting State: Activating
+[04:30:02]     Setting State: Ready
+[04:30:03]     Setting State: Activating
+[04:30:03]     Setting State: Ready
+[04:30:04]     Setting State: Activating
+[04:30:04]     Setting State: Ready
+[04:30:05]     Setting State: Activating
+[04:30:05]     Setting State: Ready
+[04:30:07] Filter 8 RF power =
+[04:30:07] 1.083984375
+[04:30:07] Filter 1 RF power =
+[04:30:07] 0.908203125
+[04:30:07] Filter 4 RF power =
+[04:30:07] 0.947265625
+[04:30:07] Filter 5 RF power =
+[04:30:07] 1.0205078125
+[04:30:07]     Setting State: Activating
+[04:30:07]     Setting State: Ready
+[04:30:07]     Setting State: Activating
+Peak: Subscan 1 of 4
+[04:30:07]     Setting State: Ready
+[04:30:08] In state Ready, waiting for state Running
+[04:30:08]     Setting State: Activating
+[04:30:22]     Setting State: Committed
+[04:30:24]     Setting State: Running
+[04:30:24] Detected state Running
+[04:30:25] *** Notice: This subscan will be numbered as scan #25 in your data reduction package.
+[04:30:25] In state Running, waiting for state Ready
+[04:30:54]     Setting State: Stopping
+[04:30:58]     Setting State: Ready
+[04:30:58] Detected state Ready
+[04:30:58] Ygor Telescope: WaitForStopping
+[04:30:58] Peak: Subscan 2 of 4
+[04:30:58] In state Ready, waiting for state Running
+[04:30:59]     Setting State: Activating
+[04:31:03]     Setting State: Committed
+[04:31:05]     Setting State: Running
+[04:31:05] Detected state Running
+[04:31:06] *** Notice: This subscan will be numbered as scan #26 in your data reduction package.
+[04:31:06] In state Running, waiting for state Ready
+[04:31:35]     Setting State: Stopping
+[04:31:39]     Setting State: Ready
+[04:31:39] Detected state Ready
+[04:31:39] Ygor Telescope: WaitForStopping
+[04:31:40] *** Updating antenna's pointing to az2=-0.0081 and el=0.3000 arcmins
+
+[04:31:40] Peak: Subscan 3 of 4
+[04:31:40] In state Ready, waiting for state Running
+[04:31:41]     Setting State: Activating
+[04:31:49]     Setting State: Committed
+[04:31:51]     Setting State: Running
+[04:31:51] Detected state Running
+[04:31:52] *** Notice: This subscan will be numbered as scan #27 in your data reduction package.
+[04:31:52] In state Running, waiting for state Ready
+[04:32:21]     Setting State: Stopping
+[04:32:23]     Setting State: Ready
+[04:32:23] Detected state Ready
+[04:32:23] Ygor Telescope: WaitForStopping
+[04:32:23] Peak: Subscan 4 of 4
+[04:32:24] In state Ready, waiting for state Running
+[04:32:24]     Setting State: Activating
+[04:32:28]     Setting State: Committed
+[04:32:30]     Setting State: Running
+[04:32:30] Detected state Running
+[04:32:31] *** Notice: This subscan will be numbered as scan #28 in your data reduction package.
+[04:32:31] In state Running, waiting for state Ready
+[04:33:00]     Setting State: Stopping
+[04:33:02]     Setting State: Ready
+[04:33:02] Detected state Ready
+[04:33:02] Ygor Telescope: WaitForStopping
+[04:33:03] . *** Updating antenna's pointing to az2=-0.0081 and el=0.2213 arcmins
+
+[04:33:04] Focus: Subscan 1 of 1
+[04:33:04] In state Ready, waiting for state Running
+[04:33:05]     Setting State: Activating
+[04:33:19]     Setting State: Committed
+[04:33:21]     Setting State: Running
+[04:33:21] Detected state Running
+[04:33:22] *** Notice: This subscan will be numbered as scan #29 in your data reduction package.
+[04:33:22] In state Running, waiting for state Ready
+[04:34:21]     Setting State: Stopping
+[04:34:23]     Setting State: Ready
+[04:34:23] Detected state Ready
+[04:34:23] Ygor Telescope: WaitForStopping
+[04:34:24] *** Updating antenna's focus to -2.72 mm
+
+runSuccessful: True
+[04:34:24] ******** End Scheduling Block
+[04:34:24] ******** observer = Vicente Villanueva, SB name = 06b_AutoPeakFocus_Flux, project ID = AGBT21B_024
+
+how much log? 5652 id: 289441self.history: <gbt.turtle.database.History.History instance at 0x784d0e0>self.history.connection: <gbt.turtle.database.TurtleConnection.TurtleConnection instance at 0x7845ef0>how much converted log? 5859 
+#######################################################
+ 
+ 
+#######################################################
+ SCRIPT NUMBER 8, project:AGBT21B_024_39 
+ 289442 1083 Vicente Villanueva 14 Brandon Moore 2023-12-12 04:36:19 obs_completed 
+#######################################################
+# Argus Startup
+# dfrayer 2017.08.01  17B Semester
+
+##General Fix to 18.2 M&C system
+##Resets all configuration values to defaults
+##important after KFPA projects using frequency dictionary
+ResetConfig()
+
+# Startup the insrument by calling the 'presets' command
+# This will turn on LNA/CIF if necessary
+SetValues("RcvrArray75_115",{"presets":"on"})
+
+print "CIF Power:", GetValue("RcvrArray75_115","cif_power")
+print "LNA Power:", GetValue("RcvrArray75_115","lna_power")
+
+
+#######################################################
+ LOG SESSION NUMBER 8 
+[04:36:19] ******** Begin Scheduling Block
+[04:36:19] ******** observer = Vicente Villanueva, SB name = 02_argus_startup, project ID = AGBT21B_024, date = 12 Dec 2023
+
+[04:36:19] *** Notice:Resetting the configuration. You must run another configuration before running a scan
+[04:36:19] CIF Power: on
+[04:36:19] LNA Power: on
+runSuccessful: True
+[04:36:19] ******** End Scheduling Block
+[04:36:19] ******** observer = Vicente Villanueva, SB name = 02_argus_startup, project ID = AGBT21B_024
+
+how much log? 492 id: 289442self.history: <gbt.turtle.database.History.History instance at 0x784d0e0>self.history.connection: <gbt.turtle.database.TurtleConnection.TurtleConnection instance at 0x7845ef0>how much converted log? 695 
+#######################################################
+ 
+ 
+#######################################################
+ SCRIPT NUMBER 9, project:AGBT21B_024_39 
+ 289443 1083 Vicente Villanueva 14 Brandon Moore 2023-12-12 04:36:40 obs_aborted 
+#######################################################
+#load catalogs
+#Catalog(qband_pointing)
+#Catalog(wband_pointing)
+Catalog(xband_pointing)
+#Catalog(fluxcal)
+Catalog(projectDir+"/alma_fluxcal_grid.cat")
+
+# choose appropriate source
+source = fluxSrc
+
+# set the receiver in the scan coordinator to avoid errors
+SetValues("ScanCoordinator", {"receiver": "RcvrArray75_115"})
+
+# configuring manually to avoid re-tuning
+Configure(point_config) # configure the pointing at the frequency of the source.
+execfile(projectDir+"/addwx.py")
+
+Slew(source)
+
+Balance()
+
+# pointing
+AutoPeak(source,configure=False) # This peaks at the frequency of the source.
+
+Break("enter pointing offsets")
+
+# focusing
+Focus(source) 
+
+Break("enter focus values if necessary")
+
+#######################################################
+ LOG SESSION NUMBER 9 
+[04:36:40] ******** Begin Scheduling Block
+[04:36:40] ******** observer = Vicente Villanueva, SB name = 05_PointFocus_Flux, project ID = AGBT21B_024, date = 12 Dec 2023
+
+[04:36:41] Configuring telescope.
+[04:36:45] Default values are
+[04:36:45] if3freq  =  [0]
+[04:36:45] noisecal  =  lo-ext
+[04:36:45] Configuring for backend DCR...
+[04:36:45] The bad devices are: 
+[04:36:46] ConverterFilter14
+[04:36:46] ConverterFilter2
+[04:36:46] ConverterFilter16
+[04:36:46] ConverterFilter10
+[04:36:46] ConverterFilter12
+[04:36:46] Warning: The doppler tracking frequency was not one of the specified rest frequencies. The telescope is being configured as specified but if this was not intentional, please fix and re-submit
+[04:36:46] Waiting for  LO1 to finish activating
+[04:36:46] . .
+[04:36:46] Checking telescope
+[04:36:46] Configuration Complete
+[04:36:46] source : 0319+4130
+               S0.3 : 10.036
+               location : J2000 @ (03:19:48.16, 41:30:42.10)
+               Gold : P
+               OFFSET : 61.2
+[04:36:46] Slewing to source.
+[04:36:47] In state Ready, waiting for state Activating
+[04:36:54]     Setting State: Activating
+[04:36:54] Detected state Activating
+[04:36:54] In state Activating, waiting for state Ready
+[04:37:04]     Setting State: Ready
+[04:37:04] Detected state Ready
+[04:37:04] Balancing IF system.
+[04:37:04] Balancing IFRack
+[04:37:04]     Setting State: Activating
+[04:37:04]     Setting State: Ready
+[04:37:06] the sampler values are:
+[04:37:06] RF_power 1 : 0.08300781
+[04:37:06] RF_power 2 : 1.616211
+[04:37:06] RF_power 3 : 1.445312
+[04:37:06] RF_power 4 : 0.02441406
+[04:37:06] RF_power 5 : 9.213867
+[04:37:06] RF_power 6 : 9.995117
+[04:37:06] RF_power 7 : 1.054688
+[04:37:06] RF_power 8 : 9.995117
+[04:37:07] source : 0319+4130
+[04:37:07] Slewing to source.
+[04:37:07] In state Ready, waiting for state Activating
+[04:37:07]     Setting State: Activating
+[04:37:07] Detected state Activating
+[04:37:08] In state Activating, waiting for state Ready
+[04:37:11]     Setting State: Ready
+[04:37:11] Detected state Ready
+[04:37:11] Balancing IF system.
+[04:37:11] Balancing IFRack
+[04:37:11]     Setting State: Activating
+[04:37:11]     Setting State: Ready
+[04:37:13] the sampler values are:
+[04:37:13] RF_power 1 : 0.08789062
+[04:37:13] RF_power 2 : 1.606445
+[04:37:13] RF_power 3 : 1.450195
+[04:37:13] RF_power 4 : 0.02441406
+[04:37:13] RF_power 5 : 9.179688
+[04:37:13] RF_power 6 : 9.995117
+[04:37:13] RF_power 7 : 1.05957
+[04:37:13] RF_power 8 : 9.96582
+[04:37:13] Track submotion is None - setting default
+[04:37:13] Executing Track with submotion:  <gbt.turtle.ygor.SubHome.SubHome instance at 0x7f9c9a706680>
+[04:37:13] Set submotion at antenna by now
+[04:37:13] VaneCal Track: Subscan 1 of 2
+[04:37:14] In state Ready, waiting for state Running
+[04:37:15]     Setting State: Activating
+[04:37:26]     Setting State: Committed
+[04:37:29]     Setting State: Running
+[04:37:29] Detected state Running
+[04:37:29] *** Notice: This subscan will be numbered as scan #30 in your data reduction package.
+[04:37:29] In state Running, waiting for state Ready
+[04:37:38]     Setting State: Stopping
+[04:37:40]     Setting State: Ready
+[04:37:40] Detected state Ready
+[04:37:40] Ygor Telescope: WaitForStopping
+[04:37:40] Track submotion is None - setting default
+[04:37:40] Executing Track with submotion:  <gbt.turtle.ygor.SubHome.SubHome instance at 0x7f9c985c9710>
+[04:37:40] Set submotion at antenna by now
+[04:37:40] VaneCal Track: Subscan 2 of 2
+[04:37:41] In state Ready, waiting for state Running
+[04:37:42]     Setting State: Activating
+[04:37:53]     Setting State: Committed
+[04:37:56]     Setting State: Running
+[04:37:56] Detected state Running
+[04:37:56] *** Notice: This subscan will be numbered as scan #31 in your data reduction package.
+[04:37:56] In state Running, waiting for state Ready
+[04:38:05]     Setting State: Stopping
+[04:38:07]     Setting State: Ready
+[04:38:07] Detected state Ready
+[04:38:07] Ygor Telescope: WaitForStopping
+[04:38:07] Peak: Subscan 1 of 4
+[04:38:07] In state Ready, waiting for state Running
+[04:38:08]     Setting State: Activating
+[04:38:18]     Setting State: Committed
+[04:38:21]     Setting State: Running
+[04:38:21] Detected state Running
+[04:38:21] *** Notice: This subscan will be numbered as scan #32 in your data reduction package.
+[04:38:21] In state Running, waiting for state Ready
+[04:38:50]     Setting State: Stopping
+[04:38:52]     Setting State: Ready
+[04:38:52] Detected state Ready
+[04:38:52] Ygor Telescope: WaitForStopping
+[04:38:52] Peak: Subscan 2 of 4
+[04:38:53] In state Ready, waiting for state Running
+[04:38:54]     Setting State: Activating
+[04:38:57]     Setting State: Committed
+[04:39:00]     Setting State: Running
+[04:39:00] Detected state Running
+[04:39:00] *** Notice: This subscan will be numbered as scan #33 in your data reduction package.
+[04:39:00] In state Running, waiting for state Ready
+[04:39:29]     Setting State: Stopping
+[04:39:31]     Setting State: Ready
+[04:39:31] Detected state Ready
+[04:39:31] Ygor Telescope: WaitForStopping
+[04:39:32] . *** Poor fit, not updating antenna's corrections.
+
+[04:39:32] Peak: Subscan 3 of 4
+[04:39:33] In state Ready, waiting for state Running
+[04:39:34]     Setting State: Activating
+[04:39:39]     Setting State: Committed
+[04:39:42]     Setting State: Running
+[04:39:42] Detected state Running
+[04:39:42] *** Notice: This subscan will be numbered as scan #34 in your data reduction package.
+[04:39:42] In state Running, waiting for state Ready
+[04:40:11]     Setting State: Stopping
+[04:40:13]     Setting State: Ready
+[04:40:13] Detected state Ready
+[04:40:13] Ygor Telescope: WaitForStopping
+[04:40:13] Peak: Subscan 4 of 4
+[04:40:13] In state Ready, waiting for state Running
+[04:40:14]     Setting State: Activating
+[04:40:18]     Setting State: Committed
+[04:40:21]     Setting State: Running
+[04:40:21] Detected state Running
+[04:40:21] *** Notice: This subscan will be numbered as scan #35 in your data reduction package.
+[04:40:21] In state Running, waiting for state Ready
+[04:40:50]     Setting State: Stopping
+[04:40:52]     Setting State: Ready
+[04:40:52] Detected state Ready
+[04:40:52] Ygor Telescope: WaitForStopping
+[04:40:53] *** Poor fit, not updating antenna's corrections.
+
+[04:40:53] 
+[04:40:53] User queried: "enter pointing offsets - Continue scheduling block?" waiting for reply...
+[04:40:59] User replied: "No".
+[04:40:59] Exiting scheduling block.
+runSuccessful: False
+[04:40:59] ******** End Scheduling Block
+[04:40:59] ******** observer = Vicente Villanueva, SB name = 05_PointFocus_Flux, project ID = AGBT21B_024
+
+how much log? 6623 id: 289443self.history: <gbt.turtle.database.History.History instance at 0x784d0e0>self.history.connection: <gbt.turtle.database.TurtleConnection.TurtleConnection instance at 0x7845ef0>how much converted log? 6829 
+#######################################################
+ 
+ 
+#######################################################
+ SCRIPT NUMBER 10, project:AGBT21B_024_39 
+ 289444 1083 Vicente Villanueva 14 Brandon Moore 2023-12-12 04:55:21 obs_completed 
+#######################################################
+##----------------------------------------------------------------------
+## If you restart Astrid, you will need to rerun this script!!
+## ----------------------------------------------------------------------
+#session 38 23nov19
+galaxyName="UGC02134"    # source 1
+#galaxyName="UGC04245"      # source 2
+#galaxyName="NGC2691"      # source 3
+
+# Unfinished sources (need RA map)
+#galaxyName="NGC2691"      # 23nov18
+#galaxyName="UGC02222"
+#galaxyName="UGC08231"
+#galaxyName="UGC09777"
+
+# AutoOOF source
+#oofSrc='2253+1608'
+#oofSrc='1229+0203'
+oofSrc='0319+4130'
+#oofSrc='0423-0120' #Note Ta* of it. 
+#oofSrc='0854+2006'
+
+# Flux scalibration source
+#fluxSrc='0423-0120'
+fluxSrc = '0319+4130'
+#fluxSrc = '2253+1608'
+#fluxSrc = '1229+0203' # good if OOFing
+#fluxSrc = "1058+0133"
+#fluxSrc = '0854+2006' # good if not OOFing
+
+# Avoid using pointing corrections when pointing source is in 
+# key-hole (elev >~85 deg)
+
+pointSrc="0237+2848" #1
+#pointSrc="0738+1742" #2
+#pointSrc="0927+3902" #3
+
+#pointSrc="0237+2848" #s33 point 1, s34 point1
+#pointSrc="0410+7656"  # s37 ptg 2
+#pointSrc="0738+1742"  # s37 ptg 3 & 5
+#pointSrc="0741+3112" #s33 point 3
+#pointSrc="0813+4813" #s33 point 2
+#pointSrc="0834+5534" #s33 point 4
+#pointSrc="0854+2006"  # ptg 4
+#pointSrc="0854+5757" #s34 point 4
+#pointSrc="0927+3902"  # s37 ptg 6
+#pointSrc="0956+2515" #s33 point 5
+#pointSrc="1023+3948" # s34 point 5 after 4:36
+#pointSrc="1153+8058" #s34 point 2
+#pointSrc="1159+2914"  # source 3
+#pointSrc="1331+3030" #s33 point 6, s34 point 7
+#pointSrc="1411+5212" #s33 point 7, s34 point 6
+
+print "autoOOF source = ", oofSrc
+print "flux source =  ", fluxSrc
+print "point source = ", pointSrc
+
+#----------------------------------------------------------------------
+#               Nothing below here should be changed
+#----------------------------------------------------------------------       
+
+# location of project files
+projectDir = "/home/astro-util/projects/gbt-edge"
+
+# Load in relevant catalogs
+Catalog(qband_pointing)
+Catalog(wband_pointing)
+Catalog(fluxcal)
+c = Catalog(projectDir+"/GBTEDGE.cat") 
+
+print "observing source:",  galaxyName, "at ", c[galaxyName]['location']
+
+# set up configuration file and mapping parameters
+
+# backend configuration
+configFile = projectDir+"/12co.config" 
+execfile(configFile)
+
+# pointing configuration 
+# If we're going to point at X-band don't need this. Leaving in place just in case.
+configFile = projectDir+"/pointfocus.config" 
+execfile(configFile)
+
+# map setup 
+mymap = {}
+mymap['step'] = 2.6471 # arcsec
+mymap['scanDuration'] = 33.0645 # s
+mymap['nrows'] = 35
+mymap['scanLength'] = 1.5 # arcmin
+mymap['mapHeight'] = 1.5 # arcmin
+
+
+
+#######################################################
+ LOG SESSION NUMBER 10 
+[04:55:21] Field 'log' doesn't have a default value
+[04:55:21] ******** Begin Scheduling Block
+[04:55:21] ******** observer = Vicente Villanueva, SB name = 01_setup, project ID = AGBT21B_024, date = 12 Dec 2023
+
+[04:55:21] autoOOF source =  0319+4130
+[04:55:21] flux source =   0319+4130
+[04:55:21] point source =  0237+2848
+[04:55:21] observing source: UGC02134 at  J2000 @ (02:38:51.80, 27:50:51.00)
+[04:55:21] setting restfreq = skyfreq = 113551.5946MHz
+[04:55:21] setting restfreq = skyfreq = 113551.5946MHz
+runSuccessful: True
+[04:55:21] ******** End Scheduling Block
+[04:55:21] ******** observer = Vicente Villanueva, SB name = 01_setup, project ID = AGBT21B_024
+
+how much log? 670 id: 289444self.history: <gbt.turtle.database.History.History instance at 0x674d200>self.history.connection: <gbt.turtle.database.TurtleConnection.TurtleConnection instance at 0x6691368>how much converted log? 876 
+#######################################################
+ 
+ 
+#######################################################
+ SCRIPT NUMBER 11, project:AGBT21B_024_39 
+ 289445 1083 Vicente Villanueva 14 Brandon Moore 2023-12-12 04:55:29 obs_completed 
+#######################################################
+# Argus Startup
+# dfrayer 2017.08.01  17B Semester
+
+##General Fix to 18.2 M&C system
+##Resets all configuration values to defaults
+##important after KFPA projects using frequency dictionary
+ResetConfig()
+
+# Startup the insrument by calling the 'presets' command
+# This will turn on LNA/CIF if necessary
+SetValues("RcvrArray75_115",{"presets":"on"})
+
+print "CIF Power:", GetValue("RcvrArray75_115","cif_power")
+print "LNA Power:", GetValue("RcvrArray75_115","lna_power")
+
+
+#######################################################
+ LOG SESSION NUMBER 11 
+[04:55:29] ******** Begin Scheduling Block
+[04:55:29] ******** observer = Vicente Villanueva, SB name = 02_argus_startup, project ID = AGBT21B_024, date = 12 Dec 2023
+
+[04:55:29] *** Notice:Resetting the configuration. You must run another configuration before running a scan
+[04:55:30] CIF Power: on
+[04:55:32] LNA Power: on
+runSuccessful: True
+[04:55:32] ******** End Scheduling Block
+[04:55:32] ******** observer = Vicente Villanueva, SB name = 02_argus_startup, project ID = AGBT21B_024
+
+how much log? 492 id: 289445self.history: <gbt.turtle.database.History.History instance at 0x674d200>self.history.connection: <gbt.turtle.database.TurtleConnection.TurtleConnection instance at 0x6691368>how much converted log? 695 
+#######################################################
+ 
+ 
+#######################################################
+ SCRIPT NUMBER 12, project:AGBT21B_024_39 
+ 289446 1083 Vicente Villanueva 14 Brandon Moore 2023-12-12 04:55:39 obs_aborted 
+#######################################################
+#load catalogs
+#Catalog(qband_pointing)
+#Catalog(wband_pointing)
+Catalog(xband_pointing)
+#Catalog(fluxcal)
+Catalog(projectDir+"/alma_fluxcal_grid.cat")
+
+# choose appropriate source
+source = fluxSrc
+
+# set the receiver in the scan coordinator to avoid errors
+SetValues("ScanCoordinator", {"receiver": "RcvrArray75_115"})
+
+# configuring manually to avoid re-tuning
+Configure(point_config) # configure the pointing at the frequency of the source.
+execfile(projectDir+"/addwx.py")
+
+Slew(source)
+
+Balance()
+
+# pointing
+AutoPeak(source,configure=False) # This peaks at the frequency of the source.
+
+Break("enter pointing offsets")
+
+# focusing
+Focus(source) 
+
+Break("enter focus values if necessary")
+
+#######################################################
+ LOG SESSION NUMBER 12 
+[04:55:39] ******** Begin Scheduling Block
+[04:55:39] ******** observer = Vicente Villanueva, SB name = 05_PointFocus_Flux, project ID = AGBT21B_024, date = 12 Dec 2023
+
+[04:55:39] Configuring telescope.
+[04:55:40]     Setting State: Activating
+[04:56:01]     Setting State: Ready
+[04:56:02]     Setting State: Activating
+[04:56:03]     Setting State: Ready
+[04:56:03] Default values are
+[04:56:03] if3freq  =  [0]
+[04:56:03] noisecal  =  lo-ext
+[04:56:03] Configuring for backend DCR...
+[04:56:03] The bad devices are: 
+[04:56:03] ConverterFilter14
+[04:56:03] ConverterFilter2
+[04:56:03] ConverterFilter16
+[04:56:03] ConverterFilter10
+[04:56:03] ConverterFilter12
+[04:56:03] Warning: The doppler tracking frequency was not one of the specified rest frequencies. The telescope is being configured as specified but if this was not intentional, please fix and re-submit
+[04:56:03] Waiting for  ActiveSurface to finish activating
+[04:56:03] . . Waiting for  ScanCoordinator to finish activating
+[04:56:03] . . . . . . . . . . . . . . . . . .
+[04:56:03] Checking telescope
+[04:56:03] Configuration Complete
+[04:56:03] source : 0319+4130
+               S0.3 : 10.036
+               location : J2000 @ (03:19:48.16, 41:30:42.10)
+               Gold : P
+               OFFSET : 61.2
+[04:56:03] Slewing to source.
+[04:56:04] In state Ready, waiting for state Activating
+[04:56:04]     Setting State: Activating
+[04:56:04] Detected state Activating
+[04:56:04] In state Activating, waiting for state Ready
+[04:56:07]     Setting State: Ready
+[04:56:07] Detected state Ready
+[04:56:07] Balancing IF system.
+[04:56:08] Balancing IFRack
+[04:56:08]     Setting State: Activating
+[04:56:08]     Setting State: Ready
+[04:56:10] the sampler values are:
+[04:56:10] RF_power 1 : 0.08300781
+[04:56:10] RF_power 2 : 1.582031
+[04:56:10] RF_power 3 : 1.425781
+[04:56:10] RF_power 4 : 0.02441406
+[04:56:10] RF_power 5 : 9.179688
+[04:56:10] RF_power 6 : 9.995117
+[04:56:10] RF_power 7 : 1.035156
+[04:56:10] RF_power 8 : 9.956055
+[04:56:11] source : 0319+4130
+[04:56:11] Slewing to source.
+[04:56:11] In state Ready, waiting for state Activating
+[04:56:11]     Setting State: Activating
+[04:56:11] Detected state Activating
+[04:56:11] In state Activating, waiting for state Ready
+[04:56:15]     Setting State: Ready
+[04:56:15] Detected state Ready
+[04:56:15] Balancing IF system.
+[04:56:15] Balancing IFRack
+[04:56:15]     Setting State: Activating
+[04:56:15]     Setting State: Ready
+[04:56:17] the sampler values are:
+[04:56:17] RF_power 1 : 0.08300781
+[04:56:17] RF_power 2 : 1.59668
+[04:56:17] RF_power 3 : 1.425781
+[04:56:17] RF_power 4 : 0.02441406
+[04:56:17] RF_power 5 : 9.174805
+[04:56:17] RF_power 6 : 9.995117
+[04:56:17] RF_power 7 : 1.040039
+[04:56:17] RF_power 8 : 9.96582
+[04:56:17] Track submotion is None - setting default
+[04:56:17] Executing Track with submotion:  <gbt.turtle.ygor.SubHome.SubHome instance at 0x7fe67439ecb0>
+[04:56:17] Set submotion at antenna by now
+[04:56:17] VaneCal Track: Subscan 1 of 2
+[04:56:18] In state Ready, waiting for state Running
+[04:56:18]     Setting State: Activating
+[04:56:40]     Setting State: Committed
+[04:56:42]     Setting State: Running
+[04:56:42] Detected state Running
+[04:56:42] *** Notice: This subscan will be numbered as scan #36 in your data reduction package.
+[04:56:43] In state Running, waiting for state Ready
+[04:56:52]     Setting State: Stopping
+[04:56:54]     Setting State: Ready
+[04:56:54] Detected state Ready
+[04:56:54] Ygor Telescope: WaitForStopping
+[04:56:54] Track submotion is None - setting default
+[04:56:54] Executing Track with submotion:  <gbt.turtle.ygor.SubHome.SubHome instance at 0x7fe6742b3248>
+[04:56:54] Set submotion at antenna by now
+[04:56:54] VaneCal Track: Subscan 2 of 2
+[04:56:54] In state Ready, waiting for state Running
+[04:56:55]     Setting State: Activating
+[04:57:06]     Setting State: Committed
+[04:57:08]     Setting State: Running
+[04:57:08] Detected state Running
+[04:57:09] *** Notice: This subscan will be numbered as scan #37 in your data reduction package.
+[04:57:09] In state Running, waiting for state Ready
+[04:57:18]     Setting State: Stopping
+[04:57:20]     Setting State: Ready
+[04:57:20] Detected state Ready
+[04:57:20] Ygor Telescope: WaitForStopping
+[04:57:20] Peak: Subscan 1 of 4
+[04:57:20] In state Ready, waiting for state Running
+[04:57:21]     Setting State: Activating
+[04:57:30]     Setting State: Committed
+[04:57:32]     Setting State: Running
+[04:57:32] Detected state Running
+[04:57:33] *** Notice: This subscan will be numbered as scan #38 in your data reduction package.
+[04:57:33] In state Running, waiting for state Ready
+[04:58:02]     Setting State: Stopping
+[04:58:04]     Setting State: Ready
+[04:58:04] Detected state Ready
+[04:58:04] Ygor Telescope: WaitForStopping
+[04:58:04] Peak: Subscan 2 of 4
+[04:58:05] In state Ready, waiting for state Running
+[04:58:06]     Setting State: Activating
+[04:58:10]     Setting State: Committed
+[04:58:13]     Setting State: Running
+[04:58:13] Detected state Running
+[04:58:13] *** Notice: This subscan will be numbered as scan #39 in your data reduction package.
+[04:58:13] In state Running, waiting for state Ready
+[04:58:42]     Setting State: Stopping
+[04:58:44]     Setting State: Ready
+[04:58:44] Detected state Ready
+[04:58:44] Ygor Telescope: WaitForStopping
+[04:58:45] . *** Poor fit, not updating antenna's corrections.
+
+[04:58:46] Peak: Subscan 3 of 4
+[04:58:46] In state Ready, waiting for state Running
+[04:58:47]     Setting State: Activating
+[04:58:51]     Setting State: Committed
+[04:58:54]     Setting State: Running
+[04:58:54] Detected state Running
+[04:58:54] *** Notice: This subscan will be numbered as scan #40 in your data reduction package.
+[04:58:54] In state Running, waiting for state Ready
+[04:59:23]     Setting State: Stopping
+[04:59:25]     Setting State: Ready
+[04:59:25] Detected state Ready
+[04:59:25] Ygor Telescope: WaitForStopping
+[04:59:25] Peak: Subscan 4 of 4
+[04:59:25] In state Ready, waiting for state Running
+[04:59:26]     Setting State: Activating
+[04:59:30]     Setting State: Committed
+[04:59:33]     Setting State: Running
+[04:59:33] Detected state Running
+[04:59:33] *** Notice: This subscan will be numbered as scan #41 in your data reduction package.
+[04:59:33] In state Running, waiting for state Ready
+[04:59:57]     Setting State: Aborting
+[04:59:57] ygor.Telescope: RuntimeError msg: Abort detected!
+[04:59:57] ygor.Telescope: WaitForRunning: Asking abort confirmation.
+[04:59:57] 
+[04:59:57] User queried: "Abort detected! Terminate block?" waiting for reply...
+[04:59:58]     Setting State: Ready
+[04:59:58] User replied: "Yes".
+[04:59:59] Exiting scheduling block.
+runSuccessful: False
+[04:59:59] ******** End Scheduling Block
+[04:59:59] ******** observer = Vicente Villanueva, SB name = 05_PointFocus_Flux, project ID = AGBT21B_024
+
+how much log? 6860 id: 289446self.history: <gbt.turtle.database.History.History instance at 0x674d200>self.history.connection: <gbt.turtle.database.TurtleConnection.TurtleConnection instance at 0x6691368>how much converted log? 7065 
+#######################################################
+ 
+ 
+#######################################################
+ SCRIPT NUMBER 13, project:AGBT21B_024_39 
+ 289447 1083 Vicente Villanueva 14 Brandon Moore 2023-12-12 05:00:32 obs_completed 
+#######################################################
+# Run point/focus on flux source after Argus on another receiver 
+# to measure focus offset
+#catalogs
+#Catalog(qband_pointing)
+#Catalog(wband_pointing)
+Catalog(xband_pointing)
+#Catalog(fluxcal)
+Catalog(projectDir+"/alma_fluxcal_grid.cat")
+
+source = fluxSrc
+
+
+AutoPeakFocus(source) 
+#
+#focus offset is current Argus value - derive YFC
+#Enter focus offset in 07_PointinFocus_XXX_yfc
+#----------------------------------------------------------------------
+
+#
+#######################################################
+ LOG SESSION NUMBER 13 
+[05:00:32] ******** Begin Scheduling Block
+[05:00:32] ******** observer = Vicente Villanueva, SB name = 06b_AutoPeakFocus_Flux, project ID = AGBT21B_024, date = 12 Dec 2023
+
+[05:00:32] Configuring telescope.
+[05:00:33]     Setting State: Activating
+[05:00:51]     Setting State: Ready
+[05:00:52]     Setting State: Activating
+[05:00:53]     Setting State: Ready
+[05:00:53] Default values are
+[05:00:53] if3freq  =  [0]
+[05:00:53] noisecal  =  lo-ext
+[05:00:53] Configuring for backend DCR...
+[05:00:53] The bad devices are: 
+[05:00:53] ConverterFilter14
+[05:00:53] ConverterFilter2
+[05:00:53] ConverterFilter16
+[05:00:53] ConverterFilter10
+[05:00:53] ConverterFilter12
+[05:00:53] Warning: The doppler tracking frequency was not one of the specified rest frequencies. The telescope is being configured as specified but if this was not intentional, please fix and re-submit
+[05:00:53] Waiting for  ActiveSurface to finish activating
+[05:00:53] . . Waiting for  ScanCoordinator to finish activating
+[05:00:53] . . . . . . . . . . . . . . . .
+[05:00:53] Checking telescope
+[05:00:53] Configuration Complete
+[05:00:53] source : 0319+4130
+[05:00:53] Slewing to source.
+[05:00:53] In state Ready, waiting for state Activating
+[05:00:53]     Setting State: Activating
+[05:00:53] Detected state Activating
+[05:00:54] In state Activating, waiting for state Ready
+[05:00:59]     Setting State: Ready
+[05:00:59] Detected state Ready
+[05:00:59] Balancing IF system.
+[05:01:00] Balancing IFRack
+[05:01:00]     Setting State: Activating
+[05:01:00]     Setting State: Ready
+[05:01:02] the sampler values are:
+[05:01:02] RF_power 1 : 0.08300781
+[05:01:02] RF_power 2 : 1.416016
+[05:01:02] RF_power 3 : 1.396484
+[05:01:02] RF_power 4 : 0.02441406
+[05:01:02] RF_power 5 : 2.490234
+[05:01:02] RF_power 6 : 9.995117
+[05:01:02] RF_power 7 : 0.3564453
+[05:01:02] RF_power 8 : 4.311523
+[05:01:02] Track submotion is None - setting default
+[05:01:02] Executing Track with submotion:  <gbt.turtle.ygor.SubHome.SubHome instance at 0x7fe6746fc830>
+[05:01:02] Set submotion at antenna by now
+[05:01:02] VaneCal Track: Subscan 1 of 2
+[05:01:03] In state Ready, waiting for state Running
+[05:01:03]     Setting State: Activating
+[05:01:23]     Setting State: Committed
+[05:01:26]     Setting State: Running
+[05:01:26] Detected state Running
+[05:01:26] *** Notice: This subscan will be numbered as scan #42 in your data reduction package.
+[05:01:26] In state Running, waiting for state Ready
+[05:01:35]     Setting State: Stopping
+[05:01:37]     Setting State: Ready
+[05:01:37] Detected state Ready
+[05:01:37] Ygor Telescope: WaitForStopping
+[05:01:37] Track submotion is None - setting default
+[05:01:37] Executing Track with submotion:  <gbt.turtle.ygor.SubHome.SubHome instance at 0x476cef0>
+[05:01:37] Set submotion at antenna by now
+[05:01:37] VaneCal Track: Subscan 2 of 2
+[05:01:43] In state Ready, waiting for state Running
+[05:01:43]     Setting State: Activating
+[05:02:02]     Setting State: Committed
+[05:02:05]     Setting State: Running
+[05:02:05] Detected state Running
+[05:02:05] *** Notice: This subscan will be numbered as scan #43 in your data reduction package.
+[05:02:05] In state Running, waiting for state Ready
+[05:02:14]     Setting State: Stopping
+[05:02:16]     Setting State: Ready
+[05:02:16] Detected state Ready
+[05:02:16] Ygor Telescope: WaitForStopping
+[05:02:16] Peak: Subscan 1 of 4
+[05:02:17] In state Ready, waiting for state Running
+[05:02:17]     Setting State: Activating
+[05:02:26]     Setting State: Committed
+[05:02:28]     Setting State: Running
+[05:02:28] Detected state Running
+[05:02:29] *** Notice: This subscan will be numbered as scan #44 in your data reduction package.
+[05:02:29] In state Running, waiting for state Ready
+[05:02:58]     Setting State: Stopping
+[05:03:00]     Setting State: Ready
+[05:03:00] Detected state Ready
+[05:03:00] Ygor Telescope: WaitForStopping
+[05:03:00] Peak: Subscan 2 of 4
+[05:03:01] In state Ready, waiting for state Running
+[05:03:01]     Setting State: Activating
+[05:03:05]     Setting State: Committed
+[05:03:08]     Setting State: Running
+[05:03:08] Detected state Running
+[05:03:08] *** Notice: This subscan will be numbered as scan #45 in your data reduction package.
+[05:03:08] In state Running, waiting for state Ready
+[05:03:37]     Setting State: Stopping
+[05:03:39]     Setting State: Ready
+[05:03:39] Detected state Ready
+[05:03:39] Ygor Telescope: WaitForStopping
+[05:03:39] *** Cannot update corrections! Did not receive new corrections.
+[05:03:40] *** Updating antenna's pointing to az2=0.0674 and el=0.2213 arcmins
+
+[05:03:40] Peak: Subscan 3 of 4
+[05:03:41] In state Ready, waiting for state Running
+[05:03:42]     Setting State: Activating
+[05:03:46]     Setting State: Committed
+[05:03:48]     Setting State: Running
+[05:03:48] Detected state Running
+[05:03:49] *** Notice: This subscan will be numbered as scan #46 in your data reduction package.
+[05:03:49] In state Running, waiting for state Ready
+[05:04:18]     Setting State: Stopping
+[05:04:20]     Setting State: Ready
+[05:04:20] Detected state Ready
+[05:04:20] Ygor Telescope: WaitForStopping
+[05:04:20] Peak: Subscan 4 of 4
+[05:04:20] In state Ready, waiting for state Running
+[05:04:21]     Setting State: Activating
+[05:04:25]     Setting State: Committed
+[05:04:28]     Setting State: Running
+[05:04:28] Detected state Running
+[05:04:28] *** Notice: This subscan will be numbered as scan #47 in your data reduction package.
+[05:04:28] In state Running, waiting for state Ready
+[05:04:57]     Setting State: Stopping
+[05:04:59]     Setting State: Ready
+[05:04:59] Detected state Ready
+[05:04:59] Ygor Telescope: WaitForStopping
+[05:04:59] *** Poor fit, not updating antenna's corrections.
+
+[05:04:59] Focus: Subscan 1 of 1
+[05:05:00] In state Ready, waiting for state Running
+[05:05:01]     Setting State: Activating
+[05:05:08]     Setting State: Committed
+[05:05:10]     Setting State: Running
+[05:05:10] Detected state Running
+[05:05:11] *** Notice: This subscan will be numbered as scan #48 in your data reduction package.
+[05:05:11] In state Running, waiting for state Ready
+[05:06:10]     Setting State: Stopping
+[05:06:12]     Setting State: Ready
+[05:06:12] Detected state Ready
+[05:06:12] Ygor Telescope: WaitForStopping
+[05:06:13] *** Updating antenna's focus to 3.62 mm
+
+runSuccessful: True
+[05:06:13] ******** End Scheduling Block
+[05:06:13] ******** observer = Vicente Villanueva, SB name = 06b_AutoPeakFocus_Flux, project ID = AGBT21B_024
+
+how much log? 6485 id: 289447self.history: <gbt.turtle.database.History.History instance at 0x674d200>self.history.connection: <gbt.turtle.database.TurtleConnection.TurtleConnection instance at 0x6691368>how much converted log? 6692 
+#######################################################

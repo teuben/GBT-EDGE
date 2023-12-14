@@ -242,7 +242,8 @@ sessions:
 ## all:      create a runs.sh file to re-run the whole pipeline, ideally with slurm or gnu parallel
 all:
 	./mk_runs.py
-	ls ./run_*.sh | awk '{printf("bash %s > %s.log 2>&1\n",$$1,$$1)}' > runs.sh
+	@echo "# Created by 'make all'" > runs.sh
+	ls ./run_*.sh | awk '{printf("bash %s > %s.log 2>&1\n",$$1,$$1)}' >> runs.sh
 	@echo 'Now run:'
 	@echo '   OMP_NUM_THREADS=1  parallel --jobs 16 < runs.sh'
 	@echo "e.g. 51 galaxies on 16 processors took 40 mins"

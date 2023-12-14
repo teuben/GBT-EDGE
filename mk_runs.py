@@ -7,7 +7,6 @@ import os
 import sys
 import glob
 
-
 def tolist(a):
     """  list of integers 
     """
@@ -46,6 +45,7 @@ for line in lines:
 for gal in gals.keys():
     s = gals[gal]
     fp = open("run_%s.sh" % gal, 'w')
+    fp.write('# Created by mk_runs.py\n')
     fp.write('# %s %s\n' % (gal,s))
     fp.write('set -x\n')
     s

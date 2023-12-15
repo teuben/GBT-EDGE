@@ -10,6 +10,9 @@ from datetime import datetime
 from astropy.io import fits
 import GBTEDGE
 
+# record time
+now = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+
 # stats log file
 slf = "stats.log"
 
@@ -48,7 +51,7 @@ print("     <br>- means that nothing obvious was seen")
 print("<LI> if the table below is empty.... work must be in progress")
 print("</UL>")
 
-print("(click on a column name to toggle the sorting by that column)")
+print("Table created %s  - (click on a column name to toggle the sorting by that column)" % now)
 
 print('<table border=1 class="sortable">')
 print('  <tr class="item">')
@@ -280,8 +283,7 @@ for line in lines:
 
 print("</table>")
 
-now = datetime.now()
-print("Last written on: %s" % now.strftime("%Y-%m-%dT%H:%M:%S"))
+print("Table created %s" % now)
 
 
 

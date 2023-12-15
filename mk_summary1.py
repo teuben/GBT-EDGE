@@ -100,6 +100,10 @@ print("      NF")
 print("    </th>")
 
 print("    <th>")
+print("     rms")
+print("    </th>")
+
+print("    <th>")
 print("      mom0")
 print("    </th>")
 
@@ -113,10 +117,6 @@ print("    </th>")
 
 print("    <th>")
 print("      spectrum30")
-print("    </th>")
-
-print("    <th>")
-print("     rms")
 print("    </th>")
 
 print("    <th>")
@@ -242,6 +242,11 @@ for line in lines:
     print("     %s" % nf)
     print("    </td>")
 
+    png3 = "%s/rms.png" % gal
+    print("    <td>")    
+    print("       <A HREF=%s> <IMG SRC=%s height=100></A>" % (png3,png3))
+    print("    </td>")    
+
     print("    <td>")
     if png == 0:
         print("    [pic]")
@@ -261,11 +266,6 @@ for line in lines:
     png2 = "%s/plot_spectrum2.png" % gal
     print("    <td>")    
     print("       <A HREF=%s> <IMG SRC=%s height=100></A>" % (png2,png2))
-    print("    </td>")    
-
-    png3 = "%s/rms.png" % gal
-    print("    <td>")    
-    print("       <A HREF=%s> <IMG SRC=%s height=100></A>" % (png3,png3))
     print("    </td>")    
 
     print("    <td>")

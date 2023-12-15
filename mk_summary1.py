@@ -90,7 +90,11 @@ print("      mom0peak")
 print("    </th>")
 
 print("    <th>")
-print("      spectrum")
+print("      spectrum10")
+print("    </th>")
+
+print("    <th>")
+print("      spectrum30")
 print("    </th>")
 
 print("    <th>")
@@ -212,7 +216,12 @@ for line in lines:
     print("     %.2f" % m0p)
     print("    </td>")
 
-    png2 = "%s/plot_spectrum.png" % gal
+    png1 = "%s/plot_spectrum1.png" % gal
+    print("    <td>")    
+    print("       <A HREF=%s> <IMG SRC=%s height=100></A>" % (png1,png1))
+    print("    </td>")    
+
+    png2 = "%s/plot_spectrum2.png" % gal
     print("    <td>")    
     print("       <A HREF=%s> <IMG SRC=%s height=100></A>" % (png2,png2))
     print("    </td>")    

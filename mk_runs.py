@@ -88,7 +88,8 @@ for gal in gals.keys():
         fp.write('rm -rf %s/*_feed2_*\n' % gal)
         fp.write('./reduce.py %s -g %s  %s\n' % (m,tolist(ss),gal))
     fp.write('./mmaps.py %s\n' % gal)
-    fp.write('./plot_spectrum.py %s/%s%s savefig=%s/plot_spectrum.png\n' % (gal,gal,ext,gal))    
+    fp.write('./plot_spectrum.py %s/%s%s size=10 savefig=%s/plot_spectrum1.png\n' % (gal,gal,ext,gal))    
+    fp.write('./plot_spectrum.py %s/%s%s size=30 savefig=%s/plot_spectrum2.png\n' % (gal,gal,ext,gal))    
     fp.close()
 print("Wrote %d run_GAL.sh scripts" % len(gals))
 

@@ -8,6 +8,7 @@ import sys
 import numpy as np
 from datetime import datetime
 from astropy.io import fits
+import GBTEDGE
 
 # stats log file
 slf = "stats.log"
@@ -16,7 +17,8 @@ slf = "stats.log"
 mmv = "dilsmomsk.mom0"
 fcv = "_12CO_rebase5_smooth1.3_hanning2"
 
-
+# GBTEDGE lookup
+cat = GBTEDGE.GBTEDGE('GBTEDGE.cat')              # get the galaxy catalog
 
 print("<html>")
 
@@ -59,6 +61,19 @@ print("    </th>")
 print("    <th>")
 print("      Galaxy")
 print("    </th>")
+
+print("    <th>")
+print("      RA")
+print("    </th>")
+
+print("    <th>")
+print("      DEC")
+print("    </th>")
+
+print("    <th>")
+print("      VLSR")
+print("    </th>")
+
 
 print("    <th>")
 print("      RMS (mK)")
@@ -174,18 +189,33 @@ for line in lines:
 
             
     comm= words[8]
-        
+
+    g = cat.entry(gal)
+    ra = g[0]
+    dec = g[1]
+    vlsr = g[2]
   
     print('  <tr class="item">')
 
     print("    <td>")
     print("     %d" % ngal)
     print("    </td>")
-    
-    
+
     print("    <td>")
     ff = "%s/%s%s.fits" % (gal,gal,fcv)
     print("    <A HREF=%s>%s</A>" % (ff,gal))
+    print("    </td>")
+
+    print("    <td>")
+    print("     %s" % ra)
+    print("    </td>")
+
+    print("    <td>")
+    print("     %s" % dec)
+    print("    </td>")
+    
+    print("    <td>")
+    print("     %s" % vlsr)
     print("    </td>")
 
     print("    <td>")

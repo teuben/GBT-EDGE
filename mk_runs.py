@@ -6,9 +6,10 @@
 import os
 import sys
 import glob
-
+import GBTEDGE
 
 ext = '_12CO_rebase5_smooth1.3_hanning2.fits'
+
 
 def tolist(a):
     """  list of integers 
@@ -30,7 +31,9 @@ def masks(gal):
         return gals[0].split('/')[1]
     print("Warning: %s has no mask file" % gal)
     return None
-    
+
+cat = GBTEDGE.GBTEDGE('GBTEDGE.cat')              # get the galaxy catalog
+
 
 gals = {}
 lines = open('gals.pars').readlines()
@@ -45,11 +48,13 @@ for line in lines:
         else:
             gals[gal].append(s)
 
-for gal in gals.keys():
+for gal in gals.keys():                   # loop over all observations
     s = gals[gal]
+    g = cat.entry(gal)
+    vlsr = g[2]
     fp = open("run_%s.sh" % gal, 'w')
     fp.write('# Created by mk_runs.py\n')
-    fp.write('# %s %s\n' % (gal,s))
+    fp.write('# %s %s vlsr=%s\n' % (gal,s,vlsr))
     fp.write('set -x\n')
     s
     ss = []  # use all feeds
@@ -88,8 +93,8 @@ for gal in gals.keys():
         fp.write('rm -rf %s/*_feed2_*\n' % gal)
         fp.write('./reduce.py %s -g %s  %s\n' % (m,tolist(ss),gal))
     fp.write('./mmaps.py %s\n' % gal)
-    fp.write('./plot_spectrum.py %s/%s%s size=10 savefig=%s/plot_spectrum1.png\n' % (gal,gal,ext,gal))    
-    fp.write('./plot_spectrum.py %s/%s%s size=30 savefig=%s/plot_spectrum2.png\n' % (gal,gal,ext,gal))
+    fp.write('./plot_spectrum.py %s/%s%s size=10 vlsr=%s savefig=%s/plot_spectrum1.png\n' % (gal,gal,ext,vlsr,gal))    
+    fp.write('./plot_spectrum.py %s/%s%s size=30 vlsr=%s savefig=%s/plot_spectrum2.png\n' % (gal,gal,ext,vlsr,gal))
     fp.write('fitsccd %s/%s%s - | ccdmom - - mom=-2 | ccdfits - %s/rms.fits\n' % (gal,gal,ext,gal))
     fp.write('./fitsplot2.py %s/rms.fits\n' % (gal))
     

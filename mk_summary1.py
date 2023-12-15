@@ -98,6 +98,10 @@ print("      spectrum30")
 print("    </th>")
 
 print("    <th>")
+print("     rms")
+print("    </th>")
+
+print("    <th>")
 print("      pipeline run")
 print("    </th>")
 
@@ -225,7 +229,12 @@ for line in lines:
     print("    <td>")    
     print("       <A HREF=%s> <IMG SRC=%s height=100></A>" % (png2,png2))
     print("    </td>")    
-    
+
+    png3 = "%s/rms.png" % gal
+    print("    <td>")    
+    print("       <A HREF=%s> <IMG SRC=%s height=100></A>" % (png3,png3))
+    print("    </td>")    
+
     print("    <td>")
     print("     %s" % lrt)
     print("    </td>")

@@ -90,6 +90,10 @@ print("      mom0peak")
 print("    </th>")
 
 print("    <th>")
+print("      spectrum")
+print("    </th>")
+
+print("    <th>")
 print("      pipeline run")
 print("    </th>")
 
@@ -207,6 +211,11 @@ for line in lines:
     print("    <td>")
     print("     %.2f" % m0p)
     print("    </td>")
+
+    png2 = "%s/plot_spectrum.png" % gal
+    print("    <td>")    
+    print("       <A HREF=%s> <IMG SRC=%s height=100></A>" % (png2,png2))
+    print("    </td>")    
     
     print("    <td>")
     print("     %s" % lrt)

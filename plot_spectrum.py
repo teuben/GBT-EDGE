@@ -21,6 +21,8 @@ from astropy.io import fits
 from spectral_cube import SpectralCube
 import astropy.units as u
 from nemopy import getparam
+#import pdb
+#pdb.set_trace()
 
 
 keyval = [
@@ -44,7 +46,8 @@ keyval = [
     "wins=11\n      Window smoothing applied to SDFITS spectral data",
     "edge=5\n       Number of edge channels to exclude",
     "plot=raw\n     Plot 'r(aw)' or 's(ubtracted)' spectrum - 's' will show flux",
-    "VERSION=0.6\n  16-dec-2022 PJT",
+    "savefig=\n     Save figure instead of interactive pllot",
+    "VERSION=0.7\n  14-dec-2023 PJT",
 ]
 
 usage = """
@@ -458,7 +461,10 @@ if Qplot:
     else:
         plt.title('%s @ %f %f size %g"' % (gal,ra0,dec0,size))
     plt.legend(loc='best')
-    plt.show()
+    if p.has("savefig"):
+        plt.savefig(p.get("savefig"))
+    else:
+        plt.show()
     #
 
 if p.has('tab'):

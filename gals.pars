@@ -7,7 +7,8 @@
 
 # winter 2021/22  :  sessions 1-25
 # winter 2022/23  :  sessions 26-31 are suspect (low gain), starting from 32 looks much better
-#                    sessions 32-     (sessions 33-XX have bad feed 2)
+#                    sessions 32-34   (sessions 33-XX have bad feed 2)
+# winter 2023/24  :  sessions 35-     (feed 2 still bad,  6 and perhaps 9 also suspicious - also see noisy edge in a quadrant)
 
 # galaxy seq start stop [ref1,ref2]    # refscans can be skipped if they are start-2,stop+1
 #                                      # if only one refscan available, just duplicate it
@@ -449,6 +450,7 @@ UGC08004   34   519   553             # see 15
 
 
 # --------------------------------------------------------------------------------
+# Winter 2023/24
 # session 35:    3  nov 2023
 #     beam 3/16 is still dead; 
 #     beam 7 is very noisy (known for a while -- beam 3 won't be back until the summer; beam 7 might get fixed during this season). 
@@ -530,3 +532,15 @@ NGC2691   40   570   604
 
 NGC2596   40   614   648
 
+# session 41:  dec 15/16
+
+#UGC03960
+#UGC03960
+
+#Mrk1418
+#Mrk1418
+
+#UGC08322
+#UGC08322
+#UGC08322
+#UGC08322

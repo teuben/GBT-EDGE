@@ -99,6 +99,7 @@ for gal in gals.keys():                   # loop over all observations
     fp.write('fitsccd %s/%s%s - | ccdsub - - z=1:50,197-50:197 | ccdmom - - mom=-2 | ccdmath - - "%%1*1000" | ccdfits - %s/rms1.fits\n' % (gal,gal,ext,gal))
     
     fp.write('./fitsplot2.py %s/rms.fits\n' % (gal))
+    fp.write('./fitsplot2.py %s/rms1.fits\n' % (gal))
     
     fp.close()
 print("Wrote %d run_GAL.sh scripts" % len(gals))

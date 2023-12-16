@@ -34,6 +34,7 @@ print("NOTE: these results are live from the <A HREF=https://github.com/teuben/G
 print("<UL>")
 print("<LI> Galaxy FITS cube links are to the  <B>%s.fits</B> version from the pipeline" % fcv)
 print("     <br> this should have an 8 arcsec beam and 15 km/s channels")
+print("<LI> Those with access to the  umd system is /n/lma1/teuben/GBT-EDGE")
 print("<LI> RMS is determined from the inner (spatial) 40% of the cube")
 print("<LI> sratio, pratio, SNR are indications how much signal there is")
 print("<LI> Sessions are which of the sessions used to make this summary")
@@ -100,6 +101,10 @@ print("    </th>")
 
 print("    <th>")
 print("      NF")
+print("    </th>")
+
+print("    <th>")
+print("     rms1")
 print("    </th>")
 
 print("    <th>")
@@ -245,10 +250,16 @@ for line in lines:
     print("     %s" % nf)
     print("    </td>")
 
+    png4 = "%s/rms1.png" % gal
+    print("    <td>")    
+    print("       <A HREF=%s> <IMG SRC=%s height=100></A>" % (png4,png4))
+    print("    </td>")
+
     png3 = "%s/rms.png" % gal
     print("    <td>")    
     print("       <A HREF=%s> <IMG SRC=%s height=100></A>" % (png3,png3))
     print("    </td>")    
+    
 
     print("    <td>")
     if png == 0:

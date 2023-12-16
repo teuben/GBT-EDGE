@@ -93,9 +93,11 @@ for gal in gals.keys():                   # loop over all observations
         fp.write('rm -rf %s/*_feed2_*\n' % gal)
         fp.write('./reduce.py %s -g %s  %s\n' % (m,tolist(ss),gal))
     fp.write('./mmaps.py %s\n' % gal)
-    fp.write('./plot_spectrum.py %s/%s%s size=10 vlsr=%s savefig=%s/plot_spectrum1.png\n' % (gal,gal,ext,vlsr,gal))    
+    fp.write('./plot_spectrum.py %s/%s%s size=10 vlsr=%s savefig=%s/plot_spectrum1.png\n' % (gal,gal,ext,vlsr,gal))
     fp.write('./plot_spectrum.py %s/%s%s size=30 vlsr=%s savefig=%s/plot_spectrum2.png\n' % (gal,gal,ext,vlsr,gal))
-    fp.write('fitsccd %s/%s%s - | ccdmom - - mom=-2 | ccdfits - %s/rms.fits\n' % (gal,gal,ext,gal))
+    fp.write('fitsccd %s/%s%s - |                     ccdmom - - mom=-2 | ccdmath - - %1*1000 | ccdfits - %s/rms.fits\n' % (gal,gal,ext,gal))
+    fp.write('fitsccd %s/%s%s - | z=1:50,197-50:197 | ccdmom - - mom=-2 | ccdmath - - %1*1000 | ccdfits - %s/rms.fits\n' % (gal,gal,ext,gal))
+    
     fp.write('./fitsplot2.py %s/rms.fits\n' % (gal))
     
     fp.close()

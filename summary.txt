@@ -30,6 +30,7 @@ UGC01659  -
 UGC02134  clear/messy_BL
 UGC02222  -
 UGC02239  weak
+UGC03960  - 
 UGC04054  -
 UGC04136  weak
 UGC04245  clear
@@ -53,3 +54,4 @@ CGCG163-062  -
 CGCG536-030  -
 IC0674       weak
 IC3598       -
+Mrk1418      -

@@ -31,8 +31,9 @@ ngc=$(grep ^NGC gals.pars | awk '{print $1}' | sort | uniq)
 ugc=$(grep ^UGC gals.pars | awk '{print $1}' | sort | uniq)
 cgc=$(grep ^CGC gals.pars | awk '{print $1}' | sort | uniq)
 igc=$(grep ^IC  gals.pars | awk '{print $1}' | sort | uniq)
+mkc=$(grep ^Mrk gals.pars | awk '{print $1}' | sort | uniq)
 
-gals="$ngc $ugc $cgc $igc"
+gals="$ngc $ugc $cgc $igc $mkc"
 
 #echo $gals
 

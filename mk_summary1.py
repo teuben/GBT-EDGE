@@ -34,17 +34,19 @@ print("NOTE: these results are live from the <A HREF=https://github.com/teuben/G
 print("<UL>")
 print("<LI> Galaxy FITS cube links are to the  <B>%s.fits</B> version from the pipeline" % fcv)
 print("     <br> this should have an 8 arcsec beam and 15 km/s channels")
+print("<LI> Those with access to the  umd system is /n/lma1/teuben/GBT-EDGE")
 print("<LI> RMS is determined from the inner (spatial) 40% of the cube")
 print("<LI> sratio, pratio, SNR are indications how much signal there is")
 print("<LI> Sessions are which of the sessions used to make this summary")
 print("     <br> all sessions 26-31 should not be used")
 print("     <br> all sessions 32 and up have beam 2 removed")
 print("<LI> NF is the total number of feeds used. Usually a multiple of 32 if both DEC and RA map used.")
+print('<LI> RMS1 map of the flux-flat cube, in mK, using only first and last quarter of channels')
+print('<LI> RMS map of the flux-flat cube, in mK, using all channels including the galaxy VLSR')
 print("<LI> mom0 image is from MaskMoment's <B>%s.fits.gz</B> version (units: K.km/s)" % mmv)
 print("     <br>still taken from the flux flat cube, we don't have a noise flat cube yet. Hence the noisy edge.")
 print("<LI> mom0peak is the peak in the mom0 from the inner 40% of the map ")
-print('<LI> spectra are taken 10" and 30" around reference point')
-print('<LI> RMS map of the flux-flat cube, in K')
+print('<LI> spectra are taken 10" and 30" around reference point. expected VLSR is noted with an arrow')
 print("<LI> pipeline run is the last time the pipeline was on this galaxy")
 print("<LI> comments are Peter's silly comments, usually based on initial ds9 browsing")
 print("     <br>- means that nothing obvious was seen")
@@ -100,6 +102,10 @@ print("    </th>")
 
 print("    <th>")
 print("      NF")
+print("    </th>")
+
+print("    <th>")
+print("     rms1")
 print("    </th>")
 
 print("    <th>")
@@ -245,10 +251,16 @@ for line in lines:
     print("     %s" % nf)
     print("    </td>")
 
+    png4 = "%s/rms1.png" % gal
+    print("    <td>")    
+    print("       <A HREF=%s> <IMG SRC=%s height=100></A>" % (png4,png4))
+    print("    </td>")
+
     png3 = "%s/rms.png" % gal
     print("    <td>")    
     print("       <A HREF=%s> <IMG SRC=%s height=100></A>" % (png3,png3))
     print("    </td>")    
+    
 
     print("    <td>")
     if png == 0:

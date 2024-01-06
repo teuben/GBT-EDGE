@@ -551,15 +551,20 @@ UGC08322  41   332   366     #  330-368
 
 # session 42: dec 20/21 - session was cancelled due to ice on instrument
 
-# session 43: jan 4/5
+# session 42: jan 4/5 (rescheduled)
 
+# first time map
+NGC3353 42   31 65     
+NGC3353 42   70 104
 
-# NGC3353 43
-# NGC3353 43
+# first time map
+NGC3896 42   114  148  112,151   # map end at 148, vanecal=151,152  (149,150 were mistakes)
+NGC3896 42   155  189
 
-# NGC3896 43
-# NGC3896 43
+# first time map
+UGC09629 42  199  233
+UGC09629 42  238  272
+UGC09629 42  277  311
+UGC09629 42  322  356
 
-# UGC09629 43
-# UGC09629 43
 

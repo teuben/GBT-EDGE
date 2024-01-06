@@ -1,8 +1,10 @@
 # GBT-EDGE
 
-This toolkit helps you reducing the GBT EDGE data.
-Still very preliminary, expect updates, here
-as well as in 3rd party code mentioned here.
+This toolkit helps you reducing the GBT EDGE data.  Still very
+preliminary, expect updates, here as well as in 3rd party code
+mentioned here.
+
+We also keep all the astrid/summary/tsys logs in this repo.
 
 A very simple example of use: (pick a directory):
 
@@ -107,7 +109,7 @@ After an observing session you need to edit the **gals.pars** file and add a new
 reduce their data and view the resulting fits cube using **ds9** or **carta** for example.
 
 In addition we preserving the *tsys* run of the night, as well as
-the *astridlogs*.  For example for session 26 this would be:
+the *astridlogs*.  For example for session 26 (SEQ=26) this would be:
 
 1. **tsys**:
 
@@ -119,6 +121,10 @@ the *astridlogs*.  For example for session 26 this would be:
 
 this **tsys.py** script will run IDL scripts,and take a while.
 
+With the Makefile this is reduced to:
+
+        make tsys SEQ=26
+
 2. **astridlogs**:
 
         cd astridlogs
@@ -126,6 +132,10 @@ this **tsys.py** script will run IDL scripts,and take a while.
         git add AGBT21B_024_26_log.txt
         git commit -m new AGBT21B_024_26_log.txt
         git push
+
+with the Makefile this is reduced to
+
+        make astrid SEQ=26
 
 
 # Working with selected sessions
@@ -182,6 +192,28 @@ Example how to look at Tsys and Nod_Galaxy on NGC5908
       argus_onoff,334,333,329,fdnum=7
       # -> tsys=203
 
+# Pipeline
+
+Many ways to do this. One attempt is "make all", which does:
+
+      ./mk_runs.py
+      ls ./run_*.sh | awk '{printf("bash %s > %s.log 2>&1\n",$1,$1)}' > runs.sh
+
+and can be followed with
+
+      OMP_NUM_THREADS=1  parallel --jobs 16 < runs.sh
+
+but note the hardcoded hack how to skip sessions 26-31, and flag beam 2 bad for all sessions after.
+
+After this finished, run the stats using "make stats"
+
+      ./do_stats_all > stats.log
+      ./mk_summary1.py
+
+this also makes a README.html can be made for viewing
+
+
+
 # Caveats/Issues
 
 Some of these issues will be worked on in  the code, and will disappear. See also https://github.com/teuben/GBT-EDGE/issues
@@ -193,11 +225,11 @@ Otherwise just be aware of the listed ones here:
    cannot make a differ RA and DEC map without removing all files and perhaps renaming. If you want to make
    separate RA and DEC maps, the gals.pars file will need to have commented out the other map, and the
    
-	     edit gals.pars
-		 rm -rf NGC0001
-         ./reduce.py NGC0001 ;  mv NGC0001 NGC0001_RA
-	     edit gals.pars
-         ./reduce.py NGC0001 ;  mv NGC0001 NGC0001_DEC
+        edit gals.pars
+        rm -rf NGC0001
+        ./reduce.py NGC0001 ;  mv NGC0001 NGC0001_RA
+        edit gals.pars
+        ./reduce.py NGC0001 ;  mv NGC0001 NGC0001_DEC
 		 
 2. Because of the randomized sampler in the PCA methods (i.e., the svd_solver option
    here https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html) the results are not reproducable
@@ -211,7 +243,8 @@ Otherwise just be aware of the listed ones here:
    On LMA bruteforce3 took 6:39
 
 4. nProc (see code) doesn't seem to work for me.
-   Setting OMP_NUM_THREADS=1 actually seems to make the code run a bit faster.
+   Setting OMP_NUM_THREADS=1 actually seems to make the code run a bit faster and keeps the load to 1-ish
+   Using gnu parallel on a machine like lma pays off.
 
 5. For NGC0001 here are some RMS values, for different (beam,hanning) settings
 
@@ -241,7 +274,7 @@ Otherwise just be aware of the listed ones here:
    so the "-s" flag can be optimally used.
    TBD:    bad beams cannot be edited out without removing the offending feed fits file!
    
-    TODO:   we need a "final" script to do everything
+   TODO:   we need a "final" script to do everything
     
 10. The first 25 sessions were taken with 1.5 x 1.5 arcmin maps and ~33sec integration time per scan.
 

@@ -12,10 +12,14 @@ NGC2596   clear
 NGC2691   weak
 NGC3057   -
 NGC3106   maybe
+NGC3353   -
 NGC3395   -
+NGC3406NED01  -
 NGC3614   messy
 NGC3619   -
+NGC3896   -
 NGC4003   central/weak
+NGC5157   -
 NGC5216   0
 NGC5267   maybe
 NGC5376   offset;maybe
@@ -36,17 +40,25 @@ UGC04136  weak
 UGC04245  clear
 UGC04258  weak
 UGC04262  messy
+UGC04425  -
 UGC04659  -
 UGC04730  maybe
 UGC05326  -
+UGC05396
+UGC06320  ?
 UGC08004  maybe
+UGC08234  ?
 UGC08231  -half
+UGC08234
 UGC08322  -bad_beam
 UGC08733  -
+UGC08781  ?
 UGC09598  weak
 UGC09629  maybe
 UGC9663   messy
 UGC9837   messy/offset
+UGC09598  -
+UGC09629  -
 UGC09777  weak
 UGC10097  maybe
 UGC10905  weak
@@ -54,4 +66,4 @@ CGCG163-062  weak
 CGCG536-030  -
 IC0674       weak
 IC3598       -
-Mrk1428    NOISY-EDGE
+Mrk1418    NOISY-EDGE

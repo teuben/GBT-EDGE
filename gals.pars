@@ -596,3 +596,14 @@ UGC08234 44  255  289
 
 # partial - no VANE at end
 UGC08781 44 299  324   297,297
+
+# session 45:   feb 3/4
+#   beam 3 still bad, beam 13 should be ok
+
+#                  
+UGC08234  45   29   63
+UGC08234  45   73  107
+
+#                  new source
+NGC5402   45  117  151
+NGC5402   45  156  162  154,154      # no final VANE

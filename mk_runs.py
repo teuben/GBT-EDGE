@@ -102,9 +102,9 @@ for gal in gals.keys():                   # loop over all observations
     for b in bf.keys():
         ss = bf[b]
         if len(b) == 0:
-            cmd = './reduce.py -g %s %s %s' % (m,tolist(ss),gal)
+            cmd = './reduce.py %s -g %s %s' % (m,tolist(ss),gal)
         else:
-            cmd = './reduce.py -g %s %s %s %s' % (m,tolist(ss),b,gal)
+            cmd = './reduce.py %s -g %s %s %s' % (m,tolist(ss),b,gal)
         #print('CMD',cmd)
         fp.write("%s\n" % cmd)
     fp.write('./plots.sh %s %s %s\n' % (gal,ext,vlsr))

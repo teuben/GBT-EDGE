@@ -20,11 +20,11 @@ badfeedranges = [
 
 badfeeds = {}
 for s in badfeedranges:
-    print(s[0][0],s[0][1]+1,s[1])
+    #print(s[0][0],s[0][1]+1,s[1])
     for i in range(s[0][0],s[0][1]+1):
         badfeeds[i] = s[1]
-print(badfeeds.keys())
-print(badfeeds)
+#print(badfeeds.keys())
+#print(badfeeds)
 
 def tolist(a):
     """  list of integers   [1,4,5] ->  "1,4,5"
@@ -109,7 +109,7 @@ for gal in gals.keys():                   # loop over all observations
         fp.write("%s\n" % cmd)
     fp.write('./plots.sh %s %s %s\n' % (gal,ext,vlsr))
     fp.close()
-print("Wrote %d run_GAL.sh scripts" % len(gals))
+print("Wrote %d run_GAL.sh scripts from gals.pars" % len(gals))
 
 # rules:
 # 1..25   use all feeds

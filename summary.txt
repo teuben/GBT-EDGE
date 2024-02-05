@@ -1,7 +1,7 @@
 #    annotation file for do_all_stats
 #  gal    annotation
 #
-NGC0001   clear/1
+NGC0001   clear
 NGC0169   clear (plus companion IC1559)
 NGC0495   maybe
 NGC0776   clear
@@ -45,7 +45,7 @@ UGC04425  -
 UGC04659  -
 UGC04730  maybe
 UGC05326  -
-UGC05396
+UGC05396  ?
 UGC06320  ?
 UGC08004  maybe
 UGC08234  ?

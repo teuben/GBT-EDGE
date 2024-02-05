@@ -99,5 +99,7 @@ print("Wrote %d run_GAL.sh scripts" % len(gals))
 
 # rules:
 # 1..25   use all feeds
-# 26..31  skip
+# 26..31  skip alltogether
 # 32..    skip feed 2
+# 43..44  skip feed 2,12
+# 45..    skip feed 2

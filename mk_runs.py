@@ -10,9 +10,24 @@ import GBTEDGE
 
 ext = '_12CO_rebase5_smooth1.3_hanning2.fits'
 
+badfeedranges = [
+    ([ 1,25],''),
+    ([32,42],'-f 2'),
+    ([43,44],'-f 2,12'),
+    ([44,50],'-f 2')
+    ]
+    
+
+badfeeds = {}
+for s in badfeedranges:
+    print(s[0][0],s[0][1]+1,s[1])
+    for i in range(s[0][0],s[0][1]+1):
+        badfeeds[i] = s[1]
+print(badfeeds.keys())
+print(badfeeds)
 
 def tolist(a):
-    """  list of integers 
+    """  list of integers   [1,4,5] ->  "1,4,5"
     """
     s = str(a[0])
     for a1 in a[1:]:
@@ -52,32 +67,30 @@ for gal in gals.keys():                   # loop over all observations
     s = gals[gal]
     g = cat.entry(gal)
     vlsr = g[2]
+
+    if False:
+        print(g,vlsr,s)
+        continue
+    
     fp = open("run_%s.sh" % gal, 'w')
     fp.write('# Created by mk_runs.py\n')
     fp.write('# %s %s vlsr=%s\n' % (gal,s,vlsr))
     fp.write('set -x\n')
-    s
-    ss = []  # use all feeds
-    s2 = []  # skip feed 2
-    sb = []  # bad ones
-    sq = []  # test if empty
+
+    bf = {}
     for i in s:
-        if i in range(26,32):
-            sb.append(i)
+        if i not in badfeeds.keys():
             continue
-        if i in range(1,26):
-            if not i in ss:
-                ss.append(i)
-            continue
-        if i > 31:
-            if not i in s2:
-                s2.append(i)
-            continue
-        # should not get here, but we check
-        sq.append(i)
-    if len(sq) > 0:
-        print("Not all sessions accounted for: ",sq)
-        sys.exit(0)
+        flags = badfeeds[i]
+        if flags not in bf.keys():
+            bf[flags] = [i]
+        else:
+            if i not in bf[flags]:
+                bf[flags].append(i)
+
+    if False:
+        print("BF:",gal,bf)
+        continue
 
     m = masks(gal)
     if m == None:
@@ -85,14 +98,15 @@ for gal in gals.keys():                   # loop over all observations
     else:
         m = '-m %s' % m
 
-    fp.write('rm -rf %s\n' % gal)        
-    if len(s2) == 0:
-        fp.write('./reduce.py %s -g %s %s\n' % (m,tolist(ss),gal))
-    else:
-        fp.write('./reduce.py %s -g %s -f 2 %s\n' % (m,tolist(s2),gal))
-        fp.write('rm -rf %s/*_feed2_*\n' % gal)
-        if len(ss) > 0:
-            fp.write('./reduce.py %s -g %s  %s\n' % (m,tolist(ss),gal))
+    fp.write('rm -rf %s\n' % gal)
+    for b in bf.keys():
+        ss = bf[b]
+        if len(b) == 0:
+            cmd = './reduce.py -g %s %s %s' % (m,tolist(ss),gal)
+        else:
+            cmd = './reduce.py -g %s %s %s %s' % (m,tolist(ss),b,gal)
+        #print('CMD',cmd)
+        fp.write("%s\n" % cmd)
     fp.write('./plots.sh %s %s %s\n' % (gal,ext,vlsr))
     fp.close()
 print("Wrote %d run_GAL.sh scripts" % len(gals))
@@ -103,3 +117,5 @@ print("Wrote %d run_GAL.sh scripts" % len(gals))
 # 32..    skip feed 2
 # 43..44  skip feed 2,12
 # 45..    skip feed 2
+
+

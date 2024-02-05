@@ -2,7 +2,7 @@
 #  gal    annotation
 #
 NGC0001   clear/1
-NGC0169   clear
+NGC0169   clear (plus companion IC1559)
 NGC0495   maybe
 NGC0776   clear
 NGC0932   messy_BL

@@ -9,7 +9,6 @@ import os
 import sys
 sys.path.append('maskmoment')
 import maskmoment
-from maskmoment import maskmoment
 from astropy.io import fits
 from astropy.table import Table
 import numpy as np

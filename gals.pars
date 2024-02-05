@@ -548,3 +548,62 @@ UGC08322  41   332   366     #  330-368
 
 #Mrk1418 374-399 astrid frozen
 #Mrk1418 400-420 short?
+
+# session 42: dec 20/21 - session was cancelled due to ice on instrument
+
+# session 42: jan 4/5 (rescheduled)
+
+# first time map
+NGC3353 42   31 65     
+NGC3353 42   70 104
+
+# first time map
+NGC3896 42   114  148  112,151   # map end at 148, vanecal=151,152  (149,150 were mistakes)
+NGC3896 42   155  189
+
+# 
+UGC09629 42  199  233
+UGC09629 42  238  272
+UGC09629 42  277  311
+UGC09629 42  322  356
+
+
+# session 43:   jan 21/22
+
+
+#                    new one   
+NGC5157    43   29  63   #  3,13 not working
+NGC5157    43   68 102
+
+#                    see session 12/13 (was "weak")
+UGC09598   43   112 146
+UGC09598   43   151 185
+
+# session 44: jan 22/23
+#                         beams 3,13 still out,   beam 1,2 high, beam 4,6 high too
+
+# first time map
+UGC04425 44  36  70
+UGC04425 44  80  114
+
+# first time map
+NGC3406NED01 44  124  158
+NGC3406NED01 44  163  197
+
+# first time map
+UGC08234 44  216  250
+UGC08234 44  255  289
+
+# partial - no VANE at end
+UGC08781 44 299  324   297,297
+
+# session 45:   feb 3/4
+#   beam 3 still bad, beam 13 should be ok
+
+#                  
+UGC08234  45   29   63
+UGC08234  45   73  107
+
+#                  new source
+NGC5402   45  117  151
+NGC5402   45  156  162  154,154      # no final VANE

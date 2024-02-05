@@ -28,10 +28,8 @@
 #
 #     ./mk_mask.sh refmap=NGC2596/NGC2596_12CO_rebase3_smooth2_hanning2.fits    mask=masks/mask_NGC2596.fits   inc=65 pa=60 vsys=5926 v1=200 r1=20
 #
-#     ./mk_mask.sh refmap=Mrk1418/Mrk1418_12CO_rebase3_smooth2_hanning2.fits    mask=masks/mask_Mrk1418.fits   inc=45 pa=225 vsys=759 v1=70 r1=10
+#     ./mk_mask.sh refmap=Mrk1418/Mrk1418_12CO_rebase5_smooth1.3_hanning2.fits    mask=masks/mask_Mrk1418_rotcur.fits   inc=45 pa=225 vsys=759 v1=70 r1=10
 
-NGC2596/NGC2596
-    
 #
 # pretty maps https://cseligman.com/text/atlas
 # From https://www.astro.umd.edu/~bolatto/EDGE/data/galaxy_parameters.dat

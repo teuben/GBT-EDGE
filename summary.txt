@@ -1,8 +1,8 @@
 #    annotation file for do_all_stats
 #  gal    annotation
 #
-NGC0001   clear/1
-NGC0169   clear
+NGC0001   clear
+NGC0169   clear (plus companion IC1559)
 NGC0495   maybe
 NGC0776   clear
 NGC0932   messy_BL
@@ -25,6 +25,7 @@ NGC5267   maybe
 NGC5376   offset;maybe
 NGC5630   -
 NGC5631   -
+NGC5402   -
 NGC5720   maybe
 NGC5888   weak
 NGC5954   whopping/double=Arp91
@@ -44,12 +45,12 @@ UGC04425  -
 UGC04659  -
 UGC04730  maybe
 UGC05326  -
-UGC05396
+UGC05396  ?
 UGC06320  ?
 UGC08004  maybe
 UGC08234  ?
 UGC08231  -half
-UGC08234
+UGC08234  -
 UGC08322  -bad_beam
 UGC08733  -
 UGC08781  ?

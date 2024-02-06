@@ -550,7 +550,6 @@ UGC08322  41   332   366     #  330-368
 #Mrk1418 400-420 short?
 
 # session 42: dec 20/21 - session was cancelled due to ice on instrument
-
 # session 42: jan 4/5 (rescheduled)
 
 # first time map
@@ -596,3 +595,14 @@ UGC08234 44  255  289
 
 # partial - no VANE at end
 UGC08781 44 299  324   297,297
+
+# session 45:   feb 3/4
+#   beam 3 still bad, beam 13 should be ok now
+
+#                  
+UGC08234  45   29   63
+UGC08234  45   73  107
+
+#                  new source
+NGC5402   45  117  151
+NGC5402   45  156  162  154,154      # no final VANE

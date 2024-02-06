@@ -36,7 +36,7 @@ from spectral_cube import SpectralCube
 from radio_beam import Beam
 import argparse
 
-__version__ = "29-dec-2022"
+__version__ = "4-feb-2024"
 
 def edgemask(galaxy, maskfile=None):
     """
@@ -57,14 +57,15 @@ def edgemask(galaxy, maskfile=None):
     # but it should return that filename
     return galaxy+'.12co.mask.fits'
     
-def edgegrid(galaxy, badfeed=[], maskfile=None):
+def edgegrid(galaxy, badfeeds=[], maskfile=None):
     """
+    galaxy       our galaxy name, e.g. NGC0001
     maskfile     can be None, in which case no masking was done
-    badfeed      a list of (0-based) feeds that should not be included
+    badfeeds     a list of (0-based) feeds that should not be included
                  from the list via wildfeed
     """
     filelist = glob.glob(galaxy +'*_pol0.fits')
-    for bf in badfeed:
+    for bf in badfeeds:
         fl = glob.glob(galaxy +'*_feed%s_*.fits' % bf)
         n = len(filelist)
         for fli in fl:
@@ -197,10 +198,10 @@ def getscans(gal, select=[], parfile='gals.pars'):
             print('Skipping bad line: ',line.strip())
     return scans
 
-def my_calscans(gal, scan, maskstrategy, maskfile, pid='AGBT21B_024', rawdir='../rawdata'):
+def my_calscans(gal, scan, maskstrategy, maskfile, badfeeds, pid='AGBT21B_024', rawdir='../rawdata'):
     """
-    @todo    badfeeds=[] 
-xs
+    badfeeds=[]   0 based bad feeds that should not be created
+
     """
     seq      = scan[0]
     start    = scan[1]
@@ -209,9 +210,9 @@ xs
     dirname  = '%s/%s_%02d/%s_%02d.raw.vegas' % (rawdir,pid,seq,pid,seq)
     OffType  = 'PCA'   # 'linefit'  'median'   'median2d'
     if maskstrategy == None:
-        calscans(dirname, start=start, stop=stop, refscans=refscans, OffType=OffType, nProc=1, opacity=True, varfrac=0.1)
+        calscans(dirname, start=start, stop=stop, refscans=refscans, badfeeds=badfeeds, OffType=OffType, nProc=1, opacity=True, varfrac=0.1)
     else:
-        calscans(dirname, start=start, stop=stop, refscans=refscans, OffType=OffType, nProc=1, opacity=True, OffSelector=maskstrategy, varfrac=0.1)
+        calscans(dirname, start=start, stop=stop, refscans=refscans, badfeeds=badfeeds, OffType=OffType, nProc=1, opacity=True, OffSelector=maskstrategy, varfrac=0.1)
 
 
 def main(args):    
@@ -220,7 +221,7 @@ def main(args):
     """
     do_scan = True
     do_mask = False
-    badfeed = []
+    badfeeds = []
     grabwild = False
     grabmask = False
     grabseq  = False
@@ -232,8 +233,8 @@ def main(args):
         if grabwild:
             grabwild = False
             print("Warning: removing feeds '%s'" % gal)
-            badfeed =  [int(x) for x in gal.split(',')]
-            print("badfeeds",badfeed)
+            badfeeds =  [int(x) for x in gal.split(',')]
+            print("badfeeds",badfeeds)
             continue
         if grabmask:
             mask2 = gal
@@ -293,11 +294,13 @@ def main(args):
         if len(scans) > 0:
             os.makedirs(gal, exist_ok=True)
             os.chdir(gal)
+            
             # keep track of sessions
             fp = open("sessions.log","a")
             for scan in scans:
                 fp.write("%d\n" % scan[0])
             fp.close()
+            
             # log this last pipeline run
             cmd = 'date +%Y-%m-%dT%H:%M:%S >> runs.log'
             os.system(cmd)
@@ -314,9 +317,11 @@ def main(args):
                 maskfile = None
             print('maskfile',maskfile)
             if do_scan:
+                print("CALSCANS:")
                 for scan in scans:
-                    my_calscans(gal, scan, maskstrategy, maskfile)
-            edgegrid(gal, badfeed, maskfile)
+                    my_calscans(gal, scan, maskstrategy, maskfile, badfeeds=badfeeds)
+            print("EDGEGRID:")
+            edgegrid(gal, badfeeds, maskfile)
             os.chdir('..')
         else:
             print("Skipping %s: no entry found in gals.pars" % gal)

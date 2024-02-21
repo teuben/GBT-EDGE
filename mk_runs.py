@@ -9,6 +9,7 @@ import glob
 import GBTEDGE
 
 ext = '_12CO_rebase5_smooth1.3_hanning2.fits'
+debug = False
 
 badfeedranges = [
     ([ 1,25],''),
@@ -64,6 +65,8 @@ for line in lines:
             gals[gal].append(s)
 
 for gal in gals.keys():                   # loop over all observations
+    if debug:
+        print('GAL:',gal)
     s = gals[gal]
     g = cat.entry(gal)
     vlsr = g[2]

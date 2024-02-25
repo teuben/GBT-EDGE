@@ -1,5 +1,7 @@
 # GBT-EDGE
 
+See also https://greenbankobservatory.org/science/gbt-surveys/edge/
+
 This toolkit helps you reducing the GBT EDGE data.  Still very
 preliminary, expect updates, here as well as in 3rd party code
 mentioned here.

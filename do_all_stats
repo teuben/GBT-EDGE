@@ -85,8 +85,9 @@ echo "#   Galaxy_$ext is basis for the statistics"
 #echo "#   Galaxy      RMS [mK]  sratio($cbf)   pratio       S/N  Tsys                     <Tsys> <Tsys>/RMS   detection?"
 #awk '{printf("%3d %-12s  %5.1f     %6.3f      %6.3f    %6.3f  %-35s  %5.1f %4.1f %s\n",NR,$1, 1000*$8, $12, ($10+$9)/($10-$9), $10/$8, $2, $3, $3/(1000*$8), $4  )}' $log
 
+#                                                                                                                                  notice only $13 could be present, but awk is ok
 echo "#   Galaxy      RMS [mK]  sratio($cbf)   pratio       S/N   NF detection?"
-awk '{printf("%3d %-12s  %5.1f     %6.3f      %6.3f    %6.3f  %3d %d %s\n", NR,  $1, 1000*$5,   $9,    ($7+$6)/($7-$6), $7/$5, $11, $12, $13)}' $log 
+awk '{printf("%3d %-12s  %5.1f     %6.3f      %6.3f    %6.3f  %3d %d %s %s %s %s\n", NR,  $1, 1000*$5,   $9,    ($7+$6)/($7-$6), $7/$5, $11, $12, $13,$14,$15,$16)}' $log 
 
 
 echo "#  last updated on $(date)"

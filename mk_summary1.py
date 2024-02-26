@@ -200,7 +200,7 @@ for line in lines:
         lrt = "some time ago"
 
             
-    comm= words[8]
+    comm = " ".join(words[8:])
 
     g = cat.entry(gal)
     ra = g[0]

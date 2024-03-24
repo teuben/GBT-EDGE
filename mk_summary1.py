@@ -34,15 +34,16 @@ print("NOTE: these results are live from the <A HREF=https://github.com/teuben/G
 print("<UL>")
 print("<LI> Galaxy FITS cube links are to the  <B>%s.fits</B> version from the pipeline" % fcv)
 print("     <br> this should have an 8 arcsec beam and 15 km/s channels")
-print("<LI> Those with access to the  umd system is /n/lma1/teuben/GBT-EDGE")
+print("<LI> Those with access to the umd system the data are in /n/lma1/teuben/GBT-EDGE")
 print("<LI> RMS is determined from the inner (spatial) 40% of the cube")
 print("<LI> sratio, pratio, SNR are indications how much signal there is")
 print("<LI> Sessions are which of the sessions used to make this summary")
 print("     <br> all sessions 26-31 should not be used")
-print("     <br> all sessions 32 and up have beam 2 removed")
+print("     <br> all sessions 32 and up have beam 2 (0 being the first) removed")
 print("     <br> sessions 35 and up seem to suffer from bad RMS in some edge quadrant")
-print("     <br> sessions 43-44 also has beam 12 corrupted, so it was taken out")
-print("<LI> NF is the total number of feeds used. Usually a multiple of 32 if both DEC and RA map used.")
+print("     <br> sessions 43-44 also has beam 12 corrupted, so it was taken out as well")
+print("     <br> sessions 45 and up still have beam 2 removed")
+print("<LI> NF is the total number of feeds used. Usually a multiple of 32 if both DEC and RA map used and all beam good.")
 print('<LI> RMS1 map of the flux-flat cube, in mK, using only first and last quarter of channels')
 print('<LI> RMS map of the flux-flat cube, in mK, using all channels including the galaxy VLSR')
 print("<LI> mom0 image is from MaskMoment's <B>%s.fits.gz</B> version (units: K.km/s)" % mmv)
@@ -52,6 +53,11 @@ print('<LI> spectra are taken 10" and 30" around reference point. expected VLSR 
 print("<LI> pipeline run is the last time the pipeline was on this galaxy")
 print("<LI> comments are Peter's silly comments, usually based on initial ds9 browsing")
 print("     <br>- means that nothing obvious was seen")
+print("<LI> ISSUES:  (see also <A HREF=https://github.com/teuben/GBT-EDGE/issues>github issues</A> for pipeline issues)");
+print("     <OL>")
+print("     <LI> since session 35 we have some quadrant with lot higher noise")
+print("     <LI> ...")
+print("     </OL>")
 print("<LI> if the table below is empty.... work must be in progress")
 print("</UL>")
 
@@ -123,11 +129,11 @@ print("      mom0peak")
 print("    </th>")
 
 print("    <th>")
-print("      spectrum10")
+print("      spectrum 10\"")
 print("    </th>")
 
 print("    <th>")
-print("      spectrum30")
+print("      spectrum 30\"")
 print("    </th>")
 
 print("    <th>")
@@ -199,7 +205,7 @@ for line in lines:
         lrt = "some time ago"
 
             
-    comm= words[8]
+    comm = " ".join(words[8:])
 
     g = cat.entry(gal)
     ra = g[0]

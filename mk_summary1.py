@@ -53,6 +53,11 @@ print('<LI> spectra are taken 10" and 30" around reference point. expected VLSR 
 print("<LI> pipeline run is the last time the pipeline was on this galaxy")
 print("<LI> comments are Peter's silly comments, usually based on initial ds9 browsing")
 print("     <br>- means that nothing obvious was seen")
+print("<LI> ISSUES:  (see also <A HREF=https://github.com/teuben/GBT-EDGE/issues>github issues</A> for pipeline issues)");
+print("     <OL>")
+print("     <LI> since session 35 we have some quadrant with lot higher noise")
+print("     <LI> ...")
+print("     </OL>")
 print("<LI> if the table below is empty.... work must be in progress")
 print("</UL>")
 
@@ -124,11 +129,11 @@ print("      mom0peak")
 print("    </th>")
 
 print("    <th>")
-print("      spectrum10")
+print("      spectrum 10\"")
 print("    </th>")
 
 print("    <th>")
-print("      spectrum30")
+print("      spectrum 30\"")
 print("    </th>")
 
 print("    <th>")

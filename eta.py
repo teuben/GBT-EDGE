@@ -35,7 +35,8 @@ def calc_etamb(freq, derr=235, Jupiter=False):
 
     # surface error for GBT with optimal surface and excellent weather
     esurf = 0.0235*u.cm # cm; GBT memo 302 says 230micron = 0.0230
-    esurf = (derr/1000)*u.cm # cm; GBT memo 302 says 230micron = 0.0230
+    esurf = (derr/10000)*u.cm # cm; GBT memo 302 says 230micron = 0.0230
+    print(esurf)
 
     # make the input frequency into a quantity if it isn't already
     if not isinstance(freq,u.Quantity):
@@ -77,20 +78,28 @@ def calc_etamb(freq, derr=235, Jupiter=False):
        
 
 # in microns
-ee = np.linspace(100,400,11)
+ee = np.linspace(100,400,101)
 e1 = np.zeros(len(ee))
 e2 = np.zeros(len(ee))
+e3 = np.zeros(len(ee))
+e4 = np.zeros(len(ee))
 
 for i in range(len(ee)):
-    (e1[i],e2[i]) = calc_etamb(114, ee[i])
+    e1[i],e2[i] = calc_etamb(115, ee[i])
+    e3[i],e4[i] = calc_etamb(113, ee[i])  
 
 
-plt.figure()
-plt.plot(ee,e1,label='$\\eta_a$')
-plt.plot(ee,e1,label='$\\eta_{mb}$')
-
-plt.xlabel('surface RMS ($\\mu m$')
-plt.ylabel('eta')
+plt.figure(1)
+plt.clf()
+plt.plot(ee,e1,label='$\\eta_a$ @ 115 GHz')
+plt.plot(ee,e2,label='$\\eta_{mb}$ ')
+plt.plot(ee,e3,'--',label='$\\eta_a$ @ 113 GHz')
+plt.plot(ee,e4,'--',label='$\\eta_{mb}$ ')
+plt.vlines(235,0.05,0.35,color='black')
+plt.hlines(0.12,200,350,color='black')
+plt.xlabel('surface RMS ($\\mu m)$')
+plt.ylabel('efficiency $\\eta$')
+plt.ylim(0,0.4)
 plt.title('GBT efficiencies')
 plt.legend()
 plt.savefig('eta.png')

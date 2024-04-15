@@ -36,7 +36,6 @@ def calc_etamb(freq, derr=235, Jupiter=False):
     # surface error for GBT with optimal surface and excellent weather
     esurf = 0.0235*u.cm # cm; GBT memo 302 says 230micron = 0.0230
     esurf = (derr/10000)*u.cm # cm; GBT memo 302 says 230micron = 0.0230
-    print(esurf)
 
     # make the input frequency into a quantity if it isn't already
     if not isinstance(freq,u.Quantity):

@@ -1,4 +1,7 @@
+#   Some of the entries of the observing logs have data on measured efficiencies
+#
 # session   rms(mu)   calib   flux  efficiency
+#
 1  229    -
 2   86
 3  218

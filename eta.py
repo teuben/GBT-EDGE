@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 #from degas import postprocess
 
 
-def calc_etamb(freq, Jupiter=False):
+def calc_etamb(freq, derr=235, Jupiter=False):
 
     """
     For a given input frequency, calculate and return the eta_mb value
@@ -26,6 +26,8 @@ def calc_etamb(freq, Jupiter=False):
     size of Jupiter (43" diameter), which isn't a bad assumption for
     extended molecular gas.
 
+    derr:    default rms error (in microns) for the GBT
+
     """
     import math
     from astropy import constants as c
@@ -33,6 +35,7 @@ def calc_etamb(freq, Jupiter=False):
 
     # surface error for GBT with optimal surface and excellent weather
     esurf = 0.0235*u.cm # cm; GBT memo 302 says 230micron = 0.0230
+    esurf = (derr/1000)*u.cm # cm; GBT memo 302 says 230micron = 0.0230
 
     # make the input frequency into a quantity if it isn't already
     if not isinstance(freq,u.Quantity):
@@ -73,31 +76,28 @@ def calc_etamb(freq, Jupiter=False):
 
        
 
-
-
-
-
-
-
-
-
+# in microns
 ee = np.linspace(100,400,11)
+e1 = np.zeros(len(ee))
+e2 = np.zeros(len(ee))
 
-for e in ee:
-    (e1,e2) = calc_etamb(114)
-    print(e,e1,e2)
+for i in range(len(ee)):
+    (e1[i],e2[i]) = calc_etamb(114, ee[i])
 
 
 plt.figure()
-plt.plot(data1[0],data1[1],label=tab1)
-#plt.step(data1[0],data1[1],label=tab1,where='mid')
-plt.scatter(data1[0],data1[1],label=tab1)
-#plt.errorbar(data1[0],data1[1],data1[-1],label=tab1)
-plt.xlabel('X')
-plt.ylabel('Y')
-#plt.xlim([0,1])
-#plt.ylim([0,1])
-plt.title('tabplot')
+plt.plot(ee,e1,label='$\\eta_a$')
+plt.plot(ee,e1,label='$\\eta_{mb}$')
+
+plt.xlabel('surface RMS ($\\mu m$')
+plt.ylabel('eta')
+plt.title('GBT efficiencies')
 plt.legend()
-plt.savefig('pyplot.png')
+plt.savefig('eta.png')
 plt.show()
+
+
+
+
+
+

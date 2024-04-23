@@ -1,5 +1,5 @@
 # Created by mk_runs.py
-# NGC6497 [52, 52] vlsr=6021.0
+# NGC6497 [52, 52, 52] vlsr=6021.0
 set -x
 rm -rf NGC6497
 ./reduce.py   -g 52 -f 2 NGC6497

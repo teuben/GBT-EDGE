@@ -92,7 +92,7 @@ def sexa2deci(s, scale=1.0):
         r = abs(dms[0]) + (dms[1] + dms[2]/60.0)/60.0
         return r*scale*sign
     else:
-        return float(dms)
+        return float(s)
 
 def read_ds9_region(reg):
     """ read a region file

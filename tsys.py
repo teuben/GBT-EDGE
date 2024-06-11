@@ -19,6 +19,8 @@
     Timing:  AGBT21B_024_02 took 38 mins on fourier  (29 VANE's)
 
     Multiple sessions can be given in the command line arguments
+
+    NOTE: this command can only run at GBT
 """
 
 import os

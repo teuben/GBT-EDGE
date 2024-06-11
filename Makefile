@@ -34,6 +34,7 @@ URL5  = https://github.com/tonywong94/edge_pydb
 URL6  = https://github.com/richteague/bettermoments
 URL7  = https://github.com/GreenBankObservatory/gbtgridder
 URL7a = https://github.com/teuben/gbtgridder
+URL8  = https://github.com/radio-astro-tools/spectral-cube/
 
 .PHONY:  help install build
 
@@ -76,6 +77,9 @@ edge_pydb:
 
 gbtgridder:
 	git clone -b python3 $(URL7a)
+
+spectral-cube:
+	git clone $(URL8)
 
 edge_env:
 	python3 -m venv edge_env

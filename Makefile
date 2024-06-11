@@ -172,8 +172,7 @@ bench3:
 	$(OMP) $(TIME) ./reduce.py -g 1 -m mask_NGC0001_Havfield_v1.fits NGC0001
 
 bench4:
-	./plot_spectrum.py "00:07:15.84" "+27:42:29.7" 8.4 0 0 NGC0001/NGC0001_12CO_rebase5_smooth1.3_hanning2.fits
-
+	./plot_spectrum.py NGC0001/NGC0001_12CO_rebase5_smooth1.3_hanning2.fits "00:07:15.84" "+27:42:29.7" 8.4 0 0 
 
 NGC0001:
 	wget -q https://www.astro.umd.edu/~teuben/edge/data/NGC0001.tar -O - | tar xvf -

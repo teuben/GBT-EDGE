@@ -1,0 +1,19 @@
+#! /usr/bin/env bash
+#
+#   re-install a python for EDGE and the modules we need
+#
+
+
+rm -rf anaconda3
+./install_anaconda3 version=2022.10       # ok
+#./install_anaconda3 version=2023.03-1     # needs: pip install scikit-learn
+#./install_anaconda3 version=2024.02-1     # just bad bad bad
+source anaconda3/python_start.sh
+
+pip install -e gbtpipe
+pip install -e degas
+pip install -e maskmoment
+pip install -e $NEMO
+pip install aplpy
+pip install regions==0.5
+pip install pyspeckit

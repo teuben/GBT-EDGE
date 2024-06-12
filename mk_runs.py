@@ -11,6 +11,14 @@ import GBTEDGE
 ext = '_12CO_rebase5_smooth1.3_hanning2.fits'
 debug = False
 
+#   list of sessions where we have identified certain beams to be bad
+#   The -f flag use 0 based beams (0..15)
+#      1..25   use all feeds
+#      26..31  skip alltogether
+#      32..    skip feed 2
+#      43..44  skip feed 2,12
+#      45..    skip feed 2
+
 badfeedranges = [
     ([ 1,25],''),
     ([32,42],'-f 2'),
@@ -21,7 +29,6 @@ badfeedranges = [
 
 badfeeds = {}
 for s in badfeedranges:
-    #print(s[0][0],s[0][1]+1,s[1])
     for i in range(s[0][0],s[0][1]+1):
         badfeeds[i] = s[1]
 #print(badfeeds.keys())
@@ -113,12 +120,4 @@ for gal in gals.keys():                   # loop over all observations
     fp.write('./plots.sh %s %s %s\n' % (gal,ext,vlsr))
     fp.close()
 print("Wrote %d run_GAL.sh scripts from gals.pars" % len(gals))
-
-# rules:
-# 1..25   use all feeds
-# 26..31  skip alltogether
-# 32..    skip feed 2
-# 43..44  skip feed 2,12
-# 45..    skip feed 2
-
 

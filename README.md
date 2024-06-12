@@ -1,12 +1,17 @@
 # GBT-EDGE
 
-See also https://greenbankobservatory.org/science/gbt-surveys/edge/
+## Summary
 
-This toolkit helps you reducing the GBT EDGE data.  Still very
-preliminary, expect updates, here as well as in 3rd party code
-mentioned here.
+For a background of the science,
+see https://greenbankobservatory.org/science/gbt-surveys/edge/
 
-We also keep all the astrid/summary/tsys logs in this repo.
+This toolkit helps you reducing the GBT EDGE data.  Installation
+requires some attention, as we use a few 3rd party packages that
+have their own dependencies.
+
+We also keep all the astrid/summary/tsys logs in this repo.  The raw
+data (through session 54) is about 72GB.  This covers
+observations from November 5, 2021 (session 1) through April 22, 2024 (session 54)
 
 A very simple example of use: (pick a directory):
 
@@ -17,19 +22,25 @@ A very simple example of use: (pick a directory):
       ./reduce.py -g 1 NGC0001
       ./mmaps.py NGC0001
 	  
-each galaxy takes about 20 mins to reduce, where the observing time was about 60 mins.
+Each galaxy takes about 10-20 mins to reduce, where the observing time would be
+about 60 mins for an Ra and Dec scan.
+This is on a fast machine. fourier will take considerably longer.
 The use of the **edge.sh** script is optional in your installation, as long as the needed packages are
 installed in *your* python (see Installation below). However, at GBO and UMD it is required.
 
 You can push your luck by trying the example maskmoment based **mmaps.py** script which tries a number
 of methods to make moment maps.
 
-There are some -h flags to the **reduce.py** script. The gals.pars script controls which sessions contain
-which galaxy
+Use **reduce.py -h** to get a reminder of the usage. The **gals.pars** file
+controls which sessions contain which galaxy
+
+Here is an example of a moment-0 map of NGC0001, produced with mask:moment
 
 ![NGC0001](figures/NGC0001-dilsmomsk.png)
 
-# Installation
+## Installation
+
+The source of GBT-EDGE can be downloaded as follows:
 
       git clone https://github.com/teuben/GBT-EDGE
 
@@ -40,24 +51,34 @@ install the following python packages in your python3 environment:
 * **degas**:   https://github.com/GBTSpectroscopy/degas
 * **maskmoment**:   https://github.com/tonywong94/maskmoment
 
-Probably better to use the source based "install -e", so you can "git pull" while code updates are being made:
+We use the source based "pip install -e" method,
+so you can "git pull" while code updates are being made in those 3rd party packages:
 
-      make git
-      (cd gbtpipe;    pip install -e .)
-      (cd degas;      pip install -e .)
-      (cd maskmoment; pip install -e .)
+      make git pull
+      pip install -e gbtpipe
+      pip install -e degas
+      pip install -e maskmoment
       pip install pyspeckit
 	  
-It was noted that python > 3.7 was needed, where GBO runs 3.6.8. I've used the lmtoy method to
-install a container with anaconda3's python. Also the installation of gbtpipe might need the
+It was noted that python > 3.7 was needed, where GBO runs 3.6.8. I've used the lmtoy/nemo method to
+install a container with anaconda3's python, but feel free to use your own
+setup, virtual or not.   Also the installation of gbtpipe might need the
 bz2 library. On my ubuntu system I needed to install **libbz2-dev** for this to pass the cfitsio
 installation that was needed for **gbtpipe**
 
 The Makefile contains a few other targets that may guide you in getting a clean install.
 
-On U22 cfitsio library is now causing a build failure with **gbtpipe**
+On U22 cfitsio library is now causing a build failure with **gbtpipe** due to bz2
 
-# Sample Data
+### Python
+
+I use NEMO's install_anaconda3 script.  Newer versions of python have problems.
+
+* python 3.9 is ok,     version=2022.10
+* python 3.10 deprecated np.bool (and a few other weird things with curl and matplotlib)
+* python 3.11 has deprecated np.bool in numpy 1.20
+
+## Sample Data
 
 Running the calibration off-line is not impossible, but involved, since it needs on-line weather
 information. However, using
@@ -65,11 +86,16 @@ one of our datasets for [NGC0001](https://www.astro.umd.edu/~teuben/edge/data/NG
 used to play with the gridding step, viz.
 
      make NGC0001
-      ./reduce.py -s NGC0001
+     ./reduce.py -s NGC0001
 
-and skipping the calibration.
+and skipping the calibration.   If you want to run the calibration, and have downloaded the
+GBTWeather data, use
 
-# Masking
+    ./reduce.py -g 1 NGC0001
+
+this also ensures only session 1 is used, in case you have them all.
+
+## Masking
 
 For baseline fitting it is useful to know where the signal is expected. Using the -M flag you can
 place a mask file in **masks/mask_GAL.fits**, which should contain 0's, and 1's where we expect signal.
@@ -87,7 +113,7 @@ or if you have placed a specific mask file, e.g. masks/mask_NGC0001_Havfield_v1.
 
       ./reduce.py -m mask_NGC0001_Havfield_v1.fits NGC0776
 
-# Bad Feeds
+## Bad Feeds
 
 If there is some indication that some feeds add negatively to the maps, they can be removed at the gridding 
 stage, viz.
@@ -105,7 +131,7 @@ Note we are currently looking into if/why/when feeds 8 and 11 (in the 0-based sy
 may use a 1-based system in their language. Internally in the SDFITS files the feeds are numbered 0..15
 
 
-# Observing
+## Observing
 
 After an observing session you need to edit the **gals.pars** file and add a new galaxy and scan ranges, then
 reduce their data and view the resulting fits cube using **ds9** or **carta** for example.
@@ -140,7 +166,7 @@ with the Makefile this is reduced to
         make astrid SEQ=26
 
 
-# Working with selected sessions
+## Working with selected sessions
 
 GBT data is organized in sessions, usually starting with 1. In case you have many sessions and want to
 reduce one particular session, use the -g flag. But remove the galaxy directory, in case other sessions
@@ -151,7 +177,7 @@ had calibrated scans lying around (or rename the directory):
 
 
 
-# Working Offline
+## Working Offline
 
 To fully work offline, you will need to create symlinks from
 **rawdata** and **weather** to copies of the GBT (sdfits) rawdata and
@@ -160,7 +186,7 @@ weather information. The
 go in more detail, our **Makefile** has some useful targets to aid in
 the setup.
 
-## Example
+### Example
 
       wget https://www.astro.umd.edu/~teuben/edge/data/AGBT21B_024_01.tar
       wget https://www.astro.umd.edu/~teuben/edge/data/GBTWeather.tar.gz
@@ -172,9 +198,10 @@ the setup.
 
 the mask file is not here yet.  Note we only use the first session (there are more).
 
-## Nod_Galaxy
+### Nod_Galaxy
 
-Example how to look at Tsys and Nod_Galaxy on NGC5908
+Example how to look at Tsys and Nod_Galaxy on NGC5908.  We never really followed up
+on this very much. Supporting IDL codes are in the "pro" sub-directory here.
 
       offline,'AGBT21B_024_14'
       vanecal,327
@@ -194,7 +221,7 @@ Example how to look at Tsys and Nod_Galaxy on NGC5908
       argus_onoff,334,333,329,fdnum=7
       # -> tsys=203
 
-# Pipeline
+## Pipeline
 
 Many ways to do this. One attempt is "make all", which does:
 
@@ -215,8 +242,7 @@ After this finished, run the stats using "make stats"
 this also makes a README.html can be made for viewing
 
 
-
-# Caveats/Issues
+## Caveats/Issues
 
 Some of these issues will be worked on in  the code, and will disappear. See also https://github.com/teuben/GBT-EDGE/issues
 Otherwise just be aware of the listed ones here:
@@ -287,7 +313,7 @@ Otherwise just be aware of the listed ones here:
 
     Sessions 26-31 are likely all bogus.
 
-# Important Files and Directories
+## Important Files and Directories
 
        GBTEDGE.cat   - this should also be in  /home/astro-util/projects/gbt-edge/GBTEDGE.cat 
        night1.py     - a bruteforce example script for Night 1 (Nov 5/6, 2021)
@@ -303,7 +329,6 @@ and specific to being at GBT:
 
        /home/sdfits/AGBT21B_024_01/ - night1 VEGAS raw data directory @ GBO  (1.3GB)
                                       this should be rawdata/AGBT21B_024_01 for a local install
-
 
 and at lma@UMD:
 

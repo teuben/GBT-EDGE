@@ -35,6 +35,7 @@ URL6  = https://github.com/richteague/bettermoments
 URL7  = https://github.com/GreenBankObservatory/gbtgridder
 URL7a = https://github.com/teuben/gbtgridder
 URL8  = https://github.com/radio-astro-tools/spectral-cube/
+URL9  = https://github.com/teuben/nemo
 
 .PHONY:  help install build
 
@@ -210,12 +211,18 @@ astrid:
 	@echo git add           astridlogs/AGBT21B_024_$(SEQ)_log.txt
 	@echo git commit -m new astridlogs/AGBT21B_024_$(SEQ)_log.txt
 
+## nemo:     install NEMO locally using YAPP
+YAPP = pgplot
+nemo:
+	git clone $(URL9)
+	(cd nemo; ./configure --with-yapp=$(YAPP); make build check bench5)
+
 #  produce a sample edge.sh
 edge.sh:
 	@echo '#  this is a sample edge.sh file, edit as need be'
 	@echo "export GBTWEATHER=$(PWD)/weather/"
-	@echo "source $(PWD)/lmtoy/python_start.sh"
-	@echo "source $(PWD)/lmtoy/nemo/nemo_start.sh"
+	@echo "source $(PWD)/anaconda3/python_start.sh"
+	@echo "source $(PWD)/nemo/nemo_start.sh"
 	@echo "# for a virtual environment, un-comment this:"
 	@echo "# source $(PWD)/edge_env/bin/activate"
 

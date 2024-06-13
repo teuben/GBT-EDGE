@@ -10,10 +10,19 @@ rm -rf anaconda3
 #./install_anaconda3 version=2024.02-1     # just bad bad bad
 source anaconda3/python_start.sh
 
+#  to run the basic pipeline to make fits cubes
 pip install -e gbtpipe
 pip install -e degas
+
+#  nemo
+make nemo
+source nemo/nemo_start.sh
+
+#  additional analysis and plotting (assumes NEMO is present)
 pip install -e maskmoment
 pip install -e $NEMO
 pip install aplpy
 pip install regions==0.5
 pip install pyspeckit
+
+# benchmark

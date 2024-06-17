@@ -1,9 +1,9 @@
 set -x
 
 # pars      # example
-gal=$1      #  NGC0001
-ext=$2      #  _12CO_rebase5_smooth1.3_hanning2.fits
-vlsr=$3     #  4485.7
+gal=$1      #  gal=NGC0001
+ext=$2      #  ext=_12CO_rebase5_smooth1.3_hanning2.fits
+vlsr=$3     #  vlsr=4485.7
 
 cube=$gal/${gal}${ext}
 slice=1:50,195-50:195

@@ -3,5 +3,6 @@
 set -x
 rm -rf UGC04245
 ./reduce.py -m mask_UGC04245_Havfield_v1.fits -g 8 UGC04245
-./reduce.py -m mask_UGC04245_Havfield_v1.fits -g 32,35,37 -f 2 UGC04245
+./reduce.py -m mask_UGC04245_Havfield_v1.fits -g 32 -f 2 UGC04245
+./reduce.py -m mask_UGC04245_Havfield_v1.fits -g 35,37 -f 2,6 UGC04245
 ./plots.sh UGC04245 _12CO_rebase5_smooth1.3_hanning2.fits 5169.3

@@ -3,5 +3,5 @@
 set -x
 rm -rf NGC0001
 ./reduce.py -m mask_NGC0001_Havfield_v1.fits -g 1 NGC0001
-./reduce.py -m mask_NGC0001_Havfield_v1.fits -g 36,38 -f 2 NGC0001
+./reduce.py -m mask_NGC0001_Havfield_v1.fits -g 36,38 -f 2,6 NGC0001
 ./plots.sh NGC0001 _12CO_rebase5_smooth1.3_hanning2.fits 4485.7

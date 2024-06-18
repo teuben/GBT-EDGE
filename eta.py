@@ -65,8 +65,11 @@ def calc_etamb(freq, derr=235, Jupiter=False):
         # are approximately the size of Jupiter (43" diameter)
         eta_mb = 1.23 * eta_a + 0.005*(freq.value-60) - 0.00003 * (freq.value - 60)**2
     # else calculate "small source" eta_mb.
+    elif freq > 110.0*u.GHz:
+        # corrected for higher freq (D.Frayer) 
+        eta_mb = 1.24 * (freq.value/113)**0.8 * math.exp ( -(1.3*freq.value/113)**2 )
     elif freq > 100.0*u.GHz:
-         # GBT memo 302 finds that at high frequencies the eta_mb/eta_b ratio is more like 1.45 due to a slightly larger beam size factor (1.28 instead of 1.2).
+        # GBT memo 302 finds that at high frequencies the eta_mb/eta_b ratio is more like 1.45 due to a slightly larger beam size factor (1.28 instead of 1.2).
         eta_mb = 1.45 * eta_a
     else: 
         # GBT memo 302 finds that for frequencies of 86-90GHz you can use the expected theoretical ratio of 1.274
@@ -82,10 +85,16 @@ e1 = np.zeros(len(ee))
 e2 = np.zeros(len(ee))
 e3 = np.zeros(len(ee))
 e4 = np.zeros(len(ee))
+ff = np.linspace(105,115,101)
+e5 = np.zeros(len(ff))
+e6 = np.zeros(len(ff))
 
 for i in range(len(ee)):
     e1[i],e2[i] = calc_etamb(115, ee[i])
     e3[i],e4[i] = calc_etamb(113, ee[i])  
+
+for i in range(len(ff)):
+    e5[i],e6[i] = calc_etamb(ff[i])
 
 
 plt.figure(1)
@@ -101,7 +110,20 @@ plt.ylabel('efficiency $\\eta$')
 plt.ylim(0,0.4)
 plt.title('GBT efficiencies')
 plt.legend()
-plt.savefig('eta.png')
+plt.savefig('eta1.png')
+plt.show()
+
+plt.figure(2)
+plt.clf()
+plt.plot(ff,e5,label='$\\eta_{a}$ ')
+plt.plot(ff,e6,label='$\\eta_{mb}$ ')
+
+plt.xlabel('freq (GHz)')
+plt.ylabel('efficiency $\\eta$')
+#plt.ylim(0,0.4)
+plt.title('GBT efficiencies')
+plt.legend()
+plt.savefig('eta2.png')
 plt.show()
 
 

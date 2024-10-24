@@ -36,7 +36,7 @@ from spectral_cube import SpectralCube
 from radio_beam import Beam
 import argparse
 
-__version__ = "4-feb-2024"
+__version__ = "13-jun-2024"
 
 def edgemask(galaxy, maskfile=None):
     """
@@ -301,9 +301,13 @@ def main(args):
                 fp.write("%d\n" % scan[0])
             fp.close()
             
-            # log this last pipeline run
+            # log the script arguments
+            cmd = 'echo "%s" >> runs.log' % args
+            os.system(cmd)
+            # log this last pipeline run for mk_summary1.py
             cmd = 'date +%Y-%m-%dT%H:%M:%S >> runs.log'
             os.system(cmd)
+            
 
             if do_mask:
                 maskfile = edgemask(gal, mask2)               # make mask file

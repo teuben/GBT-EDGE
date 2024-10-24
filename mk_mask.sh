@@ -59,6 +59,7 @@
 refmap=masks/mask@0.010_NGC0001.fits
 refmap=%s/%s_12CO_rebase5_smooth1.3_hanning2.fits
 refmap=NGC0001/NGC0001_12CO_rebase3_smooth2_hanning2.fits
+refmap=NGC0001/NGC0001_12CO_rebase5_smooth1.3_hanning2.fits
 v1=350           # max rotation curve (vmax)
 r0=10            # radius where v1 (vmax) is reached - inside of this we assume linear RC
 r1=30            # outer edge of galaxy

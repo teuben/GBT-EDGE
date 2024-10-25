@@ -25,7 +25,7 @@ cat = GBTEDGE.GBTEDGE('GBTEDGE.cat')              # get the galaxy catalog
 
 print("<html>")
 
-print('<script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>')
+print('<script src="sorttable.js"></script>')
 print("<H1> Summary of GBT-EDGE pipeline runs </H1>")
 print("<A HREF=%s>(see also %s)</A>" % (slf,slf))
 
@@ -42,9 +42,10 @@ print("     <br> all sessions 26-31 should not be used")
 print("     <br> all sessions 32 and up have beam 2 (0 being the first) removed")
 print("     <br> sessions 43-44 also has beam 12 corrupted, so it was taken out as well")
 print("     <br> sessions 45 and up still have beam 2 removed")
+print("     <br> sessions 55 and up in 2024/25 TBD")
 print("<LI> NF is the total number of feeds used. Usually a multiple of 32 if both DEC and RA map used and all beams good.")
-print('<LI> RMS1 map of the flux-flat cube, in mK, using only first and last quarter of channels')
-print('<LI> RMS0 map of the flux-flat cube, in mK, using center half of all channels')
+print('<LI> RMS1 map of the flux-flat cube, in mK, using only first and last quarter of channels. There should be no signal here')
+print('<LI> RMS0 map of the flux-flat cube, in mK, using center half of all channels. There should/can be signal here')
 print("<LI> mom0 image is from MaskMoment's <B>%s.fits.gz</B> version (units: K.km/s)" % mmv)
 print("     <br>still taken from the flux flat cube, we don't have a noise flat cube yet. Hence the noisy edge.")
 print("<LI> mom0peak is the peak in the mom0 from the inner 40% of the map ")

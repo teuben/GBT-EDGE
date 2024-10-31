@@ -12,7 +12,7 @@
 #  12CO_rebase3_smooth2_hanning2      9.0         2    2     1.6  x 15           13
 #  12CO_rebase3_smooth3_hanning3      4.6         3    3     1.6  x 30           19
 
-set -x
+#set -x
 
 ext=12CO_rebase3_hanning1.fits
 ext=12CO_rebase3_smooth1.3_hanning1.fits
@@ -23,7 +23,7 @@ ext=12CO_rebase3_hanning2.fits                # alberto
 ext=12CO_rebase5_hanning2.fits                # alberto
 ext=12CO_rebase5_smooth1.3_hanning2.fits      # new
 
-cbf=0.4
+cbf=0.4          # center fraction to compute noise
 sum=summary.txt
 
 
@@ -33,16 +33,23 @@ cgc=$(grep ^CGC gals.pars | awk '{print $1}' | sort | uniq)
 igc=$(grep ^IC  gals.pars | awk '{print $1}' | sort | uniq)
 mkc=$(grep ^Mrk gals.pars | awk '{print $1}' | sort | uniq)
 
+
 gals="$ngc $ugc $cgc $igc $mkc"
 
-#echo $gals
+
+
+gals="NGC0001 NGC0495 NGC0169"
+
+
 
 log=do_all_stats.tmp
 export DEBUG=-1
 
 rm -f $log
 for gal in $gals; do
-    if [ -e ${gal}/${gal}_${ext} ]; then
+  galdirs="$(ls -d ${gal} sessions/${gal}__*)"
+  for galdir in $galdirs; do
+    if [ -e ${galdir}/${gal}_${ext} ]; then
 	#tsys=$(txtpar $sum  p0=$gal,1,2)
 	tsys=0
         #comment=$(txtpar $sum  p0=$gal,1,2)
@@ -57,19 +64,20 @@ for gal in $gals; do
 	else
 	    tsum=0
 	fi
-	nf=$(ls ${gal}/*feed*.fits|wc -l)
+	nf=$(ls ${galdir}/*feed*.fits|wc -l)
 	
-	png=${gal}/${gal}.dilsmomsk.mom0.png
+	png=${galdir}/${gal}.dilsmomsk.mom0.png
 	if [ -e $png ]; then
 	    png=1
 	else
 	    png=0
 	fi
 	
-	qac=$(fitsccd ${gal}/${gal}_${ext} - |  ccdsub - - centerbox=$cbf,$cbf,$cbf | ccdstat - bad=0 qac=t)
-	echo "$gal $qac $nf $png $comment" >> $log
+	qac=$(fitsccd ${galdir}/${gal}_${ext} - |  ccdsub - - centerbox=$cbf,$cbf,$cbf | ccdstat - bad=0 qac=t)
+	echo "$galdir $qac $nf $png $comment" >> $log
 
     fi
+  done
 done
 
 # some lines with just a ' -' popped up in the $log

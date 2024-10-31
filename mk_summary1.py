@@ -158,11 +158,25 @@ for line in lines:
     ngal = ngal + 1
 
     words = line.split()
-    gal = words[1]
+    gal = words[1]            # 'gal' or 'sessions/gal__S'
     rms = words[2]
     srat= words[3]
     prat= words[4]
     snr = words[5]
+
+    # gal could also be sessions/gal__S
+    if gal.find('sessions/') == 0:
+        galaxy_session = gal[9:]
+        galaxy = gal[9:]
+        dunder = galaxy.find('__')
+        if dunder > 0:
+            galaxy = galaxy[:dunder]
+    else:
+        galaxy = gal
+        galaxy_session = gal
+        
+    
+    
     
     ses =  "%s/sessions.log" % (gal)
     if os.path.exists(ses):
@@ -180,12 +194,12 @@ for line in lines:
     nf  = words[6]
     
     if words[7] == "1":
-        png = "%s/%s.%s.png" % (gal,gal,mmv)
+        png = "%s/%s.%s.png" % (gal,galaxy,mmv)
     else:
         png = 0
 
     # find peak in the center part of mom0 fits file
-    m0f =  "%s/%s.%s.fits.gz" % (gal,gal,mmv)
+    m0f =  "%s/%s.%s.fits.gz" % (gal,galaxy,mmv)
     if os.path.exists(m0f):
         d1 = fits.open(m0f)[0].data
         (nx,ny) = d1.shape
@@ -206,7 +220,7 @@ for line in lines:
             
     comm = " ".join(words[8:])
 
-    g = cat.entry(gal)
+    g = cat.entry(galaxy)
     ra = g[0]
     dec = g[1]
     vlsr = g[2]
@@ -218,8 +232,8 @@ for line in lines:
     print("    </td>")
 
     print("    <td>")
-    ff = "%s/%s%s.fits" % (gal,gal,fcv)
-    print("    <A HREF=%s>%s</A>" % (ff,gal))
+    ff = "%s/%s%s.fits" % (gal,galaxy,fcv)
+    print("    <A HREF=%s>%s</A>" % (ff,galaxy_session))
     print("    </td>")
 
     print("    <td>")

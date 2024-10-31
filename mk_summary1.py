@@ -25,7 +25,7 @@ cat = GBTEDGE.GBTEDGE('GBTEDGE.cat')              # get the galaxy catalog
 
 print("<html>")
 
-print('<script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>')
+print('<script src="sorttable.js"></script>')
 print("<H1> Summary of GBT-EDGE pipeline runs </H1>")
 print("<A HREF=%s>(see also %s)</A>" % (slf,slf))
 
@@ -42,9 +42,10 @@ print("     <br> all sessions 26-31 should not be used")
 print("     <br> all sessions 32 and up have beam 2 (0 being the first) removed")
 print("     <br> sessions 43-44 also has beam 12 corrupted, so it was taken out as well")
 print("     <br> sessions 45 and up still have beam 2 removed")
+print("     <br> sessions 55 and up in 2024/25 TBD")
 print("<LI> NF is the total number of feeds used. Usually a multiple of 32 if both DEC and RA map used and all beams good.")
-print('<LI> RMS1 map of the flux-flat cube, in mK, using only first and last quarter of channels')
-print('<LI> RMS0 map of the flux-flat cube, in mK, using center half of all channels')
+print('<LI> RMS1 map of the flux-flat cube, in mK, using only first and last quarter of channels. There should be no signal here')
+print('<LI> RMS0 map of the flux-flat cube, in mK, using center half of all channels. There should/can be signal here')
 print("<LI> mom0 image is from MaskMoment's <B>%s.fits.gz</B> version (units: K.km/s)" % mmv)
 print("     <br>still taken from the flux flat cube, we don't have a noise flat cube yet. Hence the noisy edge.")
 print("<LI> mom0peak is the peak in the mom0 from the inner 40% of the map ")
@@ -157,11 +158,25 @@ for line in lines:
     ngal = ngal + 1
 
     words = line.split()
-    gal = words[1]
+    gal = words[1]            # 'gal' or 'sessions/gal__S'
     rms = words[2]
     srat= words[3]
     prat= words[4]
     snr = words[5]
+
+    # gal could also be sessions/gal__S
+    if gal.find('sessions/') == 0:
+        galaxy_session = gal[9:]
+        galaxy = gal[9:]
+        dunder = galaxy.find('__')
+        if dunder > 0:
+            galaxy = galaxy[:dunder]
+    else:
+        galaxy = gal
+        galaxy_session = gal
+        
+    
+    
     
     ses =  "%s/sessions.log" % (gal)
     if os.path.exists(ses):
@@ -179,12 +194,12 @@ for line in lines:
     nf  = words[6]
     
     if words[7] == "1":
-        png = "%s/%s.%s.png" % (gal,gal,mmv)
+        png = "%s/%s.%s.png" % (gal,galaxy,mmv)
     else:
         png = 0
 
     # find peak in the center part of mom0 fits file
-    m0f =  "%s/%s.%s.fits.gz" % (gal,gal,mmv)
+    m0f =  "%s/%s.%s.fits.gz" % (gal,galaxy,mmv)
     if os.path.exists(m0f):
         d1 = fits.open(m0f)[0].data
         (nx,ny) = d1.shape
@@ -205,7 +220,7 @@ for line in lines:
             
     comm = " ".join(words[8:])
 
-    g = cat.entry(gal)
+    g = cat.entry(galaxy)
     ra = g[0]
     dec = g[1]
     vlsr = g[2]
@@ -217,8 +232,8 @@ for line in lines:
     print("    </td>")
 
     print("    <td>")
-    ff = "%s/%s%s.fits" % (gal,gal,fcv)
-    print("    <A HREF=%s>%s</A>" % (ff,gal))
+    ff = "%s/%s%s.fits" % (gal,galaxy,fcv)
+    print("    <A HREF=%s>%s</A>" % (ff,galaxy_session))
     print("    </td>")
 
     print("    <td>")

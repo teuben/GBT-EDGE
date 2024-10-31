@@ -20,12 +20,13 @@ debug = False
 #      42      skip feed 2,3,5    but 3,5 recovered later in the night and were < 1000
 #      43..44  skip feed 2,12
 #      45..    skip feed 2
+#      55..    use all feeds
 
 badfeedranges = [
     ([ 1,25],''),
     ([32,34],'-f 2'),   
     ([35,39],'-f 2,6'),   # not sure when beam 6 got bad
-                          # session 39 doesn't exist
+                          # session 39 doesn't exist (weather related)
     ([40,42],'-f 2'),
     ([43,44],'-f 2,12'),
     ([45,54],'-f 2'),
@@ -125,5 +126,27 @@ for gal in gals.keys():                   # loop over all observations
         fp.write("%s\n" % cmd)
     fp.write('./plots.sh %s %s %s\n' % (gal,ext,vlsr))
     fp.close()
+
+
+
+    # now produce the sessions
+    sessions =  list(set(s))
+    sessions.sort()
+    fp = open("run_%s_sessions.sh" % gal, 'w')
+    fp.write('# Created by mk_runs.py\n')
+    fp.write('# %s %s vlsr=%s\n' % (gal,sessions,vlsr))
+    fp.write('set -x\n')
+    for s in sessions:
+        if not s in badfeeds:
+            continue
+        bf = badfeeds[s]
+        cmd = './reduce.py %s -g %d %s %s' % (m,s,bf,gal)
+        fp.write('rm -rf %s\n' % gal)
+        fp.write("%s\n" % cmd)
+        fp.write('./plots.sh %s %s %s\n' % (gal,ext,vlsr))
+        fp.write('rm -rf sessions/%s__%d\n' % (gal,s))
+        fp.write('mv %s sessions/%s__%d\n' % (gal,gal,s))
+    fp.close()
+    
 print("Wrote %d run_GAL.sh scripts from gals.pars" % len(gals))
 

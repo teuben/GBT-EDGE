@@ -1,18 +1,22 @@
 # Project: AGBT21B_024
-# Parameter file for reduce.py
+#
+# This is the parameter file for reduce.py
+#
 # Usually the refscans are the VANE's at start-2 and stop+1
 #   [vane,sky,Map,vane,sky]
 # galaxy names must match the ones in GBTEDGE.cat exactly
 
 
 # winter 2021/22  :  sessions 1-25
-# winter 2022/23  :  sessions 26-31 are suspect (low gain), starting from 32 looks much better
+# winter 2022/23  :  sessions 26-31   are suspect (low gain), starting from 32 looks much better
 #                    sessions 32-34   (sessions 33-XX have bad feed 2)
-# winter 2023/24  :  sessions 35-     (feed 2 still bad,  6 and perhaps 9 also suspicious - also see noisy edge in a quadrant)
+# winter 2023/24  :  sessions 35-54   (feed 2 still bad,  6 and perhaps 9 also suspicious - also have noisy edge in a quadrant)
+# winter 2024/25  :  sessions 55-
 
 # galaxy seq start stop [ref1,ref2]    # refscans can be skipped if they are start-2,stop+1
 #                                      # if only one refscan available, just duplicate it
 
+#  Session 1
 #  21-59  65-103
 NGC0001   1    23    57  #  21,58  #  vlsr 4485.7     good for mk_mask.sh
 NGC0001   1    67   101  #  65,102 #  5 Msun/yr    clear double horn, SN ~ 10  rms=0.025292  0.023344
@@ -745,7 +749,7 @@ UGC10905     54 288  322
 UGC10905     54 327  361
 UGC10905     54 366  392  364,364
 
-# session 55:   oct 24/25
+# session 55:   oct 24/25 2024
 
 #NGC0001
 

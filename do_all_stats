@@ -37,11 +37,6 @@ mkc=$(grep ^Mrk gals.pars | awk '{print $1}' | sort | uniq)
 gals="$ngc $ugc $cgc $igc $mkc"
 
 
-
-gals="NGC0001 NGC0495 NGC0169"
-
-
-
 log=do_all_stats.tmp
 export DEBUG=-1
 

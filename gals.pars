@@ -763,3 +763,21 @@ UGC01659    55   240 274
 UGC04258    55   289 323
 UGC04258    55   333 367
 UGC04258    55   372 395  370,370    # partial final map (high tsys)
+
+# session 56:   nov 1/2 2024
+
+
+NGC0495    56    29   63    # sdfits missed first scans, only 49... are present until we can refill
+NGC0495    56    68  102
+
+# new!
+UGC01938  56  117  151
+UGC01938  56  156  190
+
+# new!
+NGC1056   56  200  234
+NGC1056   56  239  273
+NGC1056   56  278  300    276,276
+
+# session 57:  Nov 2/3 2024
+

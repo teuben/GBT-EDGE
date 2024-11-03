@@ -715,8 +715,8 @@ NGC5929     51  602  636
 # session 52:  mar 23/24
 
 #   issue with end of pipeline
-NGC6338  52    29  63
-#NGC6338  52    68  102
+#NGC6338  52    29  63          # bad pipeline run
+#NGC6338  52    68  102         # bad pipeline run
 
 NGC6497  52    112   146
 NGC6497  52    151   185
@@ -781,3 +781,17 @@ NGC1056   56  278  300    276,276
 
 # session 57:  Nov 2/3 2024
 
+# new!    small VLSR, high Tsys
+NGC0014  57   29   63
+NGC0014  57   68  102
+
+
+# new!
+# NGC0774  57 
+# NGC0774  57 
+
+# changed mind, going to revisit NGC0932
+NGC0932  57    112  146
+NGC0932  57    151  185
+NGC0932  57    190  224
+NGC0932  57    229  238   227,227

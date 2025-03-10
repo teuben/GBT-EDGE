@@ -77,11 +77,14 @@ for project in sys.argv[1:]:
     lines = fp.readlines()
     grab = False
     tsys = []
+    tau0 = ''
     for line in lines:
         words = line.strip().split()
         if len(words) > 2:
+            if words[0][:8] == '(zenith)':
+                tau0 = words[3]
             if grab:
-                tsys.append(line)
+                tsys.append(line.strip() + ' ' + tau0 + '\n')
                 grab = False
             if words[0][:4] == 'Tatm':
                 grab = True
@@ -91,7 +94,9 @@ for project in sys.argv[1:]:
     print("### writing pro/%s.tsys with %d vanes" % (project,nvanes))
     fp = open("%s.tsys" % project, "w")
     fp.write("#  %s\n" % project)
-    fp.write("#   SCAN       Tsys_mean       Tsys_rms        Tsys_min        Tsys_max\n")
+    #fp.write("#   SCAN       Tsys_mean       Tsys_rms        Tsys_min        Tsys_max\n")
+    #          17  307.74   23.20  270.93  357.18  437.21  372.15  257.60  
+    fp.write("# SCAN Tsys_mean rms min     max     Tcal    Twarm   Tatm  tau0\n")
     for t in tsys:
         fp.write(t)
     fp.close()

@@ -4,7 +4,7 @@ makes the file
      pro/AGBT21B_024_10.tsys
 which should be copied here and saved in git in this tsyslogs directory
 
-The command "make tsys SEQ=32" does this, and gives a remidner to the git
+The command "make tsys SEQ=32" does this, and gives a reminder to the git
 commands needed to add them to git. 
 
 Missing sessions are:
@@ -18,10 +18,18 @@ The columns in the tables are:
 3   rms Tsys
 4   min Tsys
 5   max Tsys
+6   Tcal      (added Mar 2025)
+7   Twarm
+8   Tatm
+9   tau0 (zenith opacity)
 
 Somwtimes it happens that the az,el are listed as 0, in which case
 Tsys will be reported as infinity and all related calibration will
 be bad.
 In the vanecal procesure, use the maint=1 option, where it will use
 some nominal elevation, so some reasonable Tsys comes out.
+
+The Tcal,Twarm,Tatm,tau0 column were added from session 64 onwards,
+and will have to be recomputed backwards if we care for offsite
+calibration.
 

@@ -23,6 +23,7 @@ if (n_elements(nfd) eq 0) then nfd = 16
 
 ;; anything about "bad" is not used in the mean
 bad=1000
+bad=400
 
 ;;get center beam scan for ATM parameters
 gettp,scan1,ifnum=ifnum,fdnum=9
@@ -67,7 +68,7 @@ endfor
 ;print,'Tcal, Twarm, tatm:',tcal,twarm,tatm
 tsys_m = tsys1/nf
 tsys_s = sqrt(tsys2/nf - tsys_m*tsys_m)
-print,scan1,tsys_m,tsys_s,tsys_min,tsys_max
+print,format='(i3,1x,7(F7.2,1x))',scan1,tsys_m,tsys_s,tsys_min,tsys_max,tcal,twarm,tatm
 return
 end
 

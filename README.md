@@ -269,7 +269,8 @@ and can be followed with
 
       OMP_NUM_THREADS=1  parallel --jobs 16 < runs.sh
 
-but note the hardcoded hack how to skip sessions 26-31, and flag beam 2 bad for all sessions after.
+but note the hardcoded hack how to skip sessions 26-31, and flag appropriate beams 2 for various sessions as
+defined in mk_runs.py
 
 After this finished, run the stats using "make stats"
 
@@ -277,6 +278,11 @@ After this finished, run the stats using "make stats"
       ./mk_summary1.py
 
 this also makes a README.html can be made for viewing
+
+To make the sessions, the run_GALAXY_sessions.sh files have been created,
+and will create all sessions/GALAXY__S pipeline directories.
+
+
 
 
 ## Caveats/Issues

@@ -55,6 +55,9 @@ def masks(gal):
     gals = glob.glob('masks/*_%s_Hav*.fits' % gal)
     if len(gals) == 1:
         return gals[0].split('/')[1]
+    gals = glob.glob('masks/*_%s_block*.fits' % gal)
+    if len(gals) == 1:
+        return gals[0].split('/')[1]
     gals = glob.glob('masks/*_%s_rotcur*.fits' % gal)
     if len(gals) > 0:
         print("Warning: %s will use the first of %s" % (gal,str(gals)))

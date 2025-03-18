@@ -715,8 +715,8 @@ NGC5929     51  602  636
 # session 52:  mar 23/24
 
 #   issue with end of pipeline
-NGC6338  52    29  63
-#NGC6338  52    68  102
+#NGC6338  52    29  63          # bad pipeline run
+#NGC6338  52    68  102         # bad pipeline run
 
 NGC6497  52    112   146
 NGC6497  52    151   185
@@ -763,3 +763,135 @@ UGC01659    55   240 274
 UGC04258    55   289 323
 UGC04258    55   333 367
 UGC04258    55   372 395  370,370    # partial final map (high tsys)
+
+# session 56:   nov 1/2 2024
+
+
+NGC0495    56    29   63    # sdfits missed first scans, only 49... are present until we can refill
+NGC0495    56    68  102
+
+# new!
+UGC01938  56  117  151
+UGC01938  56  156  190
+
+# new!
+NGC1056   56  200  234
+NGC1056   56  239  273
+NGC1056   56  278  300    276,276
+
+# session 57:  Nov 2/3 2024
+
+# new!    small VLSR, high Tsys
+NGC0014  57   29   63
+NGC0014  57   68  102
+
+
+# new!
+# NGC0774  57 
+# NGC0774  57 
+
+# changed mind, going to revisit NGC0932
+NGC0932  57    112  146
+NGC0932  57    151  185
+NGC0932  57    190  224
+NGC0932  57    229  238   227,227
+
+
+# session 58:   Nov 12/13
+
+UGC01659   58   32   66
+UGC01659   58   71  105
+
+UGC02134   58  115  149
+UGC02134   58  154  188
+
+UGC01938   58  198  232
+
+# session 59:  Nov 24/25
+
+
+NGC2540    59    8   42
+NGC2540    59   47   81
+
+UGC05396   59   91  125
+UGC05396   59  130  164
+
+UGC08231   59  174  208
+UGC08231   59  213  247
+
+# session 60:  Dec 22/23
+
+
+NGC3896    60   45    79
+NGC3896    60   84   118
+
+NGC5376    60  128   162
+NGC5376    60  167   201
+
+NGC5157    60  211   245
+NGC5157    60  250   266  248,248
+
+# session 61:  Jan 5/6
+
+UGC8909    61   15    49
+UGC8909    61   54    88
+UGC8909    61   93   127
+UGC8909    61  132   163  130,130   # no final
+
+# session 62:  Feb 21/22
+
+
+IC3598       62   26   60
+IC3598       62   65   99
+
+NGC3406NED01 62  109  139  # 107,107   # ???
+NGC3406NED01 62  147  181
+
+NGC5929      62  191  225
+NGC5929      62  230  264
+
+NGC5987      62  279 304  277,277   # no final
+
+
+
+# session 63:  Feb 24/25
+
+NGC3353 63  42   76
+NGC3353 63  81  104  79,79 # ???
+NGC3353 63  109 143
+
+UGC9663 63  153 182  151,151 # incomplete (or can 151,184 be used?)
+UGC9663 63  186 220
+UGC9663 63  225 259
+UGC9663 63  264 285  262,262   # partial
+ 
+# session 64: Mar 8/9
+
+UGC8909  64   19  53
+UGC8909  64   58  92
+
+NGC5987  64  102 136
+NGC5987  64  141 175
+
+NGC5929  64  185 219
+NGC5929  64  224 258
+
+UGC9837  64  268 302
+UGC9837  64  307 302
+UGC9837  64  346 357 344,344
+
+# session 65: Mar 9/10
+
+IC3598   65   8  42
+IC3598   65  47  81
+
+NGC5631  65  91  125
+NGC5631  65 130  164
+
+UGC9837  65 174  208
+UGC9837  65 213  247
+
+NGC6497  65  257 291
+NGC6497  65  301 335
+NGC6497  65  345 379
+NGC6497  65  384 390  382,382

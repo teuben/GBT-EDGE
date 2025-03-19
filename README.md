@@ -319,6 +319,9 @@ Otherwise just be aware of the listed ones here:
 
     Sessions 26-31 are likely all bogus.
 
+11. All 2024/2025 sessions have an incorrect Tcal in vanecal. TWARM was 99. Best is to set
+    TWARM = TAMBIENT + 1.5 
+
 ## Important Files and Directories
 
        GBTEDGE.cat   - this should also be in  /home/astro-util/projects/gbt-edge/GBTEDGE.cat 

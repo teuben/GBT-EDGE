@@ -203,24 +203,61 @@ the mask file is not here yet.  Note we only use the first session (there are mo
 
 Example how to look at Tsys and Nod_Galaxy on NGC5908.  We never really followed up
 on this very much. Supporting IDL codes are in the "pro" sub-directory here.
+Using GBTIDL use the following commands:
+
+at GBO:
 
       offline,'AGBT21B_024_14'
+
+true offline:
+
+      filein,'rawdata/AGBT21B_024_14/AGBT21B_024_14.raw.vegas'
+
+after which:
+
       vanecal,327
       # shows Tsys in range 150-248 (previous RAmap)
       # The NOD has scans 329-334
       vanecal,329
       # shows Tsys in range 184-242 (NOD)
-      # fdnum=0..15     4 and 7 are the ones used by us
-      argus_onoff,331,332,329,fdnum=4
-      argus_onoff,332,331,329,fdnum=4
-      argus_onoff,333,334,329,fdnum=4
-      argus_onoff,334,333,329,fdnum=4
+      # fdnum=0..15     1 and 9 are the ones used by us for the nodding - grep for "Nod(source," in astrid logs
+      argus_onoff,331,332,329,fdnum=1
+      argus_onoff,332,331,329,fdnum=1
+      argus_onoff,333,334,329,fdnum=1
+      argus_onoff,334,333,329,fdnum=1
       # -> tsys=200
-      argus_onoff,331,332,329,fdnum=7
-      argus_onoff,332,331,329,fdnum=7
-      argus_onoff,333,334,329,fdnum=7
-      argus_onoff,334,333,329,fdnum=7
+      argus_onoff,331,332,329,fdnum=9
+      argus_onoff,332,331,329,fdnum=9
+      argus_onoff,333,334,329,fdnum=9
+      argus_onoff,334,333,329,fdnum=9
       # -> tsys=203
+
+errors:
+
+      bash: line 1: /users/rmaddale/bin/getForecastValues: No such file or directory
+      ->   not at GBO
+      ->   weather at  /users/rmaddale/Weather/ArchiveCoeffs
+      ->   can't find package Efftcl
+
+We have the following (14) NOD galaxies in the following sessions with the following VANE scan
+and starting (26) scans for the NOD
+
+      
+      01: IC1683          200              beams 4,7 used in session 1
+      01: NGC0001         19
+      01: UGC01659        113
+      02: NGC0169         14,16            beams 1,9 used in remaining sessions
+      02: NGC2253         114,115
+      02: NGC2623         377,379
+      02: UGC04262        288,290
+      03: NGC4047         112,114
+      14: NGC5908    329  331,333          nothing visible, strong 0.2K sinisoidal baseline
+      17: ARP220     280  282,284
+      18: ARP220          378,380
+      19: NGC6361         212,214,228,230
+      20: NGC5908         193
+      21: NGC5908         209,211
+
 
 ## Pipeline
 
@@ -319,6 +356,9 @@ Otherwise just be aware of the listed ones here:
     In session 27 we then changed to 51s (???, or is that the plan)
 
     Sessions 26-31 are likely all bogus.
+
+11. All 2024/2025 sessions have an incorrect Tcal in vanecal. TWARM was 99. Best is to set
+    TWARM = TAMBIENT + 1.5 
 
 ## Important Files and Directories
 

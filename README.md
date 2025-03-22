@@ -18,7 +18,7 @@ A very simple example of use: (pick a directory):
       cd /lma1/teuben/GBT-EDGE                                       # at UMD on lma
       cd /home/astro-util/projects/gbt-edge/GBT-EDGE-pipeline        # at GBO on e.g. fourier
       
-      source edge.sh
+      source edge.sh                               # this file needs to be created per site
       ./reduce.py -g 1 NGC0001
       ./mmaps.py NGC0001
 	  
@@ -29,7 +29,8 @@ The use of the **edge.sh** script is optional in your installation, as long as t
 installed in *your* python (see Installation below). However, at GBO and UMD it is required.
 
 You can push your luck by trying the example maskmoment based **mmaps.py** script which tries a number
-of methods to make moment maps.
+of methods to make moment maps.  The run_*sh scripts (see discussion below) automate all of these
+commands per galaxy.
 
 Use **reduce.py -h** to get a reminder of the usage. The **gals.pars** file
 controls which sessions contain which galaxy
@@ -304,7 +305,7 @@ Otherwise just be aware of the listed ones here:
 		 
 2. Because of the randomized sampler in the PCA methods (i.e., the svd_solver option
    here https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html) the results are not reproducable
-   on a few mK level.  The solver is highly efficiency but can lead to different outcomes.
+   on a few mK level.  The solver is highly efficient but can lead to different outcomes.
    
    np.random.seed(123)  doesn't seem to work.
 

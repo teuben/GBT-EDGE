@@ -7,11 +7,13 @@
 # galaxy names must match the ones in GBTEDGE.cat exactly
 
 
+# We have 300 hours for this....
+#
 # winter 2021/22  :  sessions 1-25
 # winter 2022/23  :  sessions 26-31   are suspect (low gain), starting from 32 looks much better
 #                    sessions 32-34   (sessions 33-XX have bad feed 2)
 # winter 2023/24  :  sessions 35-54   (feed 2 still bad,  6 and perhaps 9 also suspicious - also see noisy edge in a quadrant)
-# winter 2024/25  :  sessions 55-     all feeds ok now?
+# winter 2024/25  :  sessions 55-     all feeds ok now
 
 # galaxy seq start stop [ref1,ref2]    # refscans can be skipped if they are start-2,stop+1
 #                                      # if only one refscan available, just duplicate it
@@ -939,3 +941,14 @@ UGC08781   68  48  82
 
 UGC08733   68  92 126
 UGC08733   68 131 165
+
+# session 69:  Mar 26/27 - just when you thought you were done.
+
+UGC8909   69   15   49
+UGC8909   69   54   88
+
+NGC6338   69   98  132
+NGC6338   69  137  171
+
+NGC6338   69  181  215
+NGC6338   69  220  246   218,218

@@ -21,6 +21,7 @@ debug = False
 #      43..44  skip feed 2,12
 #      45..    skip feed 2
 #      55..    use all feeds
+#      67      skip feed 5,6,9,10 (center 4 frosted over)
 
 badfeedranges = [
     ([ 1,25],''),
@@ -30,7 +31,9 @@ badfeedranges = [
     ([40,42],'-f 2'),
     ([43,44],'-f 2,12'),
     ([45,54],'-f 2'),
-    ([55,99],''),    
+    ([55,66],''),
+    ([67,67],'-f 5,6,9,10'),    
+    ([68,99],''),
     ]
     
 
@@ -52,10 +55,10 @@ def tolist(a):
 def masks(gal):
     """ find the mask name
     """
-    gals = glob.glob('masks/*_%s_Hav*.fits' % gal)
+    gals = glob.glob('masks/*_%s_block*.fits' % gal)
     if len(gals) == 1:
         return gals[0].split('/')[1]
-    gals = glob.glob('masks/*_%s_block*.fits' % gal)
+    gals = glob.glob('masks/*_%s_Hav*.fits' % gal)
     if len(gals) == 1:
         return gals[0].split('/')[1]
     gals = glob.glob('masks/*_%s_rotcur*.fits' % gal)
@@ -95,6 +98,7 @@ for gal in gals.keys():                   # loop over all observations
     fp = open("run_%s.sh" % gal, 'w')
     fp.write('# Created by mk_runs.py\n')
     fp.write('# %s %s vlsr=%s\n' % (gal,s,vlsr))
+    fp.write('#  make sure you run this on a single core\n')
     fp.write('set -x\n')
 
     bf = {}

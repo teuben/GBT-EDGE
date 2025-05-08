@@ -243,8 +243,10 @@ stats:
 	./do_all_stats > do_all_stats.log
 	cp do_all_stats.log stats.log
 	@echo Results in  stats.log
-	./mk_summary1.py > README.html
+	./mk_summary1.py    > README.html
+	./mk_summary1.py -s > README2.html
 	@echo "summary in https://www.astro.umd.edu/~teuben/GBT-EDGE/README.html"
+	@echo "all sessions in https://www.astro.umd.edu/~teuben/GBT-EDGE/README2.html"
 
 ## sessions: report which galaxy in which session (not yet used)
 sessions:

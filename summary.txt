@@ -7,6 +7,7 @@ NGC0169   clear (with IC1559)
 NGC0495   maybe
 NGC0776   clear
 NGC0932   messy_BL
+NGC1056   -
 NGC2449   weak (messyBL)
 NGC2540   weak
 NGC2596   clear
@@ -27,6 +28,7 @@ NGC5376   offset;maybe
 NGC5630   -
 NGC5631   -
 NGC5402   -
+#NGC5630  crashing pipeline
 NGC5720   maybe
 NGC5888   weak
 NGC5929   NEED MORE TIME
@@ -34,8 +36,11 @@ NGC5954   whopping/double=Arp91
 NGC5987   NEED MORE TIME
 NGC6132   weak
 NGC6150B  -
+NGC6154   -
 NGC6338   -
+NGC6497   -
 UGC01659  weak
+UGC01938  -
 UGC02134  clear/messy_BL
 UGC02222  NEED MORE TIME
 UGC02239  weak

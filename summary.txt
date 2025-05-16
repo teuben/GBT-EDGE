@@ -7,7 +7,7 @@ NGC0169   clear (with IC1559)
 NGC0495   maybe
 NGC0776   clear
 NGC0932   messy_BL
-NGC1056
+NGC1056   -
 NGC2449   weak (messyBL)
 NGC2540   weak
 NGC2596   clear, profile <6000 ?shifted wrt HI?
@@ -28,6 +28,7 @@ NGC5376   offset;maybe
 NGC5630   NOT OBSERVED
 NGC5631   -
 NGC5402   -
+#NGC5630  crashing pipeline
 NGC5720   maybe
 NGC5888   weak
 NGC5929   

@@ -1,5 +1,5 @@
-#    annotation file for do_all_stats
-#  gal    annotation
+#  annotation file for do_all_stats
+#  gal    annotation for summary
 #
 NGC0001   clear
 NGC0014   
@@ -56,8 +56,8 @@ UGC05326
 UGC05396  ?
 UGC06320  NOT OBSERVED
 UGC08004  maybe
-UGC08234  ?
 UGC08231  -half
+UGC08234  ?
 UGC08322  -bad_beam
 UGC08733  -
 UGC08781  ?

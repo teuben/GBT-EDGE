@@ -26,10 +26,12 @@ GIT_DIRS = gbtpipe degas maskmoment edge_pydb gbtgridder
 # URLs that we'll need
 
 URL1  = https://github.com/GBTSpectroscopy/gbtpipe
+URL1a = https://github.com/teuben/gbtpipe
 URL2  = https://github.com/GBTSpectroscopy/degas
+URL2a = https://github.com/teuben/degas
 URL3  = https://github.com/astroumd/lmtoy
-URL4a = https://github.com/teuben/maskmoment
 URL4  = https://github.com/tonywong94/maskmoment
+URL4a = https://github.com/teuben/maskmoment
 URL5  = https://github.com/tonywong94/edge_pydb
 URL6  = https://github.com/richteague/bettermoments
 URL7  = https://github.com/GreenBankObservatory/gbtgridder
@@ -62,10 +64,14 @@ status:
 
 
 gbtpipe:
-	git clone $(URL1)
+	# git clone $(URL1)
+	git clone -b twarm2 $(URL1a)
+	(cd $@; git remote add upstream $(URL1))
 
 degas:
-	git clone $(URL2)
+	#git clone $(URL2)
+	git clone -b tmb $(URL2a)
+	(cd $@; git remote add upstream $(URL2))
 
 lmtoy:
 	git clone $(URL3)
@@ -145,10 +151,13 @@ data0:
 	(cd rawdata; \
 	wget -q https://www.astro.umd.edu/~teuben/edge/data/AGBT21B_024_01.tar -O - | tar xvf -)
 
+EXT = 12CO_rebase3_smooth2_hanning2
+EXT = 12CO_rebase5_smooth1.3_hanning2
+
 # 1 processor    280.58user 6.48system 4:47.21elapsed 99%CPU
 bench0:
 	$(OMP) $(TIME) ./reduce.py NGC0001
-	fitsccd NGC0001/NGC0001_12CO_rebase3_smooth2_hanning2.fits - | ccdstat - bad=0 qac=t
+	fitsccd NGC0001/NGC0001_$(EXT).fitss - | ccdstat - bad=0 qac=t
 
 #  all procs:    556.80user   7.36system  3:17.45elapsed 285%CPU    (peter's laptop - i5-1135G7)
 #  1 processor   182.82user   3.72system  3:06.68elapsed  99%CPU    (peter's laptop)
@@ -156,16 +165,16 @@ bench0:
 #  1 processor   536.42user  10.68system 10:25.20elapsed  87%CPU    (at GBO's fourier machine)
 bench1:	NGC0001
 	$(OMP) $(TIME) ./reduce.py -g 1 -s NGC0001
-	fitsccd NGC0001/NGC0001_12CO_rebase3_smooth2_hanning2.fits -|ccdstat - bad=0 qac=t
-	fitsccd NGC0001/NGC0001_12CO_rebase3_smooth2_hanning2.fits -|ccdstat - bad=0 qac=t robust=t
+	fitsccd NGC0001/NGC0001_$(EXT).fits -|ccdstat - bad=0 qac=t
+	fitsccd NGC0001/NGC0001_$(EXT).fits -|ccdstat - bad=0 qac=t robust=t
 
 
 
 # 1 processor:   
 bench2:
 	$(OMP) $(TIME) ./reduce.py -g 1 -M NGC0001
-	fitsccd NGC0001/NGC0001_12CO_rebase3_smooth2_hanning2.fits -|ccdstat - bad=0 qac=t
-	fitsccd NGC0001/NGC0001_12CO_rebase3_smooth2_hanning2.fits -|ccdstat - bad=0 qac=t robust=t
+	fitsccd NGC0001/NGC0001_$(EXT).fits -|ccdstat - bad=0 qac=t
+	fitsccd NGC0001/NGC0001_$(EXT).fits -|ccdstat - bad=0 qac=t robust=t
 
 # with the standard 'mask_NGC0001_Havfield_v1.fits'
 
@@ -173,7 +182,7 @@ bench3:
 	$(OMP) $(TIME) ./reduce.py -g 1 -m mask_NGC0001_Havfield_v1.fits NGC0001
 
 bench4:
-	./plot_spectrum.py NGC0001/NGC0001_12CO_rebase5_smooth1.3_hanning2.fits "00:07:15.84" "+27:42:29.7" 8.4 0 0 
+	./plot_spectrum.py NGC0001/NGC0001_$(EXT).fits "00:07:15.84" "+27:42:29.7" 8.4 0 0 
 
 NGC0001:
 	wget -q https://www.astro.umd.edu/~teuben/edge/data/NGC0001.tar -O - | tar xvf -

@@ -23,6 +23,13 @@ fcv = "_12CO_rebase5_smooth1.3_hanning2"
 # GBTEDGE lookup
 cat = GBTEDGE.GBTEDGE('GBTEDGE.cat')              # get the galaxy catalog
 
+use_sessions = False
+
+if len(sys.argv) > 1:
+    if sys.argv[1] == "-s":
+        use_sessions = True
+    
+
 print("<html>")
 
 print('<script src="sorttable.js"></script>')
@@ -53,10 +60,12 @@ print('<LI> spectra are taken 10" and 30" around reference point. expected VLSR 
 print("<LI> pipeline run is the last time the pipeline was run on this galaxy")
 print("<LI> comments are Peter's silly comments, usually based on initial ds9 browsing, often right after observing")
 print("     <br>- means that nothing obvious was seen")
-print("<LI> ISSUES:  (see also <A HREF=https://github.com/teuben/GBT-EDGE/issues>github issues</A> for pipeline issues)");
+print("<LI> ISSUES:  (see also <A HREF=https://github.com/teuben/GBT-EDGE/issues>github issues</A> for pipeline issues)")
 print("     <OL>")
 print("     <LI> ...")
 print("     </OL>")
+print("<LI> There are two tables: <A HREF=https://www.astro.umd.edu/~teuben/GBT-EDGE/README.html>combinations only</A>, and")
+print("     <A HREF=https://www.astro.umd.edu/~teuben/GBT-EDGE/README2.html>all sessions</A>")
 print("<LI> if the table below is empty.... work must be in progress")
 print("</UL>")
 
@@ -155,7 +164,6 @@ for line in lines:
         # print("%s<br>" % line[1:])
         continue
 
-    ngal = ngal + 1
 
     words = line.split()
     gal = words[1]            # 'gal' or 'sessions/gal__S'
@@ -171,10 +179,15 @@ for line in lines:
         dunder = galaxy.find('__')
         if dunder > 0:
             galaxy = galaxy[:dunder]
+        if not use_sessions:
+            continue
     else:
         galaxy = gal
         galaxy_session = gal
         
+    ngal = ngal + 1
+    
+
     
     
     

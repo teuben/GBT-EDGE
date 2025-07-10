@@ -189,6 +189,10 @@ the setup.
 
 ### Example
 
+      make data0 weather0
+
+or
+
       wget https://www.astro.umd.edu/~teuben/edge/data/AGBT21B_024_01.tar
       wget https://www.astro.umd.edu/~teuben/edge/data/GBTWeather.tar.gz
       mkdir rawdata

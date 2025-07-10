@@ -25,6 +25,8 @@ GIT_DIRS = gbtpipe degas maskmoment edge_pydb gbtgridder
 
 # URLs that we'll need
 
+URL0a = https://www.astro.umd.edu/~teuben/edge/data/AGBT21B_024_01.tar
+URL0b = https://www.astro.umd.edu/~teuben/edge/data/GBTWeather.tar.gz
 URL1  = https://github.com/GBTSpectroscopy/gbtpipe
 URL1a = https://github.com/teuben/gbtpipe
 URL2  = https://github.com/GBTSpectroscopy/degas
@@ -150,7 +152,10 @@ pjt:	lmtoy
 
 data0:
 	(cd rawdata; \
-	wget -q https://www.astro.umd.edu/~teuben/edge/data/AGBT21B_024_01.tar -O - | tar xvf -)
+	wget -q $(URL0a) -O - | tar xvf -)
+
+weather0:
+	wget -q $(URL0b) -O - | tar zxf -
 
 EXT = 12CO_rebase3_smooth2_hanning2
 EXT = 12CO_rebase5_smooth1.3_hanning2
@@ -158,7 +163,7 @@ EXT = 12CO_rebase5_smooth1.3_hanning2
 # 1 processor    280.58user 6.48system 4:47.21elapsed 99%CPU
 bench0:
 	$(OMP) $(TIME) ./reduce.py NGC0001
-	fitsccd NGC0001/NGC0001_$(EXT).fitss - | ccdstat - bad=0 qac=t
+	fitsccd NGC0001/NGC0001_$(EXT).fits - | ccdstat - bad=0 qac=t
 
 #  all procs:    556.80user   7.36system  3:17.45elapsed 285%CPU    (peter's laptop - i5-1135G7)
 #  1 processor   182.82user   3.72system  3:06.68elapsed  99%CPU    (peter's laptop)
@@ -204,7 +209,7 @@ rsync:
 	@echo weather
 	-rsync -ahv --bwlimit=8000 $(WDIR)/Coeffs* $(REM)/GBTWeather
 
-#  this lenghty IDL based procedure computes the mean/rms/min/max for tsys for a given SEQ
+#  this lengthy IDL based procedure computes the mean/rms/min/max for tsys for a given SEQ
 ## tsys:     make tsys and summary files for SEQ=$SEQ
 tsys:
 	./tsys.py AGBT21B_024_$(SEQ)

@@ -5,9 +5,14 @@
 For a background of the science,
 see https://greenbankobservatory.org/science/gbt-surveys/edge/
 
+The project is named "GBT21B-024", though labeled "AGBT21B_024" as the
+filename prefix for gbtidl/dysh.  This project was formally completed
+2025-07-31.
+
 This toolkit helps you reducing the GBT EDGE data.  Installation
 requires some attention, as we use a few 3rd party packages that
-have their own dependencies.
+have their own dependencies. All details in this README file, as
+well as targets in the Makefile.
 
 We also keep all the astrid/summary/tsys logs in this repo.  The raw
 data (through session 54) is about 72GB.  This covers
@@ -188,6 +193,10 @@ go in more detail, our **Makefile** has some useful targets to aid in
 the setup.
 
 ### Example
+
+      make data0 weather0
+
+or
 
       wget https://www.astro.umd.edu/~teuben/edge/data/AGBT21B_024_01.tar
       wget https://www.astro.umd.edu/~teuben/edge/data/GBTWeather.tar.gz

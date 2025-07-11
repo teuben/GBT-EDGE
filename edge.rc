@@ -1,0 +1,5 @@
+# example GBT-EDGE startup file
+cd ~/GBT/GBT-EDGE
+source nemo/nemo_start.sh
+source anaconda3/python_start.sh
+export GBTWEATHER=`pwd`/GBTWeather

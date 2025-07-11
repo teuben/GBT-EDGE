@@ -112,11 +112,11 @@ def edgegrid(galaxy, badfeeds=[], maskfile=None):
              startChannel=edgetrim,
              endChannel=1024-edgetrim,
              outdir='.',
-             flagSpike=True, spikeThresh=1.5,
+             flagSpike=True, spikeThresh=1.5,              # 1.5
              flagRMS=True,  plotTimeSeries=plotTimeSeries,
-             flagRipple=True, rippleThresh=1.3,
+             flagRipple=True, rippleThresh=1.1,            # 1.3
              pixPerBeam=4.0,
-             rmsThresh=1.3,
+             rmsThresh=1.2,                                # 1.3
              robust=False,
              blorder=scanblorder,
              plotsubdir='timeseries/',

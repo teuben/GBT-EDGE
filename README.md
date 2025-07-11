@@ -59,7 +59,7 @@ so you can "git pull" while code updates are being made in those 3rd party packa
       pip install -e gbtpipe
       pip install -e degas
       pip install -e maskmoment
-      pip install pyspeckit
+      pip install pyspeckit aplpy
 	  
 It was noted that python > 3.7 was needed, where GBO runs 3.6.8. I've used the lmtoy/nemo method to
 install a container with anaconda3's python, but feel free to use your own
@@ -283,7 +283,13 @@ this also makes a README.html can be made for viewing
 To make the sessions, the run_GALAXY_sessions.sh files have been created,
 and will create all sessions/GALAXY__S pipeline directories.
 
+## new2025
 
+Efforts to align a number of issues:
+
+- use the pjt repos by default (PR will be needed to align them)
+- fix the Tmb
+- fix the TWARM issue in 2024/25
 
 
 ## Caveats/Issues

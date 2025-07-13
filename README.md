@@ -60,6 +60,9 @@ so you can "git pull" while code updates are being made in those 3rd party packa
       pip install -e degas
       pip install -e maskmoment
       pip install pyspeckit
+      pip install aplpy
+      pip install regions
+      cd $NEMO; pip install -e .      # soon deprecated method
 	  
 It was noted that python > 3.7 was needed, where GBO runs 3.6.8. I've used the lmtoy/nemo method to
 install a container with anaconda3's python, but feel free to use your own

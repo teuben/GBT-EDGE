@@ -25,6 +25,8 @@ GIT_DIRS = gbtpipe degas maskmoment edge_pydb gbtgridder
 
 # URLs that we'll need
 
+URL0a = https://www.astro.umd.edu/~teuben/edge/data/AGBT21B_024_01.tar
+URL0b = https://www.astro.umd.edu/~teuben/edge/data/GBTWeather.tar.gz
 URL1  = https://github.com/GBTSpectroscopy/gbtpipe
 URL1a = https://github.com/teuben/gbtpipe
 URL2  = https://github.com/GBTSpectroscopy/degas
@@ -38,6 +40,10 @@ URL7  = https://github.com/GreenBankObservatory/gbtgridder
 URL7a = https://github.com/teuben/gbtgridder
 URL8  = https://github.com/radio-astro-tools/spectral-cube/
 URL9  = https://github.com/teuben/nemo
+
+# FITS extension for benchmark
+EXT = 12CO_rebase3_smooth2_hanning2
+EXT = 12CO_rebase5_smooth1.3_hanning2
 
 .PHONY:  help install build
 
@@ -62,16 +68,23 @@ status:
 	-@for dir in $(GIT_DIRS); do\
 	(echo -n "$$dir: " ;cd $$dir; git status -uno); done
 
-
 gbtpipe:
 	# git clone $(URL1)
 	git clone -b twarm2 $(URL1a)
 	(cd $@; git remote add upstream $(URL1))
 
+gbtpipe_pjt:
+	git clone $(URL1a) gbtpipe_pjt
+	(cd gbtpipe_pjt; git remote add upstream $(URL1))
+
 degas:
 	#git clone $(URL2)
 	git clone -b tmb $(URL2a)
 	(cd $@; git remote add upstream $(URL2))
+
+degas_pjt:
+	git clone $(URL2a) degas_pjt
+	(cd degas_pjt; git remote add upstream $(URL2))
 
 lmtoy:
 	git clone $(URL3)
@@ -82,14 +95,23 @@ maskmoment:
 edge_pydb:
 	git clone $(URL5)
 
+gbtgridder_gbo:
+	git clone $(URL7) gbtgridder_gbo
+
 gbtgridder:
+	# git clone -b release_3.0  $(URL7)
 	git clone -b python3 $(URL7a)
+	(cd gbtgridder; git remote add upstream $(URL7))  
 
 spectral-cube:
 	git clone $(URL8)
 
 edge_env:
 	python3 -m venv edge_env
+
+install_anaconda3:
+	./install_anaconda3
+
 
 # note gbtpipe needs to be installed before degas
 install_gbtpipe:  gbtpipe edge_env
@@ -148,16 +170,22 @@ pjt:	lmtoy
 	@echo "Make sure you 'source lmtoy/python_start.sh'"
 
 data0:
-	(cd rawdata; \
-	wget -q https://www.astro.umd.edu/~teuben/edge/data/AGBT21B_024_01.tar -O - | tar xvf -)
+	mkdir -p rawdata
+	wget -q $(URL0a) -O - | tar -C rawdata -xvf -
+	@echo "Warning:   this only gives you session 1 for benchmarking"
+
+weather0:
+	wget -q $(URL0b) -O - | tar zxf -
+	ln -s GBTWeather weather
 
 EXT = 12CO_rebase3_smooth2_hanning2
 EXT = 12CO_rebase5_smooth1.3_hanning2
 
 # 1 processor    280.58user 6.48system 4:47.21elapsed 99%CPU
 bench0:
-	$(OMP) $(TIME) ./reduce.py NGC0001
-	fitsccd NGC0001/NGC0001_$(EXT).fitss - | ccdstat - bad=0 qac=t
+	rm -rf NGC0001
+	$(OMP) $(TIME) ./reduce.py -g 1 NGC0001
+	fitsccd NGC0001/NGC0001_$(EXT).fits - | ccdstat - bad=0 qac=t label=bench0
 
 #  all procs:    556.80user   7.36system  3:17.45elapsed 285%CPU    (peter's laptop - i5-1135G7)
 #  1 processor   182.82user   3.72system  3:06.68elapsed  99%CPU    (peter's laptop)
@@ -165,16 +193,15 @@ bench0:
 #  1 processor   536.42user  10.68system 10:25.20elapsed  87%CPU    (at GBO's fourier machine)
 bench1:	NGC0001
 	$(OMP) $(TIME) ./reduce.py -g 1 -s NGC0001
-	fitsccd NGC0001/NGC0001_$(EXT).fits -|ccdstat - bad=0 qac=t
-	fitsccd NGC0001/NGC0001_$(EXT).fits -|ccdstat - bad=0 qac=t robust=t
-
+	fitsccd NGC0001/NGC0001_$(EXT).fits -|ccdstat - bad=0 qac=t label=bench1a
+	fitsccd NGC0001/NGC0001_$(EXT).fits -|ccdstat - bad=0 qac=t robust=t label=bench1b
 
 
 # 1 processor:   
 bench2:
 	$(OMP) $(TIME) ./reduce.py -g 1 -M NGC0001
-	fitsccd NGC0001/NGC0001_$(EXT).fits -|ccdstat - bad=0 qac=t
-	fitsccd NGC0001/NGC0001_$(EXT).fits -|ccdstat - bad=0 qac=t robust=t
+	fitsccd NGC0001/NGC0001_$(EXT).fits -|ccdstat - bad=0 qac=t label=bench2a
+	fitsccd NGC0001/NGC0001_$(EXT).fits -|ccdstat - bad=0 qac=t robust=t label=bench2b
 
 # with the standard 'mask_NGC0001_Havfield_v1.fits'
 
@@ -203,7 +230,7 @@ rsync:
 	@echo weather
 	-rsync -ahv --bwlimit=8000 $(WDIR)/Coeffs* $(REM)/GBTWeather
 
-#  this lenghty IDL based procedure computes the mean/rms/min/max for tsys for a given SEQ
+#  this lengthy IDL based procedure computes the mean/rms/min/max for tsys for a given SEQ
 ## tsys:     make tsys and summary files for SEQ=$SEQ
 tsys:
 	./tsys.py AGBT21B_024_$(SEQ)

@@ -2,8 +2,8 @@
 
 ## Summary
 
-For a background of the science,
-see https://greenbankobservatory.org/science/gbt-surveys/edge/
+For a background of the science, see
+https:/XS/greenbankobservatory.org/science/gbt-surveys/edge/
 
 The project is named "GBT21B-024", though labeled "AGBT21B_024" as the
 filename prefix for gbtidl/dysh.  This project was formally completed

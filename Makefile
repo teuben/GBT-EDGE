@@ -40,6 +40,7 @@ URL7  = https://github.com/GreenBankObservatory/gbtgridder
 URL7a = https://github.com/teuben/gbtgridder
 URL8  = https://github.com/radio-astro-tools/spectral-cube/
 URL9  = https://github.com/teuben/nemo
+URL10 = https://github.com/teuben/lmtoy_2021-S1-MX-3
 
 # FITS extension for benchmark
 EXT = 12CO_rebase3_smooth2_hanning2
@@ -138,6 +139,10 @@ install_edge:  edge_pydb edge_env
 	pip3 install --upgrade pip;\
 	pip3 install -e .)
 
+lmtoy_2021-S1-MX-3:
+	git clone $(URL10)
+
+
 #  running at GBO, rawdata just points to /home/sdfits
 #  offsite you will need to supply your own, YMMV
 #  usually using the rsync target here, and running it from GBO
@@ -182,6 +187,7 @@ EXT = 12CO_rebase3_smooth2_hanning2
 EXT = 12CO_rebase5_smooth1.3_hanning2
 
 # 1 processor    280.58user 6.48system 4:47.21elapsed 99%CPU
+## bench0:   reduction of first NGC0001, no mask
 bench0:
 	rm -rf NGC0001
 	$(OMP) $(TIME) ./reduce.py -g 1 NGC0001
@@ -203,12 +209,12 @@ bench2:
 	fitsccd NGC0001/NGC0001_$(EXT).fits -|ccdstat - bad=0 qac=t label=bench2a
 	fitsccd NGC0001/NGC0001_$(EXT).fits -|ccdstat - bad=0 qac=t robust=t label=bench2b
 
-# with the standard 'mask_NGC0001_Havfield_v1.fits'
-
+## bench3:   reduction of first NGC0001, with the standard 'mask_NGC0001_Havfield_v1.fits'
 bench3:
 	$(OMP) $(TIME) ./reduce.py -g 1 -m mask_NGC0001_Havfield_v1.fits NGC0001
 
-bench4:
+
+bench5:
 	./plot_spectrum.py NGC0001/NGC0001_$(EXT).fits "00:07:15.84" "+27:42:29.7" 8.4 0 0 
 
 NGC0001:

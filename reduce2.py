@@ -80,8 +80,8 @@ def edgegrid(galaxy, badfeeds=[], maskfile=None):
     edgetrim = 64
     outdir='.'
     plotTimeSeries=True
-    scanblorder=7
-    posblorder=5
+    scanblorder=9
+    posblorder=7
     if maskfile == None:
         windowStrategy='simple'
     else:
@@ -112,12 +112,12 @@ def edgegrid(galaxy, badfeeds=[], maskfile=None):
              startChannel=edgetrim,
              endChannel=1024-edgetrim,
              outdir='.',
-             flagSpike=True, spikeThresh=1.5,              # 1.5
+             flagSpike=True, spikeThresh=5.0,              # 1.5
              flagRMS=True,  plotTimeSeries=plotTimeSeries,
              flagRipple=True, rippleThresh=1.1,            # 1.3
              pixPerBeam=4.0,
              rmsThresh=1.2,                                # 1.3
-             robust=False,
+             robust=True,
              blorder=scanblorder,
              plotsubdir='timeseries/',
              windowStrategy=windowStrategy,   # 'cubemask' or 'simple'
@@ -130,8 +130,9 @@ def edgegrid(galaxy, badfeeds=[], maskfile=None):
                            HanningLoops=smooth_v,           # was: 1
                            spatialSmooth=smooth_xy,         # was: 1.3
                            Vwindow=1500*u.km/u.s,
+                           Vgalaxy=400*u.km/u.s,
                            CatalogFile='../GBTEDGE.cat',
-                           maskfile=maskfile,
+                           # maskfile=maskfile,
                            blorder=posblorder)
 
     # @todo - match with setting
@@ -212,7 +213,10 @@ def my_calscans(gal, scan, maskstrategy, maskfile, badfeeds, pid='AGBT21B_024', 
     if maskstrategy == None:
         calscans(dirname, start=start, stop=stop, refscans=refscans, badfeeds=badfeeds, OffType=OffType, nProc=1, opacity=True, varfrac=0.1)
     else:
-        calscans(dirname, start=start, stop=stop, refscans=refscans, badfeeds=badfeeds, OffType=OffType, nProc=1, opacity=True, OffSelector=maskstrategy, varfrac=0.1)
+        calscans(dirname, start=start, stop=stop, refscans=refscans, badfeeds=badfeeds,
+                 OffType=OffType, nProc=1, opacity=True, OffSelector=maskstrategy,
+                 varrat=1.2,   # varfrac=0.1
+                 drop_last_scan=True, smoothpca=True)
 
 
 def main(args):    

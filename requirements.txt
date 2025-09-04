@@ -6,5 +6,5 @@ spectral_cube
 lmfit
 setuptools_scm
 #
-#blessing
+blessings
 #fitsio

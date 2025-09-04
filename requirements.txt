@@ -1,0 +1,5 @@
+# 
+aplpy
+pyspeckit
+spectral_cube
+lmfit

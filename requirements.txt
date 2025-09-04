@@ -7,4 +7,4 @@ lmfit
 setuptools_scm
 #
 blessings
-#fitsio
+fitsio

@@ -2,8 +2,8 @@
 
 ## Summary
 
-For a background of the science,
-see https://greenbankobservatory.org/science/gbt-surveys/edge/
+For a background of the science, see
+https:/XS/greenbankobservatory.org/science/gbt-surveys/edge/
 
 The project is named "GBT21B-024", though labeled "AGBT21B_024" as the
 filename prefix for gbtidl/dysh.  This project was formally completed
@@ -64,7 +64,10 @@ so you can "git pull" while code updates are being made in those 3rd party packa
       pip install -e gbtpipe
       pip install -e degas
       pip install -e maskmoment
-      pip install pyspeckit aplpy
+      pip install pyspeckit
+      pip install aplpy
+      pip install regions
+      cd $NEMO; pip install -e .      # soon deprecated method
 	  
 It was noted that python > 3.7 was needed, where GBO runs 3.6.8. I've used the lmtoy/nemo method to
 install a container with anaconda3's python, but feel free to use your own

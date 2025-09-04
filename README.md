@@ -295,7 +295,13 @@ this also makes a README.html can be made for viewing
 To make the sessions, the run_GALAXY_sessions.sh files have been created,
 and will create all sessions/GALAXY__S pipeline directories.
 
+## new2025
 
+Efforts to align a number of issues:
+
+- use the pjt repos by default (PR will be needed to align them)
+- fix the Tmb
+- fix the TWARM issue in 2024/25
 
 
 ## Caveats/Issues

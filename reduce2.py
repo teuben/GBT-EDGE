@@ -36,27 +36,22 @@ from spectral_cube import SpectralCube
 from radio_beam import Beam
 import argparse
 
-__version__ = "14-jul-2025"
+__version__ = "4-sep-2025"
 
 def edgemask(galaxy, maskfile=None):
     """
     based on an input mask file (0,1) this will use gal_12CO.fits
     or a handpicked one if maskfile given
-    Note we're in the galaxy subdirectory now
     """
     if maskfile == None:
-        maskname = f'../masks/mask_{galaxy}.fits'
+        maskname = '../masks/mask_{0}.fits'.format(galaxy)
         print("Reading default mask file %s" % maskname)
     else:
-        if os.path.exists(maskfile):
-            maskname = maskfile
-            print("Using 1 maskfile=%s" % maskfile)
-        elif maskfile[0] == '/':
-            print("Using 2 maskfile=%s" % maskfile)            
+        if maskfile[0] == '/':
             maskname = maskfile
         else:
             maskname = '../masks/' + maskfile
-            print("Using 3 maskfile=%s" % maskfile)                        
+
     buildmasks(maskname, galname=galaxy, outdir='./',
                setups=['12CO'], grow_v=50, grow_xy=2)
     # this writes a file   outdir + galname+'.12co.mask.fits'
@@ -86,8 +81,8 @@ def edgegrid(galaxy, badfeeds=[], maskfile=None):
     edgetrim = 64
     outdir='.'
     plotTimeSeries=True
-    scanblorder=7
-    posblorder=5
+    scanblorder=9
+    posblorder=7
     if maskfile == None:
         windowStrategy='simple'
     else:
@@ -118,12 +113,12 @@ def edgegrid(galaxy, badfeeds=[], maskfile=None):
              startChannel=edgetrim,
              endChannel=1024-edgetrim,
              outdir='.',
-             flagSpike=True, spikeThresh=1.5,
+             flagSpike=True, spikeThresh=5.0,              # 1.5
              flagRMS=True,  plotTimeSeries=plotTimeSeries,
-             flagRipple=True, rippleThresh=1.3,
+             flagRipple=True, rippleThresh=1.1,            # 1.3
              pixPerBeam=4.0,
-             rmsThresh=1.3,
-             robust=False,
+             rmsThresh=1.2,                                # 1.3
+             robust=True,
              blorder=scanblorder,
              plotsubdir='timeseries/',
              windowStrategy=windowStrategy,   # 'cubemask' or 'simple'
@@ -136,8 +131,9 @@ def edgegrid(galaxy, badfeeds=[], maskfile=None):
                            HanningLoops=smooth_v,           # was: 1
                            spatialSmooth=smooth_xy,         # was: 1.3
                            Vwindow=1500*u.km/u.s,
+                           Vgalaxy=400*u.km/u.s,
                            CatalogFile='../GBTEDGE.cat',
-                           maskfile=maskfile,
+                           # maskfile=maskfile,
                            blorder=posblorder)
 
     # @todo - match with setting
@@ -205,6 +201,7 @@ def getscans(gal, select=[], parfile='gals.pars'):
     return scans
 
 #  @todo   should really use $SDFITS_DATA as default
+
 def my_calscans(gal, scan, maskstrategy, maskfile, badfeeds, pid='AGBT21B_024', rawdir='../rawdata'):
     """
     badfeeds=[]   0 based bad feeds that should not be created
@@ -219,7 +216,10 @@ def my_calscans(gal, scan, maskstrategy, maskfile, badfeeds, pid='AGBT21B_024', 
     if maskstrategy == None:
         calscans(dirname, start=start, stop=stop, refscans=refscans, badfeeds=badfeeds, OffType=OffType, nProc=1, opacity=True, varfrac=0.1)
     else:
-        calscans(dirname, start=start, stop=stop, refscans=refscans, badfeeds=badfeeds, OffType=OffType, nProc=1, opacity=True, OffSelector=maskstrategy, varfrac=0.1)
+        calscans(dirname, start=start, stop=stop, refscans=refscans, badfeeds=badfeeds,
+                 OffType=OffType, nProc=1, opacity=True, OffSelector=maskstrategy,
+                 varrat=1.2,   # varfrac=0.1
+                 drop_last_scan=True, smoothpca=True)
 
 
 def main(args):    

@@ -3,3 +3,7 @@ aplpy
 pyspeckit
 spectral_cube
 lmfit
+setuptools_scm
+#
+#blessing
+#fitsio

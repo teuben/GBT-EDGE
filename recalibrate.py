@@ -1,5 +1,7 @@
 #! /usr/bin/env python
 #
+# -- only for testing - not for production-
+#
 from gbtpipe.ArgusCal import calscans, ZoneOfAvoidance, SpatialMask, SpatialSpectralMask, NoMask
 from gbtpipe import griddata
 import glob

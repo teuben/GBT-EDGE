@@ -36,21 +36,27 @@ from spectral_cube import SpectralCube
 from radio_beam import Beam
 import argparse
 
-__version__ = "13-jun-2024"
+__version__ = "14-jul-2025"
 
 def edgemask(galaxy, maskfile=None):
     """
     based on an input mask file (0,1) this will use gal_12CO.fits
     or a handpicked one if maskfile given
+    Note we're in the galaxy subdirectory now
     """
     if maskfile == None:
-        maskname = '../masks/mask_{0}.fits'.format(galaxy)
+        maskname = f'../masks/mask_{galaxy}.fits'
         print("Reading default mask file %s" % maskname)
     else:
-        if maskfile[0] == '/':
+        if os.path.exists(maskfile):
+            maskname = maskfile
+            print("Using 1 maskfile=%s" % maskfile)
+        elif maskfile[0] == '/':
+            print("Using 2 maskfile=%s" % maskfile)            
             maskname = maskfile
         else:
             maskname = '../masks/' + maskfile
+            print("Using 3 maskfile=%s" % maskfile)                        
     buildmasks(maskname, galname=galaxy, outdir='./',
                setups=['12CO'], grow_v=50, grow_xy=2)
     # this writes a file   outdir + galname+'.12co.mask.fits'
@@ -198,6 +204,7 @@ def getscans(gal, select=[], parfile='gals.pars'):
             print('Skipping bad line: ',line.strip())
     return scans
 
+#  @todo   should really use $SDFITS_DATA as default
 def my_calscans(gal, scan, maskstrategy, maskfile, badfeeds, pid='AGBT21B_024', rawdir='../rawdata'):
     """
     badfeeds=[]   0 based bad feeds that should not be created

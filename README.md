@@ -399,3 +399,8 @@ and at lma@UMD:
 
         /lma1/teuben/GBTRawdata/  - a few cherry picked project (AGBT21B_024, ...)
         /lma1/teuben/GBTWeather/  - usually all the GBO weather database, going back to 2004.
+
+
+## Hacking
+
+https://gist.github.com/low-sky/61ccc52f31b099191a5d3cfc39ae8042

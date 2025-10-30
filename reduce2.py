@@ -5,17 +5,7 @@
 #
 #  e.g.       ./reduce.py [options] NGC0001 [...]
 #
-#  options:
-#    -noweather
-#    -offtype PCA
-#    -nproc 4
-#    -scanblorder 7
-#    -posblorder 3
-#    -pixperbeam 3
-#    -rmsthresh 1.1
-#    -hanning 2
-#    -smooth 2
-
+#  sep-2025   improved tuned parameters (cf. reduce.py)
 
 import os
 import sys

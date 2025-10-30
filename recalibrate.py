@@ -1,3 +1,7 @@
+#! /usr/bin/env python
+#
+# -- only for testing - not for production-
+#
 from gbtpipe.ArgusCal import calscans, ZoneOfAvoidance, SpatialMask, SpatialSpectralMask, NoMask
 from gbtpipe import griddata
 import glob
@@ -93,6 +97,7 @@ def edgegrid(galaxy):
                            spatialSmooth=1.3,
                            Vwindow=1500*u.km/u.s,
                            Vgalaxy=300*u.km/u.s,
+                           # maskfile=galaxy+'.12co.mask.fits',    # erik first forgotten
                            CatalogFile='GBTEDGE.cat',
                            blorder=posblorder)
     
@@ -122,7 +127,11 @@ def galcenter(galaxy):
 
 
 galaxy = 'NGC2596'
+galaxy = 'NGC0001'
 maskdir = '/mnt/space/erosolow/edge/full/masks/'
+maskdir = '/home/teuben/EDGE/GBT-EDGE/masks/'
+
+maskname = maskdir + f'mask_{galaxy}_Havfield_v1.fits'
 maskname = maskdir + f'mask_{galaxy}_square.fits'
 
 # Note that masks now don't receive much dilation.  This is good for square masks.  
@@ -139,6 +148,7 @@ maskstrategy=partial(SpatialMask, mask=np.any(mask, axis=0),
                      wcs=wcs.WCS(hdu[0].header).celestial)
 
 rawdir = '/mnt/space/erosolow/edge/full/GBTRawdata'
+rawdir = '/home/teuben/EDGE/GBT-EDGE/rawdata'
 for scanset in scans:
     calscans(rawdir + f'/AGBT21B_024_{scanset[0]:02d}/AGBT21B_024_{scanset[0]:02d}.raw.vegas',
              start=scanset[1], stop=scanset[2],

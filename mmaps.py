@@ -46,6 +46,7 @@ if __name__ == "__main__":
     ext = "_12CO_rebase3_smooth1.3_hanning1"   # Erik
     ext = "_12CO_rebase3_smooth2_hanning2"     # Peter's QuickLook
     ext = "_12CO_rebase5_smooth1.3_hanning2"   # final?
+    ext = "_12CO_rebase7_smooth1.3_hanning2"   # new 2025 final?
     print("Using extension name %s" % ext)
     
     for gal in sys.argv[1:]:

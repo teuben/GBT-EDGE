@@ -5,9 +5,12 @@ gal=$1      #  gal=NGC0001
 ext=$2      #  ext=_12CO_rebase5_smooth1.3_hanning2.fits
 vlsr=$3     #  vlsr=4485.7
 
+
+n=192   ## for large Z galaxies need less channels
+n=195
 cube=$gal/${gal}${ext}
-slice0=51:195-50-1
-slice1=1:50,195-50:195
+slice0=51:${n}-50-1       # for rms0, where there should be signal
+slice1=1:50,${n}-50:${n}  # for rms1, where there should be no signal
 
 ./mmaps.py $gal
 ./plot_spectrum.py $cube size=10 vlsr=$vlsr savefig=$gal/plot_spectrum1.png

@@ -22,6 +22,7 @@ ext=12CO_rebase3_smooth2_hanning2.fits        # QL
 ext=12CO_rebase3_hanning2.fits                # alberto
 ext=12CO_rebase5_hanning2.fits                # alberto
 ext=12CO_rebase5_smooth1.3_hanning2.fits      # new
+ext=12CO_rebase7_smooth1.3_hanning2.fits      # new 2025
 
 cbf=0.4          # center fraction to compute noise
 sum=summary.txt

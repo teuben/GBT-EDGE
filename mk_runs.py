@@ -8,7 +8,7 @@ import sys
 import glob
 import GBTEDGE
 
-ext = '_12CO_rebase5_smooth1.3_hanning2.fits'
+ext = '_12CO_rebase7_smooth1.3_hanning2.fits'
 debug = False
 
 #   list of sessions where we have identified certain beams to be bad
@@ -52,12 +52,17 @@ def tolist(a):
         s = s + ',%d' % a1
     return s
 
-def masks(gal):
+def masks(gal, block=True):
     """ find the mask name
     """
-    gals = glob.glob('masks/*_%s_block*.fits' % gal)
-    if len(gals) == 1:
-        return gals[0].split('/')[1]
+    if block:
+        # gals = glob.glob('masks/*_%s_block*.fits' % gal)
+        # /lma1/yhteng/EDGE-GBT/masks/from_matlab/novmaxg/mask_*galname*_block_v1.fits
+        # /lma1/yhteng/EDGE-GBT/masks/from_matlab/novmaxg/mask_*galname*_square.fits
+        gals = glob.glob('masks/*_%s_square.fits' % gal)
+
+        if len(gals) == 1:
+            return gals[0].split('/')[1]
     gals = glob.glob('masks/*_%s_Hav*.fits' % gal)
     if len(gals) == 1:
         return gals[0].split('/')[1]
@@ -126,9 +131,9 @@ for gal in gals.keys():                   # loop over all observations
     for b in bf.keys():
         ss = bf[b]
         if len(b) == 0:
-            cmd = './reduce.py %s -g %s %s' % (m,tolist(ss),gal)
+            cmd = './reduce2.py %s -g %s %s' % (m,tolist(ss),gal)
         else:
-            cmd = './reduce.py %s -g %s %s %s' % (m,tolist(ss),b,gal)
+            cmd = './reduce2.py %s -g %s %s %s' % (m,tolist(ss),b,gal)
         #print('CMD',cmd)
         fp.write("%s\n" % cmd)
     fp.write('./plots.sh %s %s %s\n' % (gal,ext,vlsr))
@@ -147,7 +152,7 @@ for gal in gals.keys():                   # loop over all observations
         if not s in badfeeds:
             continue
         bf = badfeeds[s]
-        cmd = './reduce.py %s -g %d %s %s' % (m,s,bf,gal)
+        cmd = './reduce2.py %s -g %d %s %s' % (m,s,bf,gal)
         fp.write('rm -rf %s\n' % gal)
         fp.write("%s\n" % cmd)
         fp.write('./plots.sh %s %s %s\n' % (gal,ext,vlsr))

@@ -43,7 +43,7 @@ def edgemask(galaxy, maskfile=None):
             maskname = '../masks/' + maskfile
 
     buildmasks(maskname, galname=galaxy, outdir='./',
-               setups=['12CO'], grow_v=50, grow_xy=2)
+               setups=['12CO'], grow_v=0, grow_xy=0)
     # this writes a file   outdir + galname+'.12co.mask.fits'
     # but it should return that filename
     return galaxy+'.12co.mask.fits'
@@ -71,8 +71,8 @@ def edgegrid(galaxy, badfeeds=[], maskfile=None):
     edgetrim = 64
     outdir='.'
     plotTimeSeries=True
-    scanblorder=9
-    posblorder=7
+    scanblorder = 5
+    posblorder  = 3
     if maskfile == None:
         windowStrategy='simple'
     else:
@@ -95,8 +95,8 @@ def edgegrid(galaxy, badfeeds=[], maskfile=None):
     # Erik's original
     smooth_v = 1
     smooth_xy = 1.3
-    # new trial
-    smooth_v = 2
+    # new trial 3
+    smooth_v  = 1
     smooth_xy = 1.3
     
     griddata(filelist,
@@ -105,9 +105,9 @@ def edgegrid(galaxy, badfeeds=[], maskfile=None):
              outdir='.',
              flagSpike=True, spikeThresh=5.0,              # 1.5
              flagRMS=True,  plotTimeSeries=plotTimeSeries,
-             flagRipple=True, rippleThresh=1.1,            # 1.3
+             flagRipple=True, rippleThresh=1.3,            # 1.3
              pixPerBeam=4.0,
-             rmsThresh=1.2,                                # 1.3
+             rmsThresh=1.3,                                # 1.3
              robust=True,
              blorder=scanblorder,
              plotsubdir='timeseries/',

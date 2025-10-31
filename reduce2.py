@@ -3,9 +3,10 @@
 #  reduce a EDGE galaxy from the GBT-EDGE survey
 #  all work occurs in a subdirectory of the "galaxy" name
 #
-#  e.g.       ./reduce.py [options] NGC0001 [...]
+#  e.g.       ./reduce2.py [options] NGC0001 [...]
 #
 #  sep-2025   improved tuned parameters (cf. reduce.py)
+#             taken from Erik's recalibrate.py (first version)
 
 import os
 import sys
@@ -26,7 +27,7 @@ from spectral_cube import SpectralCube
 from radio_beam import Beam
 import argparse
 
-__version__ = "4-sep-2025"
+__version__ = "31-oct-2025"
 
 def edgemask(galaxy, maskfile=None):
     """
@@ -43,7 +44,7 @@ def edgemask(galaxy, maskfile=None):
             maskname = '../masks/' + maskfile
 
     buildmasks(maskname, galname=galaxy, outdir='./',
-               setups=['12CO'], grow_v=50, grow_xy=2)
+               setups=['12CO'], grow_v=0, grow_xy=0)
     # this writes a file   outdir + galname+'.12co.mask.fits'
     # but it should return that filename
     return galaxy+'.12co.mask.fits'
@@ -51,9 +52,9 @@ def edgemask(galaxy, maskfile=None):
 def edgegrid(galaxy, badfeeds=[], maskfile=None):
     """
     galaxy       our galaxy name, e.g. NGC0001
-    maskfile     can be None, in which case no masking was done
     badfeeds     a list of (0-based) feeds that should not be included
                  from the list via wildfeed
+    maskfile     can be None, in which case no masking will be done
     """
     filelist = glob.glob(galaxy +'*_pol0.fits')
     for bf in badfeeds:
@@ -71,8 +72,8 @@ def edgegrid(galaxy, badfeeds=[], maskfile=None):
     edgetrim = 64
     outdir='.'
     plotTimeSeries=True
-    scanblorder=9
-    posblorder=7
+    scanblorder = 9   # Note these high order baselines
+    posblorder  = 7   # Seem to work pretty well as long as mask is in good shape.
     if maskfile == None:
         windowStrategy='simple'
     else:
@@ -96,7 +97,7 @@ def edgegrid(galaxy, badfeeds=[], maskfile=None):
     smooth_v = 1
     smooth_xy = 1.3
     # new trial
-    smooth_v = 2
+    smooth_v  = 1
     smooth_xy = 1.3
     
     griddata(filelist,
@@ -105,13 +106,13 @@ def edgegrid(galaxy, badfeeds=[], maskfile=None):
              outdir='.',
              flagSpike=True, spikeThresh=5.0,              # 1.5
              flagRMS=True,  plotTimeSeries=plotTimeSeries,
-             flagRipple=True, rippleThresh=1.1,            # 1.3
+             flagRipple=True, rippleThresh=1.3,            # 1.3
              pixPerBeam=4.0,
-             rmsThresh=1.2,                                # 1.3
+             rmsThresh=1.3,                                # 1.3
              robust=True,
              blorder=scanblorder,
              plotsubdir='timeseries/',
-             windowStrategy=windowStrategy,   # 'cubemask' or 'simple'
+             windowStrategy=windowStrategy,   # 'cubemask' (if mask) or 'simple' (if no mask)
              maskfile=maskfile,
              dtype=np.float32,
              outname=filename)
@@ -121,7 +122,7 @@ def edgegrid(galaxy, badfeeds=[], maskfile=None):
                            HanningLoops=smooth_v,           # was: 1
                            spatialSmooth=smooth_xy,         # was: 1.3
                            Vwindow=1500*u.km/u.s,
-                           Vgalaxy=400*u.km/u.s,
+                           Vgalaxy=400*u.km/u.s,            # was: 300
                            CatalogFile='../GBTEDGE.cat',
                            # maskfile=maskfile,
                            blorder=posblorder)
@@ -147,7 +148,7 @@ def galcenter(galaxy):
             galcoord = SkyCoord(MatchRow['RA'],
                                 MatchRow['DEC'],
                                 unit=(u.hourangle, u.deg))
-    return(galcoord)
+    return galcoord
 
 def getscans(gal, select=[], parfile='gals.pars'):
     """
@@ -206,8 +207,9 @@ def my_calscans(gal, scan, maskstrategy, maskfile, badfeeds, pid='AGBT21B_024', 
     if maskstrategy == None:
         calscans(dirname, start=start, stop=stop, refscans=refscans, badfeeds=badfeeds, OffType=OffType, nProc=1, opacity=True, varfrac=0.1)
     else:
-        calscans(dirname, start=start, stop=stop, refscans=refscans, badfeeds=badfeeds,
-                 OffType=OffType, nProc=1, opacity=True, OffSelector=maskstrategy,
+        calscans(dirname, start=start, stop=stop, refscans=refscans,
+                 badfeeds=badfeeds, nProc=1,
+                 OffType=OffType, opacity=True, OffSelector=maskstrategy,
                  varrat=1.2,   # varfrac=0.1
                  drop_last_scan=True, smoothpca=True)
 

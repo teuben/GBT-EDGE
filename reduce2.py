@@ -97,7 +97,7 @@ def edgegrid(galaxy, badfeeds=[], maskfile=None):
     smooth_v = 1
     smooth_xy = 1.3
     # new trial
-    smooth_v  = 1
+    smooth_v  = 2       # keep this at 2, orig was 1
     smooth_xy = 1.3
     
     griddata(filelist,

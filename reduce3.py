@@ -26,7 +26,7 @@ from spectral_cube import SpectralCube
 from radio_beam import Beam
 import argparse
 
-__version__ = "4-sep-2025"
+__version__ = "6-nov-2025"
 
 def edgemask(galaxy, maskfile=None):
     """
@@ -96,7 +96,7 @@ def edgegrid(galaxy, badfeeds=[], maskfile=None):
     smooth_v = 1
     smooth_xy = 1.3
     # new trial 3
-    smooth_v  = 1
+    smooth_v  = 2
     smooth_xy = 1.3
     
     griddata(filelist,

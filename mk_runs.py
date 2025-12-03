@@ -8,7 +8,7 @@ import sys
 import glob
 import GBTEDGE
 
-ext = '_12CO_rebase7_smooth1.3_hanning2.fits'
+ext = '_12CO_rebase3_smooth1.3_hanning2.fits'
 debug = False
 
 #   list of sessions where we have identified certain beams to be bad
@@ -131,9 +131,9 @@ for gal in gals.keys():                   # loop over all observations
     for b in bf.keys():
         ss = bf[b]
         if len(b) == 0:
-            cmd = './reduce2.py %s -g %s %s' % (m,tolist(ss),gal)
+            cmd = './reduce3.py %s -g %s %s' % (m,tolist(ss),gal)
         else:
-            cmd = './reduce2.py %s -g %s %s %s' % (m,tolist(ss),b,gal)
+            cmd = './reduce3.py %s -g %s %s %s' % (m,tolist(ss),b,gal)
         #print('CMD',cmd)
         fp.write("%s\n" % cmd)
     fp.write('./plots.sh %s %s %s\n' % (gal,ext,vlsr))
